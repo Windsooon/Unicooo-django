@@ -1,0 +1,61 @@
+.cropit-image-preview {
+    background-color: #f8f8f8;
+    background-size: cover;
+    border: 5px solid #ccc;
+    border-radius: 3px;
+    width: 678px;
+    height: 488px;
+    cursor: move;
+    margin: 0 auto;
+}
+
+.cropit-image-background {
+    opacity: .2;
+    cursor: auto;
+}
+
+.image-size-label {
+    margin-top: 10px;
+}
+
+input {
+    position: relative;
+    z-index: 10;
+    display: block;
+}
+
+.export {
+margin-top: 10px;
+}
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
+.upload-cover {
+    margin: 0 auto;
+    margin-top: 20px;
+    width: 668px;
+}
+
+.glyphicon.glyphicon-road {
+    font-size: 50px;
+}
+
