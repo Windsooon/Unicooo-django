@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block extra_head %}
+  <link href="{% static 'css/common.css' %}" rel="stylesheet"/>
+  <link href="{% static 'css/act.css' %}" rel="stylesheet"/>
+{% endblock %}
+{% block content %}
+<div class="activities_list_image">
+  <img src="http://7xokch.com1.z0.glb.clouddn.com/activities_list.png?imageView2/2/format/jpeg/interlace/1" />
+</div>
+<div class="btn-group btn-group-justified" role="group" aria-label="...">
+  <div class="btn-group" role="group">
+    <a class="btn btn-default" href="{% url 'act_list' 'public' %}" id="public-btn" role="button">Public</a>
+  </div>
+  <div class="btn-group" role="group">
+    <a class="btn btn-default" href="{% url 'act_list' 'group' %}" id="group-btn" role="button">Group</a>
+  </div>
+  <div class="btn-group" role="group">
+    <a class="btn btn-default" href="{% url 'act_list' 'personal' %}" id="personal-btn" role="button">Personal</a>
+  </div>
+</div>
+<div class="activity-container container">
+  <div class="activity_one">
+    <!-- Public Activities -->
+    <div class="activity_group">
+      <span><h4>Public Activities</h4></span>
+      <div class="row">
+        {% for act in act_list %}
+        <div class="single-act col-sm-6 col-md-4 col-lg-4">
+          <div class="act-container">
+              <a href="#" class="thumbnail"><img src="{{ act.act_thumb_url }}" onerror="imgError(this);" alt=""></a>
+          <div class="single-title"><p class="act-title">{{ act.act_title }}</p></div>
+          <div class="single-content"><p class="act-content">{{ act.act_content }}</p></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <!-- end row -->
+    </div>
+    <!-- end group -->
+  </div>
+  <!-- end row -->
+</div>
+{% endblock %}
+{% block script %}
+  <script src="{% static 'js/activities_ajax.js' %}"></script>
+{% endblock %}
+
+
