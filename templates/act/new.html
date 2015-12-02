@@ -7,6 +7,7 @@
 {% block content %}
 <div class="uniform container">
     <!--<span class="text-center center-block glyphicon glyphicon-road" aria-hidden="true"></span> -->
+  <div class="col-sm-12 col-md-12 col-lg-8 col-lg-offset-2">
   <h2 class="create-text text-center">Create Your Own Activity<h2>
   <hr>
   <form action="" method="POST">
@@ -25,43 +26,43 @@
       </div>
       <!-- end image-editor -->
     </div>
-    <div class="form-group">
-      <label class="control-label sr-only" for="Just check">Just check</label>
-      <div class="input-group">
-        <span class="input-group-addon"><span class="glyphicon glyphicon-globe"></span></span>
-          <input type="hidden" value="1" />
-      </div>
-    </div>
   </form>
   <!-- end form-cover -->
   <hr>
   <form action="" method="POST">
         {% csrf_token %}
         <div class="form-group">
-          <label class="control-label sr-only" for="Email address">Email address</label>
+        <div class="col-lg-12">
+            <div class="form-group row">
+                <label for="inputKey" class="col-lg-2 sr-only control-label">Act Type</label>
+                <div class="col-lg-6">
+                    {{ form.act_type }}
+                </div>
+                <label for="inputValue" class="col-md-1 sr-only control-label">Act License</label>
+                <div class="col-lg-6">
+                    {{ form.act_licence }}
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label sr-only" for="Act Title">Act Title</label>
           <div class="input-group">
             <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
-              {{ form.email }}
+              {{ form.act_title }}
           </div>
         </div>
         <div class="form-group">
-          <label class="control-label sr-only" for="Username">Username</label>
+          <label class="control-label sr-only" for="Act Content">Act Content</label>
           <div class="input-group">
             <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-              {{ form.user_name }}
+              {{ form.act_content }}
           </div>
         </div>
         <div class="form-group">
-          <label class="control-label sr-only" for="Password">Password</label>
-          <div class="input-group">
-            <span class="input-group-addon"><span class="glyphicon glyphicon-star"></span></span>
-              {{ form.password }}
-          </div>
-        </div>
-        <div class="form-group">
-            <button type="submit" class="submit-btn btn btn-default btn-block"><span class="glyphicon glyphicon-ok"></span></button>
+          <button type="submit" class="submit-btn btn btn-default btn-block"><span class="glyphicon glyphicon-ok"></span></button>
         </div>
       </form>
+    </div>
 {% endblock %}
 {% block script %}
   <script src="{% static 'js/jquery.cropit.js' %}"></script>
