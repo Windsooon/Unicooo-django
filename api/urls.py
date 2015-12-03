@@ -1,7 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: UTF-8 -*-
 from django.conf.urls import *
-from activities import views
 from rest_framework.urlpatterns import format_suffix_patterns
 
 urlpatterns = [
@@ -12,5 +9,7 @@ urlpatterns = [
               ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
+
+
 
 

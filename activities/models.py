@@ -1,6 +1,8 @@
 from django.db import models
 from common.models import MyUser
 from .choices import ACTTYPE, ACTLICENCE
+
+
 class Act(models.Model):
     user = models.ForeignKey("common.MyUser")
     act_title = models.CharField(max_length=30)
