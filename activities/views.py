@@ -60,7 +60,6 @@ def ajax_act_list(request):
     except EmptyPage:
         act_list = paginator.page(paginator.num_pages)
     act_list = json.dumps(act_list)
-    print (act_list)
     return render(request, "act/activities_list.html", {"act_list": act_list})
 
     
