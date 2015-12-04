@@ -4,7 +4,7 @@ from .choices import ACTTYPE, ACTLICENCE
 
 
 class Act(models.Model):
-    user = models.ForeignKey("common.MyUser")
+    user = models.ForeignKey("common.MyUser", related_name="act_user")
     act_title = models.CharField(max_length=30)
     act_content = models.CharField(max_length=1000)
     act_thumb_url = models.CharField(max_length=400)
