@@ -63,3 +63,22 @@ margin-top: 10px;
     width: 100%;
 }
 
+.activity-details-thumb {
+    height: 479px;
+    border: 1px solid black;
+}
+
+.act-details-title {
+   padding: 12px;
+   font-size:32px; 
+}
+
+.act-details-content {
+   font-size:16px; 
+}
+
+.activity-details-thumb-img {
+    height:479px;
+    background-color: gray;
+}
+

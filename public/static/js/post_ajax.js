@@ -19,6 +19,8 @@ $(document).ready(function(){
     var ajax_state = true
     var page = 1
     $(window).scroll(function(){
+        //console.log($(window).scrollTop());
+        //console.log($(".single-act:last").offset().top);
         if (checkscroll() && ajax_state){
             ajax_state = false;
             ajax_activity(act_type, page)
@@ -81,6 +83,42 @@ $(document).ready(function(){
         });
     }//ajax_activity结束
 
+    //$(document).on("click",".thumbnail",function(){
+    //    $('#act_details').modal('show');
+    //    //console.log($(this).attr("class"));
+    //    act_id = 1;
+    //    $.ajax({
+    //        url: "/api/act/",
+    //        type: "GET",
+    //        datatype: "json",
+    //        data:  {"act_id": act_id},
+    //        beforeSend:function(){
+    //        },
+    //        success: function(data) {
+    //        },
+    //        complete:function(){
+    //        }
+    //    });
+    //});
+
+    $('#act_details').on('show.bs.modal', function (e) {
+        var act_target = e.relatedTarget;
+        act_id = act_target.className.split(" ");
+        act_id = act_id[act_id.length-1];
+        $.ajax({
+            url: "/api/act/",
+            type: "GET",
+            datatype: "json",
+            data:  {"act_id": act_id},
+            beforeSend:function(){
+            },
+            success: function(data) {
+            },
+            complete:function(){
+            }
+        });
+    })
+
     function checkscroll(){
         if($(window).scrollTop()+500 > ($(".single-act:last").offset().top)){
             return true; 
@@ -89,6 +127,10 @@ $(document).ready(function(){
             return false;
         }
     }
+
+
+    
+
 })
 
 
@@ -98,4 +140,5 @@ function imgError(image) {
     image.src = "../../static/img/error.png";
     return true;
 }
+
 

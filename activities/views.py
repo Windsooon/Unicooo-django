@@ -4,6 +4,7 @@ from django.db.models import Max
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import ActForm
 from .models import Act
+from common.models import MyUser
 
 def new_act(request):
     if request.method == "GET":
@@ -41,8 +42,22 @@ def act_list(request, act_list):
             act_details = Act.objects.filter(act_type=dict_act[act_list])[:9]
             return render(request, "act/activities_list.html", {"act_list": act_details})
         else:
-            error = "不存在。"
+            error = "不存在此分类。"
             return render(request, "error.html", {"error": error})
+    else:
+        error = "不允许使用此方法。"
+        return render(request, "error.html", {"error": error})
+
+def act_details(request, act_author, act_title):
+    if request.method == "GET":
+        try:
+            act_author_id = MyUser.objects.get(user_name=act_author).id
+            act_details = Act.objects.get(act_title=act_title, user_id=act_author_id)
+        except:
+            error = "不存在此活动。"
+            return render(request, "error.html", {"error": error})
+        else:
+            return render(request, "act/activities_details.html", {"act_details": act_details})
     else:
         error = "不允许使用此方法。"
         return render(request, "error.html", {"error": error})

@@ -28,7 +28,7 @@
         {% for act in act_list %}
         <div class="single-act col-sm-6 col-md-4 col-lg-4">
           <div class="act-container">
-              <a href="#" class="thumbnail"><img src="{{ act.act_thumb_url }}" onerror="imgError(this);" alt=""></a>
+              <a href="#act_details" data-toggle="modal" class="thumbnail {{ act.id }}"><img src="{{ act.act_thumb_url }}" onerror="imgError(this);" alt=""></a>
           <div class="single-title"><p class="act-title">{{ act.act_title }}</p></div>
           <div class="single-content"><p class="act-content">{{ act.act_content }}</p></div>
           </div>
@@ -41,6 +41,25 @@
   </div>
   <!-- end row -->
 </div>
+<!-- Modal -->
+<div class="modal fade" id="act_details" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="act_model_title">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <img src=http://7xokch.com1.z0.glb.clouddn.com/activities_list.png?imageView2/2/format/jpeg/interlace/1" />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}
 {% block script %}
   <script src="{% static 'js/activities_ajax.js' %}"></script>
