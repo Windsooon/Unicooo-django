@@ -3,7 +3,8 @@ from rest_framework import generics
 from rest_framework import permissions
 from activities.models import Act
 from common.models import MyUser
-from .serializers import ActSerializer, UserSerializer
+from post.models import Post
+from .serializers import ActSerializer, PostSerializer, UserSerializer
 from .permissions import IsOwnerOrReadOnly
 
 
@@ -25,6 +26,14 @@ class ActList(generics.ListCreateAPIView):
         if act_type is not None:
             queryset = queryset.filter(act_type=act_type)
         return queryset
+
+class PostList(generics.ListCreateAPIView):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly)
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 class UserList(generics.ListCreateAPIView):

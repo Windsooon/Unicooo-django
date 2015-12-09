@@ -1,8 +1,8 @@
 $(document).ready(function(){
-    var $container = $('#act_grid');
+    var $container = $("#posts-container");
     $container.imagesLoaded(function(){
         $container.masonry({
-            itemSelector: '.act_item',
+            itemSelector: ".post-container",
             gutterWidth: 20,
         });
     });

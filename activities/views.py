@@ -4,8 +4,12 @@ from django.db.models import Max
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import ActForm
 from .models import Act
+from post.models import Post
 from common.models import MyUser
 
+#--------------#
+#carate new activity
+#--------------#
 def new_act(request):
     if request.method == "GET":
         if request.user.is_authenticated():
@@ -48,6 +52,10 @@ def act_list(request, act_list):
         error = "不允许使用此方法。"
         return render(request, "error.html", {"error": error})
 
+
+#--------------#
+#show activities details
+#--------------#
 def act_details(request, act_author, act_title):
     if request.method == "GET":
         try:
@@ -57,11 +65,16 @@ def act_details(request, act_author, act_title):
             error = "不存在此活动。"
             return render(request, "error.html", {"error": error})
         else:
-            return render(request, "act/activities_details.html", {"act_details": act_details})
+            act_posts = Post.objects.filter(act_id=act_details.id)
+            return render(request, "act/activities_details.html", {"act_details": act_details, "act_posts": act_posts})
     else:
         error = "不允许使用此方法。"
         return render(request, "error.html", {"error": error})
 
+
+#--------------#
+#show activities list
+#--------------#
 def ajax_act_list(request):
     act_type = request.GET.get("act_type", None)
     page = request.GET.get("page", None)

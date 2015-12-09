@@ -48,6 +48,8 @@ $(document).ready(function(){
                     act_thumb_a.setAttribute("href", "#act_details");
                     act_thumb_a.setAttribute("data-toggle", "modal");
                     var act_thumb_url = document.createElement("img");
+                    act_thumb_url.src = value["act_thumb_url"];
+                    act_thumb_url.setAttribute("onerror", "imgError(this);");
                     //活动名称外层div
                     var single_title = document.createElement("div");
                     single_title.className = "single-title";
@@ -62,8 +64,6 @@ $(document).ready(function(){
                     var single_content_p = document.createElement("p");
                     single_content_p.className = "act-content";
                     single_content_p.innerHTML = value["act_content"];
-                    act_thumb_url.src = value["act_thumb_url"];
-                    act_thumb_url.setAttribute("onerror", "imgError(this);");
                     act_thumb_a.appendChild(act_thumb_url);
                     act_container.appendChild(act_thumb_a);
                     single_title.appendChild(single_title_p);

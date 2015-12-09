@@ -1,3 +1,4 @@
+/* for sign up/login button */
 @keyframes btnhover
 {
 animation-duration: 1s;
@@ -39,13 +40,13 @@ animation-duration: 1s;
   -webkit-animation: ball-scale 1s 0s ease-in-out infinite;
           animation: ball-scale 1s 0s ease-in-out infinite; }
 
+/* frongpage auto change img */
 @media (min-width: 1200px) {
     .thumbnail {
         width: 318px;
         height: 229px;
     }
 }
-
 
 @media (min-width: 992px) and (max-width: 1199px) {
     .thumbnail {
@@ -54,98 +55,27 @@ animation-duration: 1s;
     }
 }
 
-
-/* navbar */
-.navbar {
-    margin-bottom: 0px;
-}
-
-/* form in the signup and login */
-.uniform {
-    margin-top: 150px;
-}
-
-/* activitities */
-.single-act {
-    padding:35px;
-}
-
-.act-container {
-    border: 1px solid #bfbfbf;
-    border-radius: 6px;
-}
-
-.act-container img{
-    border-top-right-radius: 4px;
-    border-top-left-radius: 4px;
-}
-
-.activity-container {
-    margin-top: 80px;
-}
-
-.single-act-border {
-    margin-top: 0px;
-    border: 1px solid #bfbfbf;
-    border-bottom-right-radius: 6px;
-    border-bottom-left-radius: 6px;
-}
-
-.single-content {
-    border-top: 2px solid #2b6e90;
-    height: 100px;
-    max-height: 200px;
-    padding: 8px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    content: "";
-    position: relative;
-    border-bottom-right-radius: 6px;
-    border-bottom-left-radius: 6px;
-}
-
-.single-content:before {
-    content: '';
-    width: 100%;
-    height: 100%;    
-    position: absolute;
-    left: 0;
-    top: 0;
-    background: linear-gradient(transparent 70px, white);
-}
-
 .thumbnail {
     margin-bottom: 0px;
     padding: 0px;
     border: 0px;
 }
 
-.single-title {
-    height: 50px;
-    padding-left: 8px;
-    padding-top: 12px;
-    padding-bottom: 12px;
+
+/* navbar */
+.navbar {
+    margin-bottom: 0px;
 }
 
-.act-author {
-    margin-top: 8px;
-    margin-right: 12px;
-    color: #838383;
+.navbar-brand img {
+    width: 20px;
+    height: 20px;
 }
 
-.act-title {
-    margin: 0px;
-    font-family: SimHei;
-    font-size: 20px;
-    color: #545454;
+/* form in the signup and login */
+.uniform {
+    margin-top: 150px;
 }
-
-.act-content {
-    font-family: SimHei;
-    color: #545454;
-    line-height: 16pt;
-}
-
 
 .input-group-addon {
     background-color: white;
@@ -161,11 +91,7 @@ animation-duration: 1s;
     text-align: center;
 }
 
-.navbar-brand img {
-    width: 20px;
-    height: 20px;
-}
-
+/* bootstrap input focut */
 textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus {   
     border-color: #48D1CC;
     box-shadow: 0px;

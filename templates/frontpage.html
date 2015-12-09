@@ -2,6 +2,7 @@
 {% load staticfiles %}
 {% block extra_head %}
   <link href="{% static 'css/common.css' %}" rel="stylesheet"/>
+  <link href="{% static 'css/act.css' %}" rel="stylesheet"/>
 {% endblock %}
 {% block content %}
 <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
@@ -64,7 +65,7 @@
 </div>
 {% endblock %}
 {% block script %}
-  <script src="{% static 'js/frontpage.js' %}"></script>
+  <script src="{% static 'js/plugin/frontpage.js' %}"></script>
 {% endblock %}
 
 

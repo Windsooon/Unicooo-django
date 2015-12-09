@@ -59,6 +59,82 @@ margin-top: 10px;
     font-size: 50px;
 }
 
+/* activitities */
+.single-act {
+    padding:35px;
+}
+
+.act-container {
+    border: 1px solid #bfbfbf;
+    border-radius: 6px;
+}
+
+.act-container img{
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+}
+
+.activity-container {
+    margin-top: 80px;
+}
+
+.single-act-border {
+    margin-top: 0px;
+    border: 1px solid #bfbfbf;
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+
+.single-content {
+    border-top: 2px solid #2b6e90;
+    height: 100px;
+    max-height: 200px;
+    padding: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    content: "";
+    position: relative;
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+
+.single-content:before {
+    content: '';
+    width: 100%;
+    height: 100%;    
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: linear-gradient(transparent 70px, white);
+}
+
+.single-title {
+    height: 50px;
+    padding-left: 8px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+.act-author {
+    margin-top: 8px;
+    margin-right: 12px;
+    color: #838383;
+}
+
+.act-title {
+    margin: 0px;
+    font-family: SimHei;
+    font-size: 20px;
+    color: #545454;
+}
+
+.act-content {
+    font-family: SimHei;
+    color: #545454;
+    line-height: 16pt;
+}
+
+
 .activities_list_image img {
     width: 100%;
 }
@@ -82,3 +158,13 @@ margin-top: 10px;
     background-color: gray;
 }
 
+.post-container {
+  width: 260px;
+  margin: 10px;
+  float: left;
+  border: 1px solid;
+}
+
+.post-container img {
+    width: 260px;
+}
