@@ -14,15 +14,15 @@ def dictfetchall(cursor):
         for row in cursor.fetchall()
     ]
 
+def public_activities(request):
+    render(request, "public_activities.html")
+
 def front_page(request):
     cursor = connection.cursor()
     cursor.execute("SELECT act_title, act_content, act_thumb_url,  a.user_name FROM ( SELECT ROW_NUMBER() OVER " +
                    "(PARTITION BY act_type ORDER BY act_create_time ) AS r, t.* FROM activities_act t) x , common_user a WHERE x.r <= 3 and user_id = a.id;")
     act_list = dictfetchall(cursor)
-    return render(request, "frontpage.html", {"act_list": act_list})
-
-def public_activities(request):
-    return render(request, "public_activities.html")
+    return render(request, "common/frontpage.html", {"act_list": act_list})
 
 def sign_up(request):
     if request.method == "GET":
@@ -40,7 +40,7 @@ def sign_up(request):
             if user is not None:
                 if user.is_active:
                     django_login(request, user)
-            return redirect("/common/frontpage")
+            return redirect("/")
         else:
             return render(request, "404.html")
     else:
@@ -57,7 +57,7 @@ def login_in(request):
         if user is not None:
             if user.is_active:
                 django_login(request, user)
-                return redirect("/common/frontpage")
+                return redirect("/")
         else:
             pass
     else:

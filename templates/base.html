@@ -49,9 +49,9 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a href="#">Personal Activities<span class="sr-only">(current)</span></a></li>
-        <li><a href="#">Group Activities</a></li>
-        <li><a href="#">Public Activities</a></li>
+        <li><a href="{% URL ">Personal Activities<span class="sr-only">(current)</span></a></li>
+        <li><a href="act/group">Group Activities</a></li>
+        <li><a href="act/public">Public Activities</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
       {% if user.is_authenticated %}
@@ -61,7 +61,7 @@
             <li><a href="#">Feed</a></li>
             <li><a href="#">Activities</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
+            <li><a href="#">Settings</a></li>
           </ul>
         </li>
       {% else %}

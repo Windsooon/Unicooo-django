@@ -13,7 +13,7 @@ $(document).ready(function(){
     //    }
     //})
 
-    //postivity板块进行ajax请求
+    //post板块进行ajax请求
     function ajax_post(page){
         $.ajax({
             url: "/api/post/",
@@ -41,7 +41,7 @@ $(document).ready(function(){
                         single_title.className = "single-title";
                         //活动内容外层div
                         var single_content = document.createElement("div");
-                        single_content.className = "single-content";
+                        single_content.className = "single-content-post";
                         //具体活动名称
                         var single_title_p = document.createElement("p");
                         single_title_p.className = "post-title";
@@ -100,7 +100,7 @@ $(document).ready(function(){
 //图片错误时加载备份图片
 function imgError(image) {
     image.onerror = "";
-    image.src = "../../static/img/error.png";
+    image.src = "../../../static/img/error.png";
     return true;
 }
 
