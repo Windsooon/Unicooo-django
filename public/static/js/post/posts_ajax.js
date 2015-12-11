@@ -58,8 +58,10 @@ $(document).ready(function(){
                         single_post.appendChild(single_content);
                         frag.appendChild(single_post);
                     })
-                    $("#posts-container").append($(frag)).masonry()
-                    .masonry("appended", $(frag), true );
+                    $container.append($(frag));
+                    $container.imagesLoaded(function(){
+                        $container.masonry().masonry( 'appended', $(frag), true ); 
+                    });
                 }
             },
             complete:function(){
