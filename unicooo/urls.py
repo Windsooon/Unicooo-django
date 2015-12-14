@@ -8,6 +8,7 @@ urlpatterns = [
     url(r"^", include("common.urls")),
     url(r"^api/", include("api.urls")),
     url(r"^act/", include("activities.urls")),
+    url(r"^post/", include("post.urls")),
 
 ]
 

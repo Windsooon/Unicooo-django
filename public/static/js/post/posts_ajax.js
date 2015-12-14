@@ -1,7 +1,9 @@
 $(document).ready(function(){
     var page = 1
-    var $container = $("#posts-container");
-    var $content = $(".post-container");
+    var $container = $('#posts-container').masonry({
+        columnWidth: 20,
+        itemSelector: '.post-container'
+    });
     ajax_post(page)
         //$(window).scroll(function(){
     //    //console.log($(window).scrollTop());
@@ -24,7 +26,7 @@ $(document).ready(function(){
             },
             success: function(data) {
                 if (data.results.length > 0) {
-                    var frag = document.createDocumentFragment();
+                    var elems = [];
                     $.each(data.results, function(key, value){
                         var single_post = document.createElement("div");
                         single_post.className = "post-container";
@@ -56,11 +58,12 @@ $(document).ready(function(){
                         single_content.appendChild(single_content_p);
                         single_post.appendChild(single_title);
                         single_post.appendChild(single_content);
-                        frag.appendChild(single_post);
+                        elems.push(single_post);
                     })
-                    $container.append($(frag));
+                    var $elems = $(elems);
+                    $container.append($elems);
                     $container.imagesLoaded(function(){
-                        $container.masonry().masonry( 'appended', $(frag), true ); 
+                        $container.masonry( 'appended', $elems, true ); 
                     });
                 }
             },
