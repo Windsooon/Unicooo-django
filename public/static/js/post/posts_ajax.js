@@ -5,15 +5,15 @@ $(document).ready(function(){
         itemSelector: '.post-container'
     });
     ajax_post(page)
-        //$(window).scroll(function(){
-    //    //console.log($(window).scrollTop());
-    //    //console.log($(".single-post:last").offset().top);
-    //    if (checkscroll() && ajax_state){
-    //        ajax_state = false;
-    //        ajax_postivity(act_type, page)
-    //        page += 1;
-    //    }
-    //})
+    $(window).scroll(function(){
+        //console.log($(window).scrollTop());
+        //console.log($(".single-post:last").offset().top);
+        if (checkscroll() && ajax_state){
+            page += 1;
+            ajax_state = false;
+            ajax_post(page)
+        }
+    })
 
     //post板块进行ajax请求
     function ajax_post(page){
@@ -91,14 +91,14 @@ $(document).ready(function(){
         });
     })
 
-    //function checkscroll(){
-    //    if($(window).scrollTop()+500 > ($(".single-post:last").offset().top)){
-    //        return true; 
-    //    }
-    //    else{
-    //        return false;
-    //    }
-    //}
+    function checkscroll(){
+        if($(window).scrollTop()+500 > ($(".post-container:last").offset().top)){
+            return true; 
+        }
+        else{
+            return false;
+        }
+    }
 })
 
 

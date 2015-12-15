@@ -63,4 +63,9 @@ def login_in(request):
     else:
         return render(request, "404.html")
 
+
+def accounts(request):
+    pass
+    
+
     
