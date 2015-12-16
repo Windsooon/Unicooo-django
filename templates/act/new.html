@@ -6,63 +6,53 @@
 {% endblock %}
 {% block content %}
 <div class="uniform container">
-    <!--<span class="text-center center-block glyphicon glyphicon-road" aria-hidden="true"></span> -->
-  <div class="col-sm-12 col-md-12 col-lg-8 col-lg-offset-2">
-  <h2 class="create-text text-center">Create Your Own Activity<h2>
-  <hr>
+  <!--<span class="text-center center-block glyphicon glyphicon-road" aria-hidden="true"></span> -->
+  <div class="well col-sm-12 col-md-12 col-lg-8 col-lg-offset-2">
+    <h2 class="create-text text-center">Create Your Own Activity<h2>
+    <hr>
+    <form action="" method="POST">
+      {% csrf_token %}
+      <div class="form-group">
+        <label class="control-label sr-only" for="Cover Image">Cover Image</label>
+        <div class="image-editor">
+          <div class="cropit-image-preview-container">
+            <div class="cropit-image-preview"></div>
+          </div>
+          <div class="upload-cover">
+            <span class="btn btn-primary btn-file btn-block">Upload your Cover Image
+              <input type="file" class="cropit-image-input">
+            </span>
+          </div>
+        </div> <!-- end image-editor -->
+      </div>
+    </form><!-- end form-cover -->
   <form action="" method="POST">
     {% csrf_token %}
-    <div class="form-group">
-      <label class="control-label sr-only" for="Cover Image">Cover Image</label>
-      <div class="image-editor">
-        <div class="cropit-image-preview-container">
-          <div class="cropit-image-preview"></div>
-        </div>
-        <div class="upload-cover">
-          <span class="btn btn-default btn-file btn-block">Upload your Cover Image
-            <input type="file" class="cropit-image-input">
-          </span>
-        </div>
+    <fieldset>
+      <div class="form-group">
+        <label for="act_type" class="control-label">Act Type</label>
+          {{ form.act_type }}
       </div>
-      <!-- end image-editor -->
-    </div>
-  </form>
-  <!-- end form-cover -->
-  <hr>
-  <form action="" method="POST">
-        {% csrf_token %}
-        <div class="form-group">
-        <div class="col-lg-12">
-            <div class="form-group row">
-                <label for="inputKey" class="col-lg-2 sr-only control-label">Act Type</label>
-                <div class="col-lg-6">
-                    {{ form.act_type }}
-                </div>
-                <label for="inputValue" class="col-md-1 sr-only control-label">Act License</label>
-                <div class="col-lg-6">
-                    {{ form.act_licence }}
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label sr-only" for="Act Title">Act Title</label>
-          <div class="input-group">
-            <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
-              {{ form.act_title }}
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label sr-only" for="Act Content">Act Content</label>
-          <div class="input-group">
-            <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-              {{ form.act_content }}
-          </div>
-        </div>
-        <div class="form-group">
-          <button type="submit" class="submit-btn btn btn-default btn-block"><span class="glyphicon glyphicon-ok"></span></button>
-        </div>
-      </form>
-    </div>
+      <div class="form-group">
+        <label for="act_licence" class="control-label">Act License</label>
+          {{ form.act_licence }}
+      </div>
+      <div class="form-group label-floating is-empty">
+        <label for="act_title" class="control-label">Act Title</label>
+          {{ form.act_title }}
+        <span class="help-block">Please enter a valid act title</span>
+      </div>
+      <div class="form-group label-floating is-empty">
+        <label for="act_content" class="control-label">Act Content</label>
+          {{ form.act_content }}
+        <span class="help-block">Please enter a valid act title</span>
+      </div>
+      <div class="form-group">
+        <button type="submit" class="submit-btn btn btn-primary btn-block"><span class="glyphicon glyphicon-ok"></span></button>
+      </div>
+    </form><!-- end form-cover -->
+  </div>
+</div>
 {% endblock %}
 {% block script %}
   <script src="{% static 'js/plugin/jquery.cropit.js' %}"></script>
@@ -81,4 +71,9 @@
       });
     });
   </script>
+  <script>
+  $.material.init();
+  </script>
 {% endblock %}
+
+

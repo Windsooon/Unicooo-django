@@ -1,3 +1,10 @@
+body {
+    background-color: white;
+}
+
+.thumbnail {
+    border: 0px;
+}
 .navbar-brand img {
     width: 20px;
     height: 20px;
@@ -5,7 +12,7 @@
 
 /* form in the signup and login */
 .uniform {
-    margin-top: 150px;
+    margin-top: 100px;
 }
 
 .input-group-addon {

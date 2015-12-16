@@ -17,7 +17,6 @@ class ActForm(forms.ModelForm):
                 attrs={
                     "id": "act_title",
                     "class": "form-control",
-                    "placeholder": _("Please ender your activity title"),
                     "minlength": 3,
                 }
             ),
@@ -25,7 +24,6 @@ class ActForm(forms.ModelForm):
                 attrs={
                     "id": "act_content",
                     "class": "form-control",
-                    "placeholder": _("Please ender your activity content"),
                     "minlength": 15,
                 }
             ),
