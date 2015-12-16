@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login as django_login
 
 
 def dictfetchall(cursor):
-    """把tuple类型转换成字典类型"""
+    """trans tuple to dict"""
     desc = cursor.description
     return [
         dict(zip([col[0] for col in desc], row))
@@ -27,7 +27,7 @@ def front_page(request):
 def sign_up(request):
     if request.method == "GET":
         form = UserCreateForm()
-        return render(request, "signup.html",{"form": form})
+        return render(request, "common/signup.html",{"form": form})
     elif request.method == "POST":
         form = UserCreateForm(request.POST)
         if form.is_valid():
@@ -49,7 +49,7 @@ def sign_up(request):
 def login_in(request):
     if request.method == "GET":
         form = UserLoginForm()
-        return render(request, "login.html", {"form": form})
+        return render(request, "common/login.html", {"form": form})
     elif request.method == "POST":
         email = request.POST.get("email", None)
         password = request.POST.get("password", None)
@@ -64,8 +64,9 @@ def login_in(request):
         return render(request, "404.html")
 
 
-def accounts(request):
-    pass
+def accounts(request, accounts):
+    """User settings"""
+    return render(request, "common/accounts.html")
     
 
     

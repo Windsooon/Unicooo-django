@@ -13,7 +13,6 @@ class UserCreateForm(forms.ModelForm):
             attrs={
                 'id': 'password_signup',
                 'class': 'form-control',
-                'placeholder': 'Please ender your password',
                 'minlength': 8,
             }
         )
@@ -32,7 +31,6 @@ class UserCreateForm(forms.ModelForm):
                 attrs={
                     'id': 'username_signup',
                     'class': 'form-control',
-                    'placeholder': 'Please ender your username',
                     'minlength': 6,
                 }
             ),
@@ -40,7 +38,6 @@ class UserCreateForm(forms.ModelForm):
                 attrs={
                     'id': 'email_signup',
                     'class': 'form-control',
-                    'placeholder': 'Please ender your email address',
                     'minlength': 8,
                 }
             ),
@@ -60,7 +57,6 @@ class UserLoginForm(forms.ModelForm):
              attrs={
                 'id': 'email_login',
                 'class': 'form-control',
-                'placeholder': 'Email address for login',
                 'minlength': 8,
             }
         )
@@ -70,7 +66,6 @@ class UserLoginForm(forms.ModelForm):
             attrs={
                 'id': 'password_login',
                 'class': 'form-control',
-                'placeholder': 'Password for login',
                 'minlength': 8,
             }
         )

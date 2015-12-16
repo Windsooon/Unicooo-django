@@ -21,27 +21,30 @@
     <div class="row">
       <form action="" method="POST">
         {% csrf_token %}
-        <div class="form-group">
-          <label class="control-label sr-only" for="Email address">Email address</label>
-          <div class="input-group">
-            <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-              {{ form.email }}
+        <fieldset>
+          <div class="form-group label-floating is-empty">
+            <div class="input-group">
+              <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+              <label for="email_login" class="control-label">Email address</label>
+                {{ form.email }}
+              <span class="help-block">Please enter a valid email address</span>
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label sr-only" for="Password">Password</label>
-          <div class="input-group">
-            <span class="input-group-addon"><span class="glyphicon glyphicon-star"></span></span>
-              {{ form.password }}
+          <div class="form-group label-floating is-empty">
+            <div class="input-group">
+              <span class="input-group-addon"><span class="glyphicon glyphicon-star"></span></span>
+              <label for="password_login" class="control-label">Password</label>
+                {{ form.password }}
+              <span class="help-block">Please enter your password</span>
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <button type="submit" class="submit-btn btn btn-default btn-block"><span class="glyphicon glyphicon-ok"></span></button>
+          <div class="form-group">
+            <button type="submit" class="submit-btn btn btn-primary btn-block"><span class="glyphicon glyphicon-ok"></span></button>
         </div>
       </form>
-      <div class="pull-right">
-          <a href="../../common/signup"><h5>Sign up an account</h5></a>
-      </div>
+    <div class="pull-right">
+      <a href="../../common/signup"><h5>Sign up an account</h5></a>
+    </div>
     </div>
   </div>
   <!-- signup_form end -->
@@ -49,5 +52,8 @@
 {% endblock %}
 {% block script %}
   <script src="{% static 'js/common/login.js' %}"></script>
+  <script>
+  $.material.init();
+  </script>
 {% endblock %}
 

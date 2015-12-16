@@ -2,7 +2,6 @@
 {% load staticfiles %}
 {% block extra_head %}
   <link href="{% static 'css/common.css' %}" rel="stylesheet"/>
-  <link href="{% static 'css/act.css' %}" rel="stylesheet"/>
 {% endblock %}
 {% block content %}
 <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
@@ -33,40 +32,11 @@
     </div>
   </div>
 </div>
-<div class="activity-container container">
-  <!-- 加载loging效果 -->
-  <!-- <div class="ball-scale">
-    <div></div>
-  </div> -->
-  <div class="activity_one">
-    <!-- Public Activities -->
-    <div class="activity_group">
-      <span><h4>Public Activities</h4></span>
-      <div class="row">
-        {% for act in act_list %}
-        <div class="single-act col-sm-6 col-md-4 col-lg-4">
-          <div class="act-container">
-              <a href="#" class="thumbnail"><img src="{{ act.act_thumb_url }}" onerror="imgError(this);" alt=""></a>
-          <div class="single-title"><p class="act-title">{{ act.act_title }}</p></div>
-          <div class="single-content"><p class="act-content">{{ act.act_content }}</p></div>
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-      <!-- end row -->
-    </div>
-    <!-- end group -->
-  </div>
-      <!-- end row --
-</div>
-    <!-- end group -->
-<div class="jumbotron">
-  <h1 class="text-center">about us</h1>
-</div>
 {% endblock %}
 {% block script %}
-  <script src="{% static 'js/common/frontpage.js' %}"></script>
+  <script src="{% static 'js/plugin/frontpage.js' %}"></script>
 {% endblock %}
+
 
 
 

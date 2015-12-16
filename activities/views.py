@@ -1,5 +1,6 @@
 import json
 from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
 from django.db.models import Max
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import ActForm
@@ -16,7 +17,7 @@ def new_act(request):
             form = ActForm()
             return render(request, "act/new.html", {"form": form})
         else:
-            redirect('/login/') 
+            return HttpResponseRedirect("/login/")
     elif request.method == "POST":
         if request.user.is_authenticated():
             form = ActForm(request.POST)
