@@ -1,7 +1,7 @@
 import json
 from django.views.generic.edit import CreateView, FormView
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Max
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import ActCreateForm
@@ -12,7 +12,7 @@ from common.models import MyUser
 #--------------#
 #create new activity
 #--------------#
-class AjaxableResponseMixin(FormView):
+class AjaxableResponseMixin(object):
     """
     Mixin to add AJAX support to create activity
     """
@@ -30,67 +30,25 @@ class AjaxableResponseMixin(FormView):
         else:
             return response
 
-class ActCreate(AjaxableResponseMixin, CreateView):
-    form_class = ActCreateForm
+class ActCreate(CreateView):
+    model = Act
     template_name = "act/new.html"
-
-    def get(self, request, *args, **kwargs):
-        if not request.user.is_authenticated():
-            return HttpResponseRedirect("/login/")
-        else:
-            return super(ActCreate, self).get(request, *args, **kwargs)
-
+    form_class = ActCreateForm
+    
     def form_valid(self, form):
+        self.object = form.save(commit=False)  
         act_ident = Act.objects.all().aggregate(Max('act_ident'))["act_ident__max"] + 1
-        response = super(ActCreate, self).form_valid(form)
-        self.object = form.save(commit=False)
-        self.object.act_type = form.cleaned_data["act_type"]
-        self.object.act_licence = form.cleaned_data["act_licence"]
-        self.object.act_title = form.cleaned_data["act_title"]
-        self.object.act_username = request.user.user_name
-        self.object.act.act_type = act_type
-        self.object.act.act_licence = act_licence
-        self.object.act.user_id = request.user.id
-        self.object.act.act_url = "/act/" + act_username + "/" + act_title
-
+        self.object.act_ident = act_ident
+        act_username = self.request.user.user_name
+        self.object.act_url = "/act/" + act_username + "/" +  form.cleaned_data["act_title"]
+        self.object.user_id = self.request.user.id 
         self.object.save()
-        error = "成功"
-        return HttpResponseRedirect("/signup/")
+        response = super(ActCreate, self).form_valid(form)
+        return response
 
     def form_invalid(self, form):
-        error = "不成功"
-        return HttpResponseRedirect("/login/")
-
-
-        
-#def new_act(request):
-#    if request.method == "GET":
-#        if request.user.is_authenticated():
-#            form = ActForm()
-#            return render(request, "act/new.html", {"form": form})
-#        else:
-#            return HttpResponseRedirect("/login/")
-#    elif request.method == "POST":
-#        if request.user.is_authenticated():
-#            form = ActForm(request.POST)
-#            if form.is_valid():
-#                act_ident = Act.objects.all().aggregate(Max('act_ident'))["act_ident__max"] + 1
-#                act = form.save(commit=False)
-#                act.act_ident = act_ident
-#                act_type = form.cleaned_data["act_type"]
-#                act_licence = form.cleaned_data["act_licence"]
-#                act_title = form.cleaned_data["act_title"]
-#                act_username = request.user.user_name
-#                act.act_type = act_type
-#                act.act_licence = act_licence
-#                act.user_id = request.user.id
-#                act.act_url = "/act/" + act_username + "/" + act_title
-#                act.save()
-#                error = 'hey'
-#                return render(request, "error.html", {"error": error})
-#    else:
-#        error = "不允许使用此方法。"
-#        return render(request, "error.html", {"error": error})
+        error = "failed"
+        return HttpResponse(form.errors)
 
 def act_list(request, act_list):
     if request.method == "GET":
@@ -123,29 +81,5 @@ def act_details(request, act_author, act_title):
     else:
         error = "不允许使用此方法。"
         return render(request, "error.html", {"error": error})
-
-
-#--------------#
-#show activities list
-#--------------#
-def ajax_act_list(request):
-    act_type = request.GET.get("act_type", None)
-    page = request.GET.get("page", None)
-    number = request.GET.get("number", None)
-    ajax_act_list = Act.objects.filter(act_type=act_type)
-    paginator = Paginator(ajax_act_list, number)
-    try:
-        act_list = paginator.page(page)
-    except PageNotAnInteger:
-        act_list = paginator.page(1)
-    except EmptyPage:
-        act_list = paginator.page(paginator.num_pages)
-    act_list = json.dumps(act_list)
-    return render(request, "act/activities_list.html", {"act_list": act_list})
-
-    
-
-
-    
 
 

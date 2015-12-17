@@ -2,7 +2,8 @@ $(document).ready(function(){
     var page = 1
     var $container = $('#posts-container').masonry({
         columnWidth: 20,
-        itemSelector: '.post-container'
+        itemSelector: '.post-container',
+        transitionDuration: 0
     });
     ajax_post(page)
     $(window).scroll(function(){
@@ -63,7 +64,7 @@ $(document).ready(function(){
                     var $elems = $(elems);
                     $container.append($elems);
                     $container.imagesLoaded(function(){
-                        $container.masonry( 'appended', $elems, true ); 
+                        $container.masonry('appended', $elems, true); 
                     });
                 }
             },
