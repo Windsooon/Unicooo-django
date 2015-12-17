@@ -2,7 +2,7 @@ from django import forms
 from .models import Act
 from django.utils.translation import ugettext as _
 
-class ActForm(forms.ModelForm):
+class ActCreateForm(forms.ModelForm):
     class Meta:
         model = Act
         fields = ("act_title", "act_content", "act_type", "act_licence")

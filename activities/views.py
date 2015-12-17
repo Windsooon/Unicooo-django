@@ -1,44 +1,96 @@
 import json
+from django.views.generic.edit import CreateView, FormView
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.db.models import Max
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .forms import ActForm
+from .forms import ActCreateForm
 from .models import Act
 from post.models import Post
 from common.models import MyUser
 
 #--------------#
-#carate new activity
+#create new activity
 #--------------#
-def new_act(request):
-    if request.method == "GET":
-        if request.user.is_authenticated():
-            form = ActForm()
-            return render(request, "act/new.html", {"form": form})
+class AjaxableResponseMixin(FormView):
+    """
+    Mixin to add AJAX support to create activity
+    """
+    def form_invalid(self, form):
+        response = super(AjaxableResponseMixin, self).form_invalid(form)
+        if self.request.is_ajax():
+            return JsonResponse(form.errors, status=400)
         else:
+            return response
+
+    def form_valid(self, form):
+        response = super(AjaxableResponseMixin, self).form_valid(form)
+        if self.request.is_ajax():
+            return JsonResponse(data)
+        else:
+            return response
+
+class ActCreate(AjaxableResponseMixin, CreateView):
+    form_class = ActCreateForm
+    template_name = "act/new.html"
+
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated():
             return HttpResponseRedirect("/login/")
-    elif request.method == "POST":
-        if request.user.is_authenticated():
-            form = ActForm(request.POST)
-            if form.is_valid():
-                act_ident = Act.objects.all().aggregate(Max('act_ident'))["act_ident__max"] + 1
-                act = form.save(commit=False)
-                act.act_ident = act_ident
-                act_type = form.cleaned_data["act_type"]
-                act_licence = form.cleaned_data["act_licence"]
-                act_title = form.cleaned_data["act_title"]
-                act_username = request.user.user_name
-                act.act_type = act_type
-                act.act_licence = act_licence
-                act.user_id = request.user.id
-                act.act_url = "/act/" + act_username + "/" + act_title
-                act.save()
-                error = 'hey'
-                return render(request, "error.html", {"error": error})
-    else:
-        error = "不允许使用此方法。"
-        return render(request, "error.html", {"error": error})
+        else:
+            return super(ActCreate, self).get(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        act_ident = Act.objects.all().aggregate(Max('act_ident'))["act_ident__max"] + 1
+        response = super(ActCreate, self).form_valid(form)
+        self.object = form.save(commit=False)
+        self.object.act_type = form.cleaned_data["act_type"]
+        self.object.act_licence = form.cleaned_data["act_licence"]
+        self.object.act_title = form.cleaned_data["act_title"]
+        self.object.act_username = request.user.user_name
+        self.object.act.act_type = act_type
+        self.object.act.act_licence = act_licence
+        self.object.act.user_id = request.user.id
+        self.object.act.act_url = "/act/" + act_username + "/" + act_title
+
+        self.object.save()
+        error = "成功"
+        return HttpResponseRedirect("/signup/")
+
+    def form_invalid(self, form):
+        error = "不成功"
+        return HttpResponseRedirect("/login/")
+
+
+        
+#def new_act(request):
+#    if request.method == "GET":
+#        if request.user.is_authenticated():
+#            form = ActForm()
+#            return render(request, "act/new.html", {"form": form})
+#        else:
+#            return HttpResponseRedirect("/login/")
+#    elif request.method == "POST":
+#        if request.user.is_authenticated():
+#            form = ActForm(request.POST)
+#            if form.is_valid():
+#                act_ident = Act.objects.all().aggregate(Max('act_ident'))["act_ident__max"] + 1
+#                act = form.save(commit=False)
+#                act.act_ident = act_ident
+#                act_type = form.cleaned_data["act_type"]
+#                act_licence = form.cleaned_data["act_licence"]
+#                act_title = form.cleaned_data["act_title"]
+#                act_username = request.user.user_name
+#                act.act_type = act_type
+#                act.act_licence = act_licence
+#                act.user_id = request.user.id
+#                act.act_url = "/act/" + act_username + "/" + act_title
+#                act.save()
+#                error = 'hey'
+#                return render(request, "error.html", {"error": error})
+#    else:
+#        error = "不允许使用此方法。"
+#        return render(request, "error.html", {"error": error})
 
 def act_list(request, act_list):
     if request.method == "GET":
@@ -92,3 +144,8 @@ def ajax_act_list(request):
     return render(request, "act/activities_list.html", {"act_list": act_list})
 
     
+
+
+    
+
+
