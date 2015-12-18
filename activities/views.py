@@ -54,7 +54,7 @@ def act_list(request, act_list):
     if request.method == "GET":
         if act_list in ("public", "group", "personal"):
             dict_act = {"public": 0, "group": 1, "personal": 2}
-            act_details = Act.objects.filter(act_type=dict_act[act_list])[:9]
+            act_details = Act.objects.filter(act_type=dict_act[act_list])[:12]
             return render(request, "act/activities_list.html", {"act_list": act_details})
         else:
             error = "不存在此分类。"

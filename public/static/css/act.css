@@ -114,7 +114,7 @@
 
 .activity-details-thumb {
     height: 479px;
-    border: 1px solid black;
+    background-color: white;
 }
 
 .act-details-title {
@@ -123,22 +123,27 @@
 }
 
 .act-details-content {
+   height: 330px;
    font-size:16px; 
+   padding-top: 30px;
+   border-top: 1px solid gray;
 }
 
 .activity-details-thumb-img {
     height:479px;
-    background-color: gray;
+    padding: 0px;
 }
 
 .post-container {
   width: 260px;
   margin: 10px;
   float: left;
+  background-color: white;
+  border: 1px solid #e5e5e5;
 }
 
 .post-container img {
-    width: 260px;
+    width: 258px;
 }
 
 

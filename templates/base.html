@@ -51,11 +51,11 @@
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse navbar-responsive-collapse" id="bs-example-navbar-collapse-1">
+    <div class="collapse navbar-collapse navbar-responsive-collapse">
       <ul class="nav navbar-nav">
-        <li><a href="{% URL ">Personal Activities<span class="sr-only">(current)</span></a></li>
-        <li><a href="act/group">Group Activities</a></li>
-        <li><a href="act/public">Public Activities</a></li>
+        <li><a href="{% url 'act_type' 'public' %}">Public</a></li>
+        <li><a href="{% url 'act_type' 'group' %}">Group</a></li>
+        <li><a href="{% url 'act_type' 'personal' %}">Personal</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
       {% if user.is_authenticated %}
