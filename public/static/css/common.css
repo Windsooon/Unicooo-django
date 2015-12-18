@@ -4,6 +4,7 @@ body {
 
 .thumbnail {
     border: 0px;
+    padding: 0px;
 }
 
 .navbar-brand img {

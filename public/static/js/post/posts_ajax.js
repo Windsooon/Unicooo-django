@@ -3,7 +3,8 @@ $(document).ready(function(){
     var $container = $('#posts-container').masonry({
         columnWidth: 20,
         itemSelector: '.post-container',
-        transitionDuration: 0
+        isFitWidth: true,
+        transitionDuration: 0,
     });
     ajax_post(page)
     $(window).scroll(function(){
@@ -40,24 +41,33 @@ $(document).ready(function(){
                         post_thumb_url.src = value["post_thumb_url"];
                         post_thumb_url.setAttribute("onerror", "imgError(this);");
                         //活动名称外层div
+                        var single_border = document.createElement("div");
+                        single_border.className = "post-border";
                         var single_title = document.createElement("div");
-                        single_title.className = "single-title";
+                        single_title.className = "post-title";
+                        var single_posttime = document.createElement("div");
+                        single_posttime.className = "post-posttime";
+                        var single_posttime_p = document.createElement("p");
+                        single_posttime_p.innerHTML = value["post_create_time"];
                         //活动内容外层div
                         var single_content = document.createElement("div");
-                        single_content.className = "single-content-post";
+                        single_content.className = "post-content";
                         //具体活动名称
                         var single_title_p = document.createElement("p");
-                        single_title_p.className = "post-title";
-                        single_title_p.innerHTML = value["post_title"];
+                        single_title_p.className = "post-user";
+                        single_title_p.innerHTML = value["post_user"].user_name;
                         //具体活动内容
                         var single_content_p = document.createElement("p");
-                        single_content_p.className = "post-content";
+                        single_content_p.className = "post-content-p";
                         single_content_p.innerHTML = value["post_content"];
                         post_thumb_a.appendChild(post_thumb_url);
                         single_post.appendChild(post_thumb_a);
+                        single_posttime.appendChild(single_posttime_p);
                         single_title.appendChild(single_title_p);
                         single_content.appendChild(single_content_p);
-                        single_post.appendChild(single_title);
+                        single_border.appendChild(single_title);
+                        single_border.appendChild(single_posttime);
+                        single_post.appendChild(single_border);
                         single_post.appendChild(single_content);
                         elems.push(single_post);
                     })

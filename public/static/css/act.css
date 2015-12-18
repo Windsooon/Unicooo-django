@@ -36,6 +36,7 @@
 .act-container {
     border: 1px solid #bfbfbf;
     border-radius: 6px;
+    background-color: white;
 }
 
 .act-container img{
@@ -43,8 +44,16 @@
     border-top-left-radius: 4px;
 }
 
+.act-intro {
+    width: 100%;
+}
+
 .activity-container {
     margin-top: 80px;
+}
+
+.activity-details-thumb-img a img {
+    width: 100%;
 }
 
 .single-act-border {
@@ -74,14 +83,12 @@
     position: absolute;
     left: 0;
     top: 0;
-    background: linear-gradient(transparent 70px, white);
+    background: linear-gradient(transparent 60px, white);
 }
 
 .single-title {
-    height: 50px;
+    height: 40px;
     padding-left: 8px;
-    padding-top: 12px;
-    padding-bottom: 12px;
 }
 
 .single-title-empty {
@@ -113,7 +120,6 @@
 }
 
 .activity-details-thumb {
-    height: 479px;
     background-color: white;
 }
 
@@ -123,30 +129,12 @@
 }
 
 .act-details-content {
-   height: 330px;
    font-size:16px; 
    padding-top: 30px;
    border-top: 1px solid gray;
 }
 
 .activity-details-thumb-img {
-    height:479px;
     padding: 0px;
 }
 
-.post-container {
-  width: 260px;
-  margin: 10px;
-  float: left;
-  background-color: white;
-  border: 1px solid #e5e5e5;
-}
-
-.post-container img {
-    width: 258px;
-}
-
-
-.post-container a {
-    display: block;
-}
