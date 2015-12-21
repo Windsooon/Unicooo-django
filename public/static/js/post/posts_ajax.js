@@ -72,8 +72,10 @@ $(document).ready(function(){
                         elems.push(single_post);
                     })
                     var $elems = $(elems);
+                    var $elems = $(elems).hide();
                     $container.append($elems);
                     $container.imagesLoaded(function(){
+                        $elems.show();
                         $container.masonry('appended', $elems, true); 
                     });
                 }
