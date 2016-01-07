@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Max
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import ActCreateForm
 from .models import Act
 from post.models import Post
@@ -30,7 +31,9 @@ class AjaxableResponseMixin(object):
         else:
             return response
 
-class ActCreate(CreateView):
+class ActCreate(LoginRequiredMixin, CreateView):
+    login_url = '/login/'
+    redirect_field_name = 'redirect_to'
     model = Act
     template_name = "act/new.html"
     form_class = ActCreateForm

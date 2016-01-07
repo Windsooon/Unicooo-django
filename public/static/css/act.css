@@ -1,3 +1,23 @@
+/*make modal vertically in center */
+.modal {
+  text-align: center;
+}
+
+@media screen and (min-width: 768px) { 
+  .modal:before {
+    display: inline-block;
+    vertical-align: middle;
+    content: " ";
+    height: 100%;
+  }
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}
+
 .cropit-image-preview {
     background-color: #f8f8f8;
     background-size: cover;

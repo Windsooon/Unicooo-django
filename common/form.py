@@ -34,7 +34,7 @@ class UserCreateForm(forms.ModelForm):
                     'minlength': 6,
                 }
             ),
-            'email': forms.TextInput(
+            'email': forms.EmailInput(
                 attrs={
                     'id': 'email_signup',
                     'class': 'form-control',

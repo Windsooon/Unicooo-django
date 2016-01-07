@@ -35,6 +35,18 @@ class PostList(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+    def get_queryset(self):
+        """
+        Optionally restricts the returned purchases to a given user,
+        by filtering against a `username` query parameter in the URL.
+        """
+        queryset = Post.objects.all()
+        post_id = self.request.query_params.get('post_id', None)
+        if post_id is not None:
+            queryset = queryset.filter(id=post_id)
+        return queryset
+
+
 
 class UserList(generics.ListCreateAPIView):
     queryset = MyUser.objects.all()
