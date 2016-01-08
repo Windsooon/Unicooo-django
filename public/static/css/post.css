@@ -75,3 +75,31 @@
     display: block;
     margin: 0 auto;
 }
+
+.post-content-b {
+    margin-top: 20px;
+    margin-left: 20px;
+    padding-left: 15px;
+    border-left: 5px solid #2b6e90;
+}
+
+.post-content-b-user {
+    margin-bottom: 0px;
+}
+.user-avatar-s {
+    width: 50px; 
+    height: 50px;
+    border-radius: 50%;
+}
+
+.comment-avatar {
+    text-align: left;
+    display: inline-block;
+}
+
+.comment-avatar img {
+}
+
+.comment-avatar-a {
+
+}
