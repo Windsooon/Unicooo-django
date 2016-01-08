@@ -69,5 +69,15 @@ margin-top: 10px;
     display: block;
 }
 
+.modal-footer {
+    text-align: left;
+}
+
+.list-group .list-group-item {
+    padding-left: 10px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
 
 

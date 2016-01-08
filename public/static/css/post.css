@@ -86,20 +86,45 @@
 .post-content-b-user {
     margin-bottom: 0px;
 }
-.user-avatar-s {
+
+.comment-header {
+    margin-left: 50px;
+    padding-left: 10px;
+}
+
+.comment-content {
+    margin-left: 50px;
+    padding-left: 10px;
+}
+.comment-avatar-s {
     width: 50px; 
     height: 50px;
     border-radius: 50%;
 }
 
+.comment-username {
+    display: inline;
+}
+
+.comment-posttime {
+    display: inline;
+}
 .comment-avatar {
     text-align: left;
     display: inline-block;
 }
 
-.comment-avatar img {
-}
 
 .comment-avatar-a {
+    display: inline-block;
+}
 
+.comment-form {
+    padding-left: 10px;
+    padding-right: 16px;
+}
+
+.comment-form-length {
+    color: #A9A9A9;
+    font-style:italic;
 }

@@ -3,6 +3,7 @@ from rest_framework import serializers
 from activities.models import Act 
 from common.models import MyUser
 from post.models import Post
+from comment.models import Comment
 from activities.choices import ACTTYPE, ACTLICENCE
 
 class UserSerializer(serializers.ModelSerializer):
@@ -26,14 +27,28 @@ class ActSerializer(serializers.ModelSerializer):
                   "act_url", "act_delete", "act_create_time")
 
 
-class PostSerializer(serializers.ModelSerializer):
-    """Post api fields"""
+class PostAllSerializer(serializers.ModelSerializer):
+    """Posts api fields"""
     post_user = UserSerializer(source="user")
 
     class Meta:
         model = Post
         fields = ("id", "user", "post_user", "post_title", "post_content", "post_thumb_url", "post_create_time") 
 
+class PostSerializer(serializers.ModelSerializer):
+    """Post api fields"""
+
+    class Meta:
+        model = Post
+        fields = ("id", "user", "post_title", "post_content", "post_thumb_url", "post_create_time") 
+
+class CommentSerializer(serializers.ModelSerializer):
+    """Comment api fields"""
+    post_comment = PostSerializer(source="post")
+
+    class Meta:
+        model = Comment
+        fields = ("id", "reply_id", "post_comment", "comment_content", "comment_create_time", "post", "user")
 
 
 

@@ -4,8 +4,10 @@ from api import views
 
 urlpatterns = [
                   url(r'^act/$', views.ActList.as_view()),
+                  url(r'^posts/$', views.PostAllList.as_view()),
                   url(r'^post/$', views.PostList.as_view()),
                   url(r'^user/$', views.UserList.as_view()),
+                  url(r'^comment/$', views.CommentList.as_view()),
               ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

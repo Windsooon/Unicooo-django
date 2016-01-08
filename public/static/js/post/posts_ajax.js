@@ -20,7 +20,7 @@ $(document).ready(function(){
     //post板块进行ajax请求
     function ajax_post(page){
         $.ajax({
-            url: "/api/post/",
+            url: "/api/posts/",
             type: "GET",
             datatype: "json",
             data:  {"page": page},
@@ -116,13 +116,27 @@ $(document).ready(function(){
             success: function(data) {
               if (data.results.length > 0) {
                   $(e.currentTarget).find(".post-raw-details").attr("src",data.results[0]["post_thumb_url"]);
-                  console.log(data.results[0]["post_content"]);
               }
             },
             complete:function(){
             }
         });
     })
+    
+
+    //显示剩余输入字数
+    $(".comment-form-text").keyup(function(){  
+        var $comment_length = $(".comment-form-length");
+        var currrent_length=$(".comment-form-text").val().length + 1;   
+        if (currrent_length <= 140) {
+            $comment_length.text(141-currrent_length);
+        }
+        else {
+            $comment_length.text("beyond 140 char");
+            $comment_length.css("color","#3f51b5");
+        }
+
+    })  
 
     function checkscroll(){
         if($(window).scrollTop()+500 > ($(".post-container:last").offset().top)){
