@@ -50,7 +50,7 @@ class PostList(generics.ListCreateAPIView):
         Optionally restricts the returned purchases to a given post_id,
         by filtering against a `post_id` query parameter in the URL.
         """
-        queryset = Comment.object
+        queryset = Comment.objects.all()
         post_id = self.request.query_params.get('post_id', None)
         if post_id is not None:
             queryset = queryset.filter(id=post_id)
