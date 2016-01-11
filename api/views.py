@@ -30,7 +30,7 @@ class ActList(generics.ListCreateAPIView):
 
 class PostAllList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly)
-    queryset = Post.objects.all()
+    queryset = Post.objects.prefetch_related('comment_post').all()
     serializer_class = PostAllSerializer
 
     def perform_create(self, serializer):
@@ -39,18 +39,14 @@ class PostAllList(generics.ListCreateAPIView):
  
 class PostList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly)
-    queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
     def get_queryset(self):
-        """
-        Optionally restricts the returned purchases to a given post_id,
-        by filtering against a `post_id` query parameter in the URL.
-        """
-        queryset = Comment.objects.all()
+        queryset = Post.objects.all()
         post_id = self.request.query_params.get('post_id', None)
         if post_id is not None:
             queryset = queryset.filter(id=post_id)
@@ -69,3 +65,4 @@ class UserList(generics.ListCreateAPIView):
 
 
 
+    queryset = Comment.objects.all()

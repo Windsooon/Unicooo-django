@@ -17,7 +17,7 @@ $(document).ready(function(){
         }
     })
 
-    //post板块进行ajax请求
+    //get post per page
     function ajax_post(page){
         $.ajax({
             url: "/api/posts/",
@@ -32,7 +32,7 @@ $(document).ready(function(){
                     $.each(data.results, function(key, value){
                         var single_post = document.createElement("div");
                         single_post.className = "post-container";
-                        //帖子缩略图
+                        //post thumb image
                         var post_thumb_a = document.createElement("a");
                         //post_thumb_a.className = value["id"];
                         post_thumb_a.setAttribute("href", "#post_details");
@@ -42,34 +42,34 @@ $(document).ready(function(){
                         var post_thumb_url = document.createElement("img");
                         post_thumb_url.src = value["post_thumb_url"];
                         post_thumb_url.setAttribute("onerror", "imgError(this);");
-                        //create post border
+                        //post border
                         var single_border = document.createElement("div");
                         single_border.className = "post-border";
-                        //create post title
+                        //post title
                         var single_title = document.createElement("div");
                         single_title.className = "post-title";
-                        //create post posttime
+                        //post posttime
                         var single_posttime = document.createElement("div");
                         single_posttime.className = "post-posttime";
-                        //create post posttime text
+                        //post posttime text
                         var single_posttime_p = document.createElement("p");
                         single_posttime_p.innerHTML = value["post_create_time"];
-                        //create post footer
+                        //post footer
                         var single_footer = document.createElement("div");
                         single_footer.className = "post-footer clearfix";
-                        //create post footer content(like and comment count)
+                        //post footer content(like and comment count)
                         var single_footer_like = document.createElement("span");
                         single_footer_like.className = "post-like glyphicon glyphicon-heart pull-right";
                         var single_footer_comment = document.createElement("span");
                         single_footer_comment.className = "post-comment glyphicon glyphicon-comment pull-right";
-                        //create content div
+                        //content div
                         var single_content = document.createElement("div");
                         single_content.className = "post-content";
-                        //create post-title text
+                        //post-title text
                         var single_title_p = document.createElement("p");
                         single_title_p.className = "post-user";
                         single_title_p.innerHTML = value["post_user"].user_name;
-                        //create post-content text
+                        //post-content text
                         var single_content_p = document.createElement("p");
                         single_content_p.className = "post-content-p";
                         single_content_p.innerHTML =  value["post_content"];
@@ -115,7 +115,71 @@ $(document).ready(function(){
             },
             success: function(data) {
               if (data.results.length > 0) {
+                  var elems = [];
                   $(e.currentTarget).find(".post-raw-details").attr("src",data.results[0]["post_thumb_url"]);
+                  $.each(data.results[0]["post_comment"], function(key, value){
+                      //comment avatar
+                      var comment_avatar_s = $("<img />", {
+                          src: value["comment_user"]["user_avatar"] ,
+                          "class": "comment-avatar-s",
+                      });
+
+                      var comment_avatar = $("<div />", {
+                          "class": "comment-avatar",
+                      });
+                      
+                      var comment_avatar_a = $("<a />", {
+                          "class": "comment-avatar-a pull-left",
+                      });
+                    
+                      comment_avatar_a.append(comment_avatar);
+                      comment_avatar.append(comment_avatar_s);
+
+                      //comment user and content
+                      var comment_username_a = $("<a />", {
+                          href:  value["comment_user"]["user_name"],
+                          "class": "comment-username-a",
+                      });
+
+                      var comment_username = $("<div />", {
+                          "class": "comment-username",
+                      });
+
+                      var comment_posttime_span = $("<span />", {
+                          value: value["comment_create_time"],
+                      });
+
+                      var comment_posttime = $("<div />", {
+                          "class": "comment-posttime"
+                      });
+
+                      var comment_header = $("<div />", {
+                          "class": "comment-header"
+                      });
+                        
+                      comment_username.append(comment_username_a);
+                      comment_posttime.append(comment_posttime_span);
+                      comment_header.append(comment_username);
+                      comment_header.append(comment_posttime);
+
+                      var comment_content = $("<div />", {
+                          "class": "comment-content"
+                      });
+
+                      var comment_content_p = $("<p />", {
+                          value:  value["comment_content"],
+                      });
+
+                      comment_content.append(comment_content_p);
+
+                      var comment_all = $("<div />", {
+                          "class": "comment-all"
+                      });
+
+                      comment_all.append(comment_header);
+                      comment_all.append(comment_content);
+                      
+                  });
               }
             },
             complete:function(){
