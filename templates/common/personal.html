@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block extra_head %}
+  <link href="{% static 'css/common.css' %}" rel="stylesheet"/>
+{% endblock %}
+{% block content %}
+<!-- container begin -->
+<div class="uniform">
+  <!-- personal info begin -->
+  <div class="personal-header">
+    <div class="personal-avatar-div">
+      <img class="personal-avatar-image" src="http://7xokch.com1.z0.glb.clouddn.com/uni-testred.png" />
+      <p class="personal-avatar-p">{{request.user.user_name}}</p>
+      <input type="hidden" value={{request.user.id}} />
+    </div>
+  </div>
+</div>
+<div class="container">
+<div class="btn-group btn-group-justified" role="group" aria-label="...">
+  <div class="btn-group" role="group">
+    <a class="btn btn-default" href="" id="act-create-btn" role="button">Act(create)</a>
+  </div>
+  <div class="btn-group" role="group">
+    <a class="btn btn-default" href="" id="act-join-btn" role="button">Act(join)</a>
+  </div>
+  <div class="btn-group" role="group">
+    <a class="btn btn-default" href="" id="post-create-btn" role="button">Post</a>
+  </div>
+</div>
+</div>
+{% endblock %}
+{% block script %}
+  <script src="{% static 'js/common/personal.js' %}"></script>
+  <script>
+  $.material.init();
+  </script>
+{% endblock %}
+
+
+

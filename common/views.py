@@ -63,6 +63,13 @@ def login_in(request):
     else:
         return render(request, "404.html")
 
+def personal(request, personal):
+    if request.method == "GET":
+        return render(request, "common/personal.html", {"personal": personal})
+    else:
+        return render(request, "404.html")
+
+
 
 def accounts(request, accounts):
     """User settings"""

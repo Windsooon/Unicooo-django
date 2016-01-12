@@ -6,6 +6,7 @@ $(document).ready(function(){
         isFitWidth: true,
         transitionDuration: 0,
     });
+    var ajax_state = false;
     ajax_post(page)
     $(window).scroll(function(){
         //console.log($(window).scrollTop());
@@ -115,7 +116,9 @@ $(document).ready(function(){
             },
             success: function(data) {
               if (data.results.length > 0) {
+                  console.log(data.results[0]);
                   var elems = [];
+                  $(".list-group").empty();
                   $(e.currentTarget).find(".post-raw-details").attr("src",data.results[0]["post_thumb_url"]);
                   $.each(data.results[0]["post_comment"], function(key, value){
                       //comment avatar
@@ -132,8 +135,8 @@ $(document).ready(function(){
                           "class": "comment-avatar-a pull-left",
                       });
                     
-                      comment_avatar_a.append(comment_avatar);
                       comment_avatar.append(comment_avatar_s);
+                      comment_avatar_a.append(comment_avatar);
 
                       //comment user and content
                       var comment_username_a = $("<a />", {
@@ -146,7 +149,7 @@ $(document).ready(function(){
                       });
 
                       var comment_posttime_span = $("<span />", {
-                          value: value["comment_create_time"],
+                          text: value["comment_create_time"],
                       });
 
                       var comment_posttime = $("<div />", {
@@ -167,7 +170,7 @@ $(document).ready(function(){
                       });
 
                       var comment_content_p = $("<p />", {
-                          value:  value["comment_content"],
+                          text:  value["comment_content"],
                       });
 
                       comment_content.append(comment_content_p);
@@ -178,6 +181,15 @@ $(document).ready(function(){
 
                       comment_all.append(comment_header);
                       comment_all.append(comment_content);
+
+                       var list_group_item = $("<li />", {
+                          "class": "list-group-item"
+                      });
+
+                      list_group_item.append(comment_avatar_a);
+                      list_group_item.append(comment_all);
+                      
+                      $(".list-group").append(list_group_item);
                       
                   });
               }

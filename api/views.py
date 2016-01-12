@@ -30,11 +30,23 @@ class ActList(generics.ListCreateAPIView):
 
 class PostAllList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly)
-    queryset = Post.objects.prefetch_related('comment_post').all()
+    queryset = Post.objects.all()
     serializer_class = PostAllSerializer
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+        
+    def get_queryset(self):
+        queryset = Post.objects.all()
+        post_id = self.request.query_params.get('post_id', None)
+        act_id = self.request.query_params.get('act_id', None)
+        if post_id is not None:
+            queryset = queryset.filter(id=post_id)
+
+        if act_id is not None:
+            queryset = queryset.filter(act__id=act_id)
+
+        return queryset
 
  
 class PostList(generics.ListCreateAPIView):
@@ -48,13 +60,19 @@ class PostList(generics.ListCreateAPIView):
     def get_queryset(self):
         queryset = Post.objects.all()
         post_id = self.request.query_params.get('post_id', None)
+        act_id = self.request.query_params.get('act_id', None)
         if post_id is not None:
             queryset = queryset.filter(id=post_id)
+
+        if act_id is not None:
+            queryset = queryset.filter(act=act_id)
+
         return queryset
 
 
 
 class CommentList(generics.ListCreateAPIView):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly)
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 

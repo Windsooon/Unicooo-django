@@ -16,6 +16,10 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 12
 }
@@ -43,6 +47,7 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     'api',
     'rest_framework',
+    'rest_framework.authtoken',
     'common',
     'activities',
     'comment',

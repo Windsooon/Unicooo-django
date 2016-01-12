@@ -33,7 +33,8 @@ class PostAllSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ("id", "user", "post_user", "post_title", "post_content", "post_thumb_url", "post_create_time") 
+        fields = ("id", "user", "act","post_title", "post_content", "post_thumb_url", "post_create_time", "post_user") 
+
 
 class CommentSerializer(serializers.ModelSerializer):
     """Comment api fields"""
@@ -42,6 +43,7 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ("id", "reply_id", "comment_content", "comment_create_time", "post", "comment_user")
+        
         
 class PostSerializer(serializers.ModelSerializer):
     """Post api fields"""

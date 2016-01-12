@@ -11,6 +11,6 @@ urlpatterns = [
                   url(r'^public-activities/$',views.public_activities),
                   url(r'^signup/$',views.sign_up),
                   url(r'^login/$',views.login_in),
-                  url(r'^(?P<accounts>\w+)/$', views.accounts, name="accounts"),
+                  url(r'^(?P<personal>\w+)/$', views.personal, name="personal"),
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

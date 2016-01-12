@@ -80,4 +80,21 @@ margin-top: 10px;
 }
 
 
+.personal-header {
+    text-align: center;
+}
 
+.personal-avatar-div {
+    margin: 0 auto;
+    padding-bottom: 30px;
+    border-bottom: 1px solid gray;
+}
+
+.personal-avatar-image {
+    width: 160px;
+    height: 160px;
+}
+
+.personal-avatar-p {
+    font-size: 30px;
+}
