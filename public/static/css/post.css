@@ -15,7 +15,7 @@
 }
 
 .post-container {
-  width: 260px;
+  width: 350px;
   float: left;
   margin: 10px;
   background-color: white;
@@ -24,7 +24,7 @@
 }
 
 .post-container img {
-    width: 258px;
+    width: 100%;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
 }

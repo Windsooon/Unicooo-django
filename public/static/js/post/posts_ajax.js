@@ -94,7 +94,7 @@ $(document).ready(function(){
                     var $elems = $(elems).hide();
                     $container.append($elems);
                     $container.imagesLoaded(function(){
-                        $elems.show();
+                        $elems.fadeIn(500);
                         $container.masonry('appended', $elems, true); 
                     });
                 }
@@ -108,7 +108,7 @@ $(document).ready(function(){
     $("#post-details").on("show.bs.modal", function (e) {
         var post_id = $(e.relatedTarget).data('post-id');
         $.ajax({
-            url: "/api/post/",
+            url: "/api/posts/",
             type: "GET",
             datatype: "json",
             data:  {"post_id": post_id},
@@ -203,6 +203,7 @@ $(document).ready(function(){
     //显示剩余输入字数
     $(".comment-form-text").keyup(function(){  
         var $comment_length = $(".comment-form-length");
+        //length未必存在
         var currrent_length=$(".comment-form-text").val().length + 1;   
         if (currrent_length <= 140) {
             $comment_length.text(141-currrent_length);

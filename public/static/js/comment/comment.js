@@ -2,10 +2,10 @@ $(document).ready(function(){
     $("#add-comment-btn").click(function(){
         var comment_text = $(".comment-form-text").val();
         $.ajax({
-            url: "/api/comment/",
+            url: "/api/comments/",
             type: "POST",
             datatype: "json",
-            data:  {csrfmiddlewaretoken: window.CSRF_TOKEN},
+            data:  {csrfmiddlewaretoken: window.CSRF_TOKEN, "comment_content": comment_text},
             success: function(data) {
                 var comment_avatar_s = $("<img />", {
                           src: $("#base-user-avatar").val(),
