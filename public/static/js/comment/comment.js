@@ -1,6 +1,5 @@
-$(document).ready(function(){
-    $("#add-comment-btn").click(function(){
-        var comment_text = $(".comment-form-text").val();
+var comment_click_handler = function(e) {
+    var comment_text = $(".comment-form-text").val();
         $.ajax({
             url: "/api/comments/",
             type: "POST",
@@ -79,5 +78,4 @@ $(document).ready(function(){
               complete:function(){
             },
          });
-    })
-});
+}

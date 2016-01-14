@@ -11,13 +11,127 @@ $(document).ready(function(){
     $(window).scroll(function(){
         //console.log($(window).scrollTop());
         //console.log($(".single-post:last").offset().top);
-        if (checkscroll() && ajax_state){
+        if (checkScroll() && ajax_state){
             page += 1;
             ajax_state = false;
             ajax_post(page)
         }
     })
 
+    
+    $("#post-details").on("show.bs.modal", function(e) {
+        var post_id = $(e.relatedTarget).data('post-id');
+        $.ajax({
+            url: "/api/posts/" + post_id,
+            type: "GET",
+            datatype: "json",
+            beforeSend:function(){
+            },
+            success: function(data) {
+              if (data) {
+                  console.log(data);
+                  var elems = [];
+                  $(".list-group").empty();
+                  $(e.currentTarget).find(".post-raw-details").attr("src",data["post_thumb_url"]);
+                  $(".post-user").text(data["post_user"]["user_name"]);
+                  $(".post-posttime p").text(data["post_creattime"]);
+                  $(".post-content-p").text(data["post_content"]);
+                  $.each(data["post_comment"], function(key, value){
+                      //comment avatar
+                      var comment_avatar_s = $("<img />", {
+                          src: value["comment_user"]["user_avatar"] ,
+                          "class": "comment-avatar-s",
+                      });
+
+                      var comment_avatar = $("<div />", {
+                          "class": "comment-avatar",
+                      });
+                      
+                      var comment_avatar_a = $("<a />", {
+                          "class": "comment-avatar-a pull-left",
+                      });
+                    
+                      comment_avatar.append(comment_avatar_s);
+                      comment_avatar_a.append(comment_avatar);
+
+                      //comment user and content
+                      var comment_username_a = $("<a />", {
+                          href:  value["comment_user"]["user_name"],
+                          "class": "comment-username-a",
+                      });
+
+                      var comment_username = $("<div />", {
+                          "class": "comment-username",
+                      });
+
+                      var comment_posttime_span = $("<span />", {
+                          text: value["comment_create_time"],
+                      });
+
+                      var comment_posttime = $("<div />", {
+                          "class": "comment-posttime"
+                      });
+
+                      var comment_header = $("<div />", {
+                          "class": "comment-header"
+                      });
+                        
+                      comment_username.append(comment_username_a);
+                      comment_posttime.append(comment_posttime_span);
+                      comment_header.append(comment_username);
+                      comment_header.append(comment_posttime);
+
+                      var comment_content = $("<div />", {
+                          "class": "comment-content"
+                      });
+
+                      var comment_content_p = $("<p />", {
+                          text:  value["comment_content"],
+                      });
+
+                      comment_content.append(comment_content_p);
+
+                      var comment_all = $("<div />", {
+                          "class": "comment-all"
+                      });
+
+                      comment_all.append(comment_header);
+                      comment_all.append(comment_content);
+
+                       var list_group_item = $("<li />", {
+                          "class": "list-group-item"
+                      });
+
+                      list_group_item.append(comment_avatar_a);
+                      list_group_item.append(comment_all);
+                      
+                      $(".list-group").append(list_group_item);
+                  });
+              }
+            },
+            complete:function(){
+            }
+        });
+    });
+        //comment_click_handler is in comment_ajax.js
+        //$('#add-comment-btn').one('click', comment_click_handler);
+    
+
+    //显示剩余输入字数
+    $(".comment-form-text").keyup(function(){  
+        var $comment_length = $(".comment-form-length");
+        //length未必存在
+        var currrent_length=$(".comment-form-text").val().length + 1;   
+        if (currrent_length <= 140) {
+            $comment_length.text(141-currrent_length);
+        }
+        else {
+            $comment_length.text("beyond 140 char");
+            $comment_length.css("color","#3f51b5");
+        }
+
+    }); 
+  
     //get post per page
     function ajax_post(page){
         $.ajax({
@@ -103,119 +217,10 @@ $(document).ready(function(){
                 ajax_state = true;
             }
         });
-    }//ajax_postivity结束
-
-    $("#post-details").on("show.bs.modal", function (e) {
-        var post_id = $(e.relatedTarget).data('post-id');
-        $.ajax({
-            url: "/api/posts/",
-            type: "GET",
-            datatype: "json",
-            data:  {"post_id": post_id},
-            beforeSend:function(){
-            },
-            success: function(data) {
-              if (data.results.length > 0) {
-                  console.log(data.results[0]);
-                  var elems = [];
-                  $(".list-group").empty();
-                  $(e.currentTarget).find(".post-raw-details").attr("src",data.results[0]["post_thumb_url"]);
-                  $.each(data.results[0]["post_comment"], function(key, value){
-                      //comment avatar
-                      var comment_avatar_s = $("<img />", {
-                          src: value["comment_user"]["user_avatar"] ,
-                          "class": "comment-avatar-s",
-                      });
-
-                      var comment_avatar = $("<div />", {
-                          "class": "comment-avatar",
-                      });
-                      
-                      var comment_avatar_a = $("<a />", {
-                          "class": "comment-avatar-a pull-left",
-                      });
-                    
-                      comment_avatar.append(comment_avatar_s);
-                      comment_avatar_a.append(comment_avatar);
-
-                      //comment user and content
-                      var comment_username_a = $("<a />", {
-                          href:  value["comment_user"]["user_name"],
-                          "class": "comment-username-a",
-                      });
-
-                      var comment_username = $("<div />", {
-                          "class": "comment-username",
-                      });
-
-                      var comment_posttime_span = $("<span />", {
-                          text: value["comment_create_time"],
-                      });
-
-                      var comment_posttime = $("<div />", {
-                          "class": "comment-posttime"
-                      });
-
-                      var comment_header = $("<div />", {
-                          "class": "comment-header"
-                      });
-                        
-                      comment_username.append(comment_username_a);
-                      comment_posttime.append(comment_posttime_span);
-                      comment_header.append(comment_username);
-                      comment_header.append(comment_posttime);
-
-                      var comment_content = $("<div />", {
-                          "class": "comment-content"
-                      });
-
-                      var comment_content_p = $("<p />", {
-                          text:  value["comment_content"],
-                      });
-
-                      comment_content.append(comment_content_p);
-
-                      var comment_all = $("<div />", {
-                          "class": "comment-all"
-                      });
-
-                      comment_all.append(comment_header);
-                      comment_all.append(comment_content);
-
-                       var list_group_item = $("<li />", {
-                          "class": "list-group-item"
-                      });
-
-                      list_group_item.append(comment_avatar_a);
-                      list_group_item.append(comment_all);
-                      
-                      $(".list-group").append(list_group_item);
-                      
-                  });
-              }
-            },
-            complete:function(){
-            }
-        });
-    })
+    }//ajax_post end
     
-
-    //显示剩余输入字数
-    $(".comment-form-text").keyup(function(){  
-        var $comment_length = $(".comment-form-length");
-        //length未必存在
-        var currrent_length=$(".comment-form-text").val().length + 1;   
-        if (currrent_length <= 140) {
-            $comment_length.text(141-currrent_length);
-        }
-        else {
-            $comment_length.text("beyond 140 char");
-            $comment_length.css("color","#3f51b5");
-        }
-
-    })  
-
-    function checkscroll(){
+   
+    function checkScroll(){
         if($(window).scrollTop()+500 > ($(".post-container:last").offset().top)){
             return true; 
         }
@@ -230,6 +235,7 @@ $(document).ready(function(){
         image.src = "../../../static/img/error.png";
         return true;
     }
+
 })
 
 
