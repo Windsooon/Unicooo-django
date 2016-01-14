@@ -81,6 +81,3 @@ class UserList(generics.ListCreateAPIView):
     queryset = MyUser.objects.all()
     serializer_class = UserSerializer
 
-
-
-    queryset = Comment.objects.all()

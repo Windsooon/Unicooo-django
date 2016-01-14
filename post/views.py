@@ -22,3 +22,5 @@ def create_post(request):
         post_choice.insert(0, post_max_id)
         cursor.execute("INSERT INTO post_post VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",post_choice)
 
+
+

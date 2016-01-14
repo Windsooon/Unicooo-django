@@ -5,9 +5,7 @@ $(document).ready(function(){
             url: "/api/comment/",
             type: "POST",
             datatype: "json",
-            data:  {"reply_id": "1", csrfmiddlewaretoken: '{{ csrf_token }}'},
-            beforeSend:function(){
-            },
+            data:  {csrfmiddlewaretoken: window.CSRF_TOKEN},
             success: function(data) {
                 var comment_avatar_s = $("<img />", {
                           src: $("#base-user-avatar").val(),
@@ -78,6 +76,8 @@ $(document).ready(function(){
                       list_group_item.hide().appendTo(".list-group").fadeIn();
                       $(".comment-form-text").val("");
               },
+              complete:function(){
+            },
          });
     })
 });

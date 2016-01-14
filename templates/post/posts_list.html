@@ -72,7 +72,8 @@
             <ul class="list-group">
             </ul>
             <div class="comment-form">
-              <form>
+              <form method="POST">
+                {% csrf_token %}
                 <div class="form-group">
                   <label class="sr-only" for="" >Comment</label>
                   <input type="text" class="comment-form-text form-control" id="" placeholder="Please enter you comment">
@@ -92,6 +93,7 @@
 {% block script %}
   <script src="{% static 'js/plugin/imageLoaded.min.js' %}"></script>
   <script src="{% static 'js/plugin/jquery.masonry.min.js' %}"></script>
+  <script> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
   <script src="{% static 'js/post/posts_ajax.js' %}"></script>
   <script src="{% static 'js/comment/comment.js' %}"></script>
   <script>
