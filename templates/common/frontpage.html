@@ -41,17 +41,21 @@
   <div class="activity_one">
     <!-- Public Activities -->
     <div class="activity_group">
-      <span><h4>Public Activities</h4></span>
+      {% regroup act_list by act_type_str as act %}
       <div class="row">
-        {% for act in act_list %}
+      {% for act_type_str in act %}
+      <span><h4>{{ act_type_str.grouper }}</h4></span>
+        {% for act_details in act_type_str.list %} 
         <div class="single-act col-sm-6 col-md-4 col-lg-4">
           <div class="act-container">
-              <a href="#" class="thumbnail"><img src="{{ act.act_thumb_url }}" onerror="imgError(this);" alt=""></a>
-          <div class="single-title"><p class="act-title">{{ act.act_title }}</p></div>
-          <div class="single-content"><p class="act-content">{{ act.act_content }}</p></div>
+              <a href="{% url 'act_details' act_details.user_name act_details.act_title %}" class="thumbnail"><img src="{{ act_details.act_thumb_url }}" onerror="imgError(this);" alt="">
+          <div class="single-title"><p class="act-title">{{ act_details.act_title }}</p></div>
+          <div class="single-content"><p class="act-content">{{ act_details.act_content }}</p></div>
           </div>
+      </a>
         </div>
         {% endfor %}
+      {% endfor %}
       </div>
       <!-- end row -->
     </div>

@@ -1,13 +1,11 @@
 from django.conf.urls import *
 from activities import views
-from rest_framework.urlpatterns import format_suffix_patterns
 
 urlpatterns = [
                   url(r'^new/$', views.ActCreate.as_view(), name='act_new'),
                   url(r'^(?P<act_list>\w+)/$', views.act_list, name="act_type"),
-                  url(r'^(?P<act_author>\w+)/(?P<act_title>\w+)/$', views.act_details, name="act_details"),
+                  url(r'^(?P<act_author>.+)/(?P<act_title>.+)/$', views.act_details, name="act_details"),
               ]
 
-urlpatterns = format_suffix_patterns(urlpatterns)
 
 

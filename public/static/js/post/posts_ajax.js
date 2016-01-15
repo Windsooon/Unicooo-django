@@ -21,15 +21,35 @@ $(document).ready(function(){
     
     $("#post-details").on("show.bs.modal", function(e) {
         var post_id = $(e.relatedTarget).data('post-id');
-        $.ajax({
-            url: "/api/posts/" + post_id,
+        getPost(post_id, e, getId);
+    });
+            
+
+    //显示剩余输入字数
+    $(".comment-form-text").keyup(function(){  
+        var $comment_length = $(".comment-form-length");
+        //length未必存在
+        var currrent_length=$(".comment-form-text").val().length + 1;   
+        if (currrent_length <= 140) {
+            $comment_length.text(141-currrent_length);
+        }
+        else {
+            $comment_length.text("beyond 140 char");
+            $comment_length.css("color","#3f51b5");
+        }
+
+    }); 
+ 
+    function getPost(post_id, e, getId) {
+        return $.ajax({
+            url: "/api/posts/" + post_id + "/",
             type: "GET",
             datatype: "json",
             beforeSend:function(){
             },
             success: function(data) {
               if (data) {
-                  console.log(data);
+                  getId(data);
                   var elems = [];
                   $(".list-group").empty();
                   $(e.currentTarget).find(".post-raw-details").attr("src",data["post_thumb_url"]);
@@ -112,26 +132,17 @@ $(document).ready(function(){
             complete:function(){
             }
         });
-    });
-        //comment_click_handler is in comment_ajax.js
-        //$('#add-comment-btn').one('click', comment_click_handler);
+    }
     
-
-    //显示剩余输入字数
-    $(".comment-form-text").keyup(function(){  
-        var $comment_length = $(".comment-form-length");
-        //length未必存在
-        var currrent_length=$(".comment-form-text").val().length + 1;   
-        if (currrent_length <= 140) {
-            $comment_length.text(141-currrent_length);
-        }
-        else {
-            $comment_length.text("beyond 140 char");
-            $comment_length.css("color","#3f51b5");
-        }
-
-    }); 
-  
+    //get current post id and user id
+    function getId(data) {
+        //comment_click_handler is in comment_ajax.js
+        var user_id = data["user"];
+        var post_id = data["id"];
+        console.log(data);
+        $('#add-comment-btn').one('click', {"user_id": user_id, "post_id": post_id}, comment_click_handler);
+    }
+    
     //get post per page
     function ajax_post(page){
         $.ajax({

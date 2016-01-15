@@ -19,9 +19,10 @@ def public_activities(request):
 
 def front_page(request):
     cursor = connection.cursor()
-    cursor.execute("SELECT act_title, act_content, act_thumb_url,  a.user_name FROM ( SELECT ROW_NUMBER() OVER " +
+    cursor.execute("SELECT act_title, act_content, act_thumb_url, act_type, CASE WHEN act_type=0 THEN 'public' WHEN act_type=1 THEN 'group' ELSE 'personal' END AS act_type_str, a.user_name FROM ( SELECT ROW_NUMBER() OVER " +
                    "(PARTITION BY act_type ORDER BY act_create_time ) AS r, t.* FROM activities_act t) x , common_user a WHERE x.r <= 3 and user_id = a.id;")
     act_list = dictfetchall(cursor)
+    print(act_list)
     return render(request, "common/frontpage.html", {"act_list": act_list})
 
 def sign_up(request):

@@ -4,7 +4,7 @@ var comment_click_handler = function(e) {
             url: "/api/comments/",
             type: "POST",
             datatype: "json",
-            data:  {csrfmiddlewaretoken: window.CSRF_TOKEN, "comment_content": comment_text},
+            data:  {csrfmiddlewaretoken: window.CSRF_TOKEN, "reply_id": e.data.user_id, "post": e.data.post_id, "comment_content": comment_text},
             success: function(data) {
                 var comment_avatar_s = $("<img />", {
                           src: $("#base-user-avatar").val(),
