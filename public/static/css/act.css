@@ -107,8 +107,9 @@
 }
 
 .single-title {
-    height: 40px;
+    height: 60px;
     padding-left: 8px;
+    padding-top: 20px;
 }
 
 .single-title-empty {

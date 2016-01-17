@@ -51,15 +51,14 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse navbar-responsive-collapse">
       <ul class="nav navbar-nav">
-        <li><a href="{% url 'act_type' 'public' %}">Public</a></li>
-        <li><a href="{% url 'act_type' 'group' %}">Group</a></li>
-        <li><a class="glyphicon glyphicon-star" href="{% url 'act_type' 'personal' %}">Personal</a></li>
+        <li><a href="{% url 'act_type' 'public' %}"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span>    Public</a></li>
+        <li><a href="{% url 'act_type' 'group' %}"><span class="glyphicon glyphicon-glass" aria-hidden="true"></span>    Group</a></li>
+        <li> <a href="{% url 'act_type' 'personal' %}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>    Personal</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
       {% if user.is_authenticated %}
         <li class="dropdown">
-        <a href="#" id="base-user-username" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{request.user.user_name}}<span class="caret"></span></a>
-        <input type="hidden" id="base-user-avatar" value={{request.user.user_avatar}} />
+        <a href="#" id="base-user-username" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>    {{request.user.user_name}}<span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="#">Feed</a></li>
             <li><a href="#">Activities</a></li>
