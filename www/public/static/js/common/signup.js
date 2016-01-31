@@ -12,7 +12,7 @@ $(document).ready(function(){
             },
             password: {
                 required: true,
-                minlength: 6
+                minlength: 8
             },
         },
         messages: {
@@ -30,13 +30,22 @@ $(document).ready(function(){
             },
         },
         submitHandler: function() {
+            $(".form-group-loading").empty();
+            var form_loading = $("<div />", {
+                          "class": "la-ball-clip-rotate la-sm",
+                      });
+            var form_inner_loading = $("<div />", {
+                          "class": "loading-center",
+                      });
+            form_loading.append(form_inner_loading);
+            $(".form-group-loading").append(form_loading);
             console.log("submit");
-            form.submit();
+            //form.submit();
         },
         success: function(label) {
             // set &nbsp; as text for IE
             console.log("success");
-            label.html("&nbsp;").addClass("checked");
+            //label.html("&nbsp;").addClass("checked");
         },
         highlight: function(element, errorClass) {
             $(element).parent().next().find("." + errorClass).removeClass("checked");

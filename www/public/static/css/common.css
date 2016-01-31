@@ -44,10 +44,6 @@ a:hover {
 }
 
 /* bootstrap input focut */
-.navbar .navbar-brand {
-    width: 50%;
-}
-
 textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus {   
     border-color: #48D1CC;
     box-shadow: 0px;
