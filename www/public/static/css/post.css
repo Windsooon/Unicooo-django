@@ -1,0 +1,130 @@
+.single-content-post {
+    border-top: 2px solid #2b6e90;
+    max-height: 200px;
+    padding: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    content: "";
+    position: relative;
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+
+#posts-container {
+    margin: 0 auto;
+}
+
+.post-container {
+  width: 350px;
+  float: left;
+  margin: 10px;
+  background-color: white;
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+}
+
+.post-container img {
+    width: 100%;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+.post-container a {
+    display: block;
+}
+
+.post-content {
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAABCAYAAADn9T9+AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABxJREFUeNpifPbs2X8GBGCE0nAxSUlJsBhAgAEAoWUE/8iu67gAAAAASUVORK5CYII=') transparent  repeat-x top left;
+}
+
+.post-content-p {
+    max-height: 200px;
+    padding: 15px;
+    height: 100%;
+    font-size: 1.1em;
+}
+
+.post-border {
+    margin-top: 20px;
+    margin-left: 15px;
+    padding-left: 15px;
+    border-left: 5px solid #2b6e90;
+}
+
+.post-user {
+    margin-bottom: 0px;
+}
+
+.post-footer {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.post-like {
+    color: #999;
+    width: 50px;
+}
+
+.post-comment {
+    color: #999;
+    width: 50px;
+}
+
+.post-raw-details {
+    border-radius: 6px;
+    display: block;
+    margin: 0 auto;
+}
+
+.post-content-b {
+    margin-top: 20px;
+    margin-left: 20px;
+    padding-left: 15px;
+    border-left: 5px solid #2b6e90;
+}
+
+.post-content-b-user {
+    margin-bottom: 0px;
+}
+
+.comment-header {
+    margin-left: 50px;
+    padding-left: 10px;
+}
+
+.comment-content {
+    margin-left: 50px;
+    padding-left: 10px;
+}
+.comment-avatar-s {
+    width: 50px; 
+    height: 50px;
+    border-radius: 50%;
+}
+
+.comment-username {
+    display: inline;
+}
+
+.comment-posttime {
+    display: inline;
+}
+.comment-avatar {
+    text-align: left;
+    display: inline-block;
+}
+
+
+.comment-avatar-a {
+    display: inline-block;
+}
+
+.comment-form {
+    padding-left: 10px;
+    padding-right: 16px;
+}
+
+.comment-form-length {
+    color: #A9A9A9;
+    font-style:italic;
+}

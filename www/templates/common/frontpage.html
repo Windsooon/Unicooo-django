@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block extra_head %}
+  <link href="{% static 'css/common.css' %}" rel="stylesheet"/>
+  <link href="{% static 'css/act.css' %}" rel="stylesheet"/>
+{% endblock %}
+{% block content %}
+<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+  <!-- Indicators -->
+  <ol class="carousel-indicators">
+    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+  </ol>
+
+  <!-- Wrapper for slides -->
+  <div class="carousel-inner" role="listbox">
+    <div class="item active">
+      <img class="carousel-img" src="http://7xokch.com1.z0.glb.clouddn.com/apple_inclusion_blue.png?imageView2/2/format/jpeg/interlace/1"  alt="...">
+      <div class="carousel-caption">
+          <h3><a href="#">Learn more</a></h3>
+      </div>
+    </div>
+    <div class="item">
+      <img src="http://7xokch.com1.z0.glb.clouddn.com/apple_inclusion.png?imageView2/2/format/jpeg/interlace/1" alt="...">
+      <div class="carousel-caption">
+      </div>
+    </div>
+    <div class="item">
+      <img src="http://7xokch.com1.z0.glb.clouddn.com/apple_inclusion_yellow.png?imageView2/2/format/jpeg/interlace/1" alt="...">
+      <div class="carousel-caption">
+      </div>
+    </div>
+  </div>
+</div>
+<div class="activity-container container">
+  <!-- 加载loging效果 -->
+  <!-- <div class="ball-scale">
+    <div></div>
+  </div> -->
+  <div class="activity_one">
+    <!-- Public Activities -->
+    <div class="activity_group">
+      {% regroup act_list by act_type_str as act %}
+      <div class="row">
+      {% for act_type_str in act %}
+      <span><h4>{{ act_type_str.grouper }}</h4></span>
+        {% for act_details in act_type_str.list %} 
+        <div class="single-act col-sm-6 col-md-4 col-lg-4">
+          <div class="act-container">
+              <a href="{% url 'act_details' act_details.user_name act_details.act_title %}" class="thumbnail"><img src="{{ act_details.act_thumb_url }}" onerror="imgError(this);" alt="">
+          <div class="single-title"><p class="act-title">{{ act_details.act_title }}</p></div>
+          <div class="single-content"><p class="act-content">{{ act_details.act_content }}</p></div>
+          </div>
+      </a>
+        </div>
+        {% endfor %}
+      {% endfor %}
+      </div>
+      <!-- end row -->
+    </div>
+    <!-- end group -->
+  </div>
+      <!-- end row --
+</div>
+    <!-- end group -->
+<div class="jumbotron">
+  <h1 class="text-center">about us</h1>
+</div>
+{% endblock %}
+{% block script %}
+  <script src="{% static 'js/common/frontpage.js' %}"></script>
+{% endblock %}
+
+
+

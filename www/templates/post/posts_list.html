@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load humanize %}
+{% block extra_head %}
+  <link href="{% static 'css/common.css' %}" rel="stylesheet"/>
+  <link href="{% static 'css/act.css' %}" rel="stylesheet"/>
+  <link href="{% static 'css/post.css' %}" rel="stylesheet"/>
+{% endblock %}
+{% block content %}
+<div class="activity-container container">
+  <div class="activity-details-thumb clearfix">
+    <div class="activity-details-thumb-img col-sm-7 col-md-7 col-lg-7"> 
+        <a><img src="{{ act_details.act_thumb_url }}" /></a>
+    </div>
+    <div class="activity-details-content col-sm-5 col-md-5 col-lg-5">
+      <p class="act-details-title text-center">{{ act_details.act_title }}</p>
+      <p class="act-details-content">{{ act_details.act_content }}</p>
+    </div>
+    <div class="pull-right">
+      <button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#post-upload">join the act</button>
+    </div>
+  </div>
+  <div id="posts-container">
+  </div>
+  
+  <!-- Display post upload image using modal -->
+  <div id="post-upload" class="modal fade" tabindex="-1" style="display: none">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4 class="modal-title">Join the Act</h4>
+            <span class="btn btn-primary btn-file btn-block">Choose Image
+              <input type="file" class="cropit-image-input">
+            </span>
+            <img style="width:100%" src="http://7xokch.com1.z0.glb.clouddn.com/uni_image-guide.png" />
+          </div>
+          <div class="modal-body">
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+  </div>
+
+  <!-- Display post details using modal -->
+  <div id="post-details" class="modal fade" tabindex="-1" style="display: none">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4 class="modal-title">Post details</h4>
+          </div>
+          <div class="modal-body">
+            <div class="post-image-b">
+              <img class="post-raw-details" />
+            </div>
+            <div class="post-border">
+              <div class="post-title">
+                <p class="post-user"></p>
+              </div>
+              <div class="post-posttime">  
+                <p></p>
+              </div>
+            </div>
+            <div class="post-content">
+              <p class="post-content-p"></p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <!-- Key content display all comment -->
+            <ul class="list-group">
+            </ul>
+            <div class="comment-form">
+              <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label class="sr-only" for="" >Comment</label>
+                  <input type="text" class="comment-form-text form-control" id="" placeholder="Please enter you comment">
+                <h6 class="comment-form-length">140</h6>
+                </div>
+                <button type="button" id="add-comment-btn" class="btn btn-primary pull-right">Submit</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+
+</div>
+
+{% endblock %}
+{% block script %}
+  <script src="{% static 'js/plugin/imageLoaded.min.js' %}"></script>
+  <script src="{% static 'js/plugin/jquery.masonry.min.js' %}"></script>
+  <script> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
+  <script src="{% static 'js/post/posts_ajax.js' %}"></script>
+  <script src="{% static 'js/comment/comment.js' %}"></script>
+  <script>
+  $.material.init();
+  </script>
+{% endblock %}
+

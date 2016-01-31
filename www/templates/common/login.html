@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block extra_head %}
+  <link href="{% static 'css/common.css' %}" rel="stylesheet"/>
+{% endblock %}
+{% block content %}
+<!-- container begin -->
+<div class="uniform container">
+  <!-- signup_form begin -->
+  <div class="well login_form col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6">
+    <div>
+      <div class="col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6">
+        <span class="span-uni"><h3>Welcome back</h3></span>
+        <hr>
+      </div>
+    <div>
+      <a href="#" class="thumbnail">
+        <img src="http://7xokch.com1.z0.glb.clouddn.com/apple_inclusion_yellow.png" />
+      </a>
+    </div>
+    <div>
+      <form action="" method="POST">
+        {% csrf_token %}
+        <fieldset>
+          <div class="form-group label-floating is-empty">
+            <div class="input-group">
+              <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+              <label for="email_login" class="control-label">Email address</label>
+                {{ form.email }}
+              <span class="help-block">Please enter a valid email address</span>
+            </div>
+          </div>
+          <div class="form-group label-floating is-empty">
+            <div class="input-group">
+              <span class="input-group-addon"><span class="glyphicon glyphicon-star"></span></span>
+              <label for="password_login" class="control-label">Password</label>
+                {{ form.password }}
+              <span class="help-block">Please enter your password</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="submit-btn btn btn-primary btn-block"><span class="glyphicon glyphicon-ok"></span></button>
+        </div>
+      </form>
+    <div class="pull-right">
+      <a href="../../signup"><h5>Sign up an account</h5></a>
+    </div>
+    </div>
+  </div>
+  <!-- signup_form end -->
+</div>
+{% endblock %}
+{% block script %}
+  <script src="{% static 'js/common/login.js' %}"></script>
+  <script>
+  $.material.init();
+  </script>
+{% endblock %}
+

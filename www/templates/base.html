@@ -1,0 +1,90 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="">
+  <meta name="keywords" content="index">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+  <link rel="icon" type="image/png" href="{% static 'i/favicon.ico' %}">
+  <link rel="apple-touch-icon-precomposed" href="{% static '/i/favicon.ico' %}">
+  {% block styles %}
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/bootstrap-material-design.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/ripples.min.css' %}" rel="stylesheet"/>
+  {% endblock %}
+  {% block extra_head %}
+  {% endblock %}
+  {% block scripts %}
+    <!--[if lt IE 9]>
+    <script src="{% static 'js/respond.min.js' %}></script>
+    <![endif]-->
+    <!--[if (gte IE 9)|!(IE)]><!-->
+    <script src="{% static 'js/plugin/jquery-2.1.4.min.js' %}"></script>
+    <script src="{% static 'js/plugin/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/plugin/material.min.js' %}"></script>
+    <script src="{% static 'js/plugin/ripples.min.js' %}"></script>
+    <!--<![endif]-->
+  {% endblock %}
+  {% block title %}
+    <title>Welcome to Unicooo</title>
+  {% endblock %}
+</head>
+<body>
+{% block header %}
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button> 
+    </div>
+    <a class="navbar-brand" href="/">Unicooo</a>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse navbar-responsive-collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="{% url 'act_type' 'public' %}"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span>    Public</a></li>
+        <li><a href="{% url 'act_type' 'group' %}"><span class="glyphicon glyphicon-glass" aria-hidden="true"></span>    Group</a></li>
+        <li> <a href="{% url 'act_type' 'personal' %}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>    Personal</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+      {% if user.is_authenticated %}
+        <li class="dropdown">
+        <a href="#" id="base-user-username" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>    {{request.user.user_name}}<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Feed</a></li>
+            <li><a href="#">Activities</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Settings</a></li>
+          </ul>
+        </li>
+      {% else %}
+        
+        <li><a href="/signup" role="button" aria-haspopup="true" aria-expanded="false">SignUp </a></li>
+      {% endif %}
+      </ul>
+    </div>
+    <!-- end navbar-collapse -->
+  </div>
+  <!--  end container-fluid -->
+</nav>
+{% endblock %}
+{% block content %}
+{% endblock %}
+{% block fooder %}
+<footer>
+</footer>
+{% block script %}
+{% endblock %}
+{% endblock %}
+</body>
+</html>
+
