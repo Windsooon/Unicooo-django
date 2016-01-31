@@ -87,6 +87,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'unicooo.wsgi.application'
+LOGIN_REDIRECT_URL = '/'
 
 
 # Database

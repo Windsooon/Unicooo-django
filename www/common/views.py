@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from django.db import connection
 from .models import CustomAuth
 from django.contrib.auth import authenticate, login as django_login
+from django.http import HttpResponseRedirect
 
 
 def dictfetchall(cursor):
@@ -15,6 +16,23 @@ def dictfetchall(cursor):
         for row in cursor.fetchall()
     ]
 
+
+def anonymous_required(view_function, redirect_to = None):
+    return AnonymousRequired(view_function, redirect_to) 
+
+class AnonymousRequired(object):
+    def __init__(self, view_function, redirect_to):
+        if redirect_to is None:
+            from django.conf import settings
+            redirect_to = settings.LOGIN_REDIRECT_URL
+        self.view_function = view_function
+        self.redirect_to = redirect_to
+
+    def __call__(self, request, *args, **kwargs):
+        if request.user is not None and request.user.is_authenticated():
+            return HttpResponseRedirect(self.redirect_to)
+        return self.view_function(request, *args, **kwargs)
+    
 def public_activities(request):
     render(request, "public_activities.html")
 
@@ -25,6 +43,7 @@ def front_page(request):
     act_list = dictfetchall(cursor)
     return render(request, "common/frontpage.html", {"act_list": act_list})
 
+@anonymous_required
 def sign_up(request):
     if request.method == "GET":
         form = UserCreateForm()
@@ -43,10 +62,11 @@ def sign_up(request):
                     django_login(request, user)
             return redirect("/")
         else:
-            return render(request, "404.html")
+            return render(request, "error.html", {"error": "Form is not valid."})
     else:
-        return render(request, "404.html")
-
+        return render(request, "error.html", {"error": "Method not accepted."})
+    
+@anonymous_required
 def login_in(request):
     if request.method == "GET":
         form = UserLoginForm()
@@ -62,7 +82,7 @@ def login_in(request):
         else:
             pass
     else:
-        return render(request, "404.html")
+        return render(request, "error.html", {"error": "Method not accepted."})
 
 def personal(request, personal):
     if request.method == "GET":

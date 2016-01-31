@@ -7,7 +7,7 @@
 <!-- container begin -->
 <div class="uniform container">
   <!-- signup_form begin -->
-  <div class="well login_form col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6">
+  <div class="well login-form col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6">
     <div>
       <div class="col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6">
         <span class="span-uni"><h3>Welcome back</h3></span>
@@ -19,7 +19,7 @@
       </a>
     </div>
     <div>
-      <form action="" method="POST">
+      <form action="" method="POST" id="login_form">
         {% csrf_token %}
         <fieldset>
           <div class="form-group label-floating is-empty">
@@ -51,9 +51,13 @@
 </div>
 {% endblock %}
 {% block script %}
+  <script src="{% static 'js/plugin/jquery.validate.min.js' %}"></script>
   <script src="{% static 'js/common/login.js' %}"></script>
   <script>
   $.material.init();
+  </script>
+  <script>
+  $("#login_form").validate();
   </script>
 {% endblock %}
 

@@ -22,7 +22,7 @@ class ActList(generics.ListCreateAPIView):
         Optionally restricts the returned purchases to a given user,
         by filtering against a `username` query parameter in the URL.
         """
-        queryset = Act.objects.all()
+        queryset = Act.objects.all().order_by('id')
         act_type = self.request.query_params.get('act_type', None)
         if act_type is not None:
             queryset = queryset.filter(act_type=act_type)
