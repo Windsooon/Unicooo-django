@@ -6,7 +6,7 @@ from common.models import MyUser
 from post.models import Post
 from comment.models import Comment
 from .serializers import ActSerializer, PostAllSerializer, PostSerializer, UserSerializer, CommentSerializer
-from .permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly
+from .permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly, IsAuthenticatedOrCreate
 
 
 class ActList(generics.ListCreateAPIView):
@@ -97,4 +97,5 @@ class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
 class UserList(generics.ListCreateAPIView):
     queryset = MyUser.objects.all()
     serializer_class = UserSerializer
+    permission_classes = (IsAuthenticatedOrCreate,)
 

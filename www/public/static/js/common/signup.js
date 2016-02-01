@@ -1,4 +1,5 @@
 $(document).ready(function(){
+
     var validator = $("#signup_form").validate({
         rules: {
             email: {
@@ -29,23 +30,37 @@ $(document).ready(function(){
                 minlength: "Please enter a valid email address",
             },
         },
-        submitHandler: function() {
+        submitHandler: function(form) {
+            csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+            $("#signup_form :input").prop("disabled", true);
             $(".form-group-loading").empty();
+            var form_outer_loading = $("<div />", {
+                          "class": "loading-center",
+                      });
             var form_loading = $("<div />", {
                           "class": "la-ball-clip-rotate la-sm",
                       });
-            var form_inner_loading = $("<div />", {
-                          "class": "loading-center",
-                      });
+            var form_inner_loading = $("<div />");
             form_loading.append(form_inner_loading);
-            $(".form-group-loading").append(form_loading);
+            form_outer_loading.append(form_loading);
+            $(".form-group-loading").append(form_outer_loading);
             console.log("submit");
-            //form.submit();
+            $.ajax({
+                url: "/api/users/",
+                type: "POST",
+                datatype: "json",
+                data:  {"csrfmiddlewaretoken": csrf_token},
+                beforeSend:function() {},
+                success: function(xhr) {
+                    console.log(xhr.status);
+                },
+                error: function(xhr) {
+                    console.log(xhr.status);
+                },
+            });
         },
         success: function(label) {
-            // set &nbsp; as text for IE
-            console.log("success");
-            //label.html("&nbsp;").addClass("checked");
+            label.parent().parent().addClass("has-success");
         },
         highlight: function(element, errorClass) {
             $(element).parent().next().find("." + errorClass).removeClass("checked");

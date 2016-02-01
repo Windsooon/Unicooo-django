@@ -6,13 +6,24 @@ from post.models import Post
 from comment.models import Comment
 from activities.choices import ACTTYPE, ACTLICENCE
 
+
 class UserSerializer(serializers.ModelSerializer):
-    """User api fields"""
     class Meta:
         model = MyUser
-        fields = ("id", "last_login","user_name", 
-                  "user_avatar", "user_gender", "user_point", "user_details", "user_register_time",
-                  "is_active", "is_admin")
+        fields = ("id", "email", "user_name", "password", "user_avatar", "user_gender", "user_point", "user_details", "user_register_time")
+        write_only_fields = ("password",)
+        read_only_fields = ("id", "user_avatar", "user_gender", "user_point", "user_details", "user_register_time")
+
+    def create(self, validated_data):
+        user = MyUser.objects.create(
+            user_name=validated_data['user_name'],
+            email=validated_data['email'],
+        )
+
+        user.set_password(validated_data['password'])
+        user.save()
+
+        return user
 
         
 class ActSerializer(serializers.ModelSerializer):

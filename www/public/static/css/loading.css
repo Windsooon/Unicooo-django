@@ -3,13 +3,17 @@
  * Copyright 2015 Daniel Cardoso <@DanielCardoso>
  * Licensed under MIT
  */
+
 .la-ball-clip-rotate {
-    text-align: center;
+    margin: 0 auto;
 }
 
 .loading-center {
-    margin: 0 auto;
+    margin: 10px;
+    padding: 10px;
+    height: 36px;
 }
+
 .la-ball-clip-rotate,
 .la-ball-clip-rotate > div {
     position: relative;
