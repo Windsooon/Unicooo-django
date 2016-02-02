@@ -114,3 +114,16 @@ input {
 .personal-avatar-p {
     font-size: 30px;
 }
+
+.form-server-error-p {
+    font-size: 15px;
+    color: #f44336;
+}
+
+.form-server-error-span {
+    color: #f44336;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-left: 12px;
+    margin-right: 4px;
+}

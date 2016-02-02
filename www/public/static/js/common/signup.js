@@ -31,9 +31,11 @@ $(document).ready(function(){
             },
         },
         submitHandler: function(form) {
-            csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+            var $form_group_loading = $(".form-group-loading");
+            var $form_submit_wrap = $(".submit-btn-wrap");
+            //csrf_token = $("input[name='csrfmiddlewaretoken']").val();
             $("#signup_form :input").prop("disabled", true);
-            $(".form-group-loading").empty();
+            $form_submit_wrap.empty()
             var form_outer_loading = $("<div />", {
                           "class": "loading-center",
                       });
@@ -43,19 +45,34 @@ $(document).ready(function(){
             var form_inner_loading = $("<div />");
             form_loading.append(form_inner_loading);
             form_outer_loading.append(form_loading);
-            $(".form-group-loading").append(form_outer_loading);
+            $form_submit_wrap.append(form_outer_loading);
             console.log("submit");
             $.ajax({
                 url: "/api/users/",
                 type: "POST",
                 datatype: "json",
-                data:  {"csrfmiddlewaretoken": csrf_token},
+                data:  {"email": $("#email_signup").val()},
                 beforeSend:function() {},
                 success: function(xhr) {
                     console.log(xhr.status);
                 },
-                error: function(xhr) {
-                    console.log(xhr.status);
+                error: function(xhr, status, error) {
+                    $form_submit_wrap.empty();
+                    $(".form-server-error").empty();
+                    var form_submit_button = $("<button />", {"class": "submit-btn btn btn-primary btn-block"});
+                    var form_submit_button_span = $("<span />", {"class": "glyphicon glyphicon-ok"});
+                    form_submit_button.append(form_submit_button_span);
+                    $form_submit_wrap.append(form_submit_button);
+                    var form_server_error = $("<div />", {
+                          "class": "form-server-error"
+                      });
+                    $form_submit_wrap.before(form_server_error);
+                    if (xhr.status == 400) {
+                        $form_server_error_span = $("<span />", {"class": "pull-left form-server-error-span glyphicon glyphicon-exclamation-sign"});
+                        $form_server_error_p = $("<p />", {"class": "form-server-error-p", text: "Please check again your input."});
+                        $form_server_error_span.appendTo(form_server_error).hide().fadeIn();
+                        $form_server_error_p.appendTo(form_server_error).hide().fadeIn();
+                    }
                 },
             });
         },
