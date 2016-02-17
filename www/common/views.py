@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render, redirect
-from .form import UserCreateForm, UserLoginForm
 from django.contrib.auth import get_user_model
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.db import connection
-from .models import CustomAuth
 from django.contrib.auth import authenticate, login as django_login
-from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
+from .form import UserCreateForm, UserLoginForm
+from .models import CustomAuth
+from qiniu import Auth
+import time
 
 
 def dictfetchall(cursor):
@@ -78,7 +81,6 @@ def login_in(request):
         if user is not None:
             if user.is_active:
                 django_login(request, user)
-                return redirect("/")
         else:
             pass
     else:
@@ -90,11 +92,18 @@ def personal(request, personal):
     else:
         return render(request, "404.html")
 
-
-
 def accounts(request, accounts):
     """User settings"""
     return render(request, "common/accounts.html")
-    
 
-    
+accessKey = "jBYdJ5zP1rWc2KfUWlsXAe8FD0sFyALSzyaPI8Ys" 
+secretKey = "XvIPtijF_b7LMrsB7c2FNpqMiqRxG7tyyH217lej"
+bucket = "uni-image-test"
+
+@login_required 
+def get_upload_token(request):
+    auth = Auth(accessKey, secretKey)
+    upToken = auth.upload_token(bucket, key=None)
+    serverTime = time.time()
+    return JsonResponse({"token": upToken, "key": serverTime})
+

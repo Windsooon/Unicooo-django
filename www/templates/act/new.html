@@ -3,6 +3,7 @@
 {% block extra_head %}
   <link href="{% static 'css/common.css' %}" rel="stylesheet"/>
   <link href="{% static 'css/act.css' %}" rel="stylesheet"/>
+  <link href="{% static 'css/loading.css' %}" rel="stylesheet"/>
 {% endblock %}
 {% block content %}
 <div class="uniform container">
@@ -10,7 +11,7 @@
   <div class="well col-sm-12 col-md-12 col-lg-8 col-lg-offset-2">
     <h2 class="create-text text-center">Create Your Own Activity<h2>
     <hr>
-    <form action="" method="POST">
+    <form action="" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       <div class="form-group">
         <label class="control-label sr-only" for="Cover Image">Cover Image</label>
@@ -19,8 +20,8 @@
             <div class="cropit-image-preview"></div>
           </div>
           <div class="upload-cover">
-            <span class="btn btn-primary btn-file btn-block">Upload your Cover Image
-              <input type="file" class="cropit-image-input">
+            <span class="btn btn-primary btn-file btn-block" id="act-cover-span">Upload your Cover Image
+              <input type="file" class="cropit-image-input" id="act-cover-image">
             </span>
           </div>
         </div> <!-- end image-editor -->
@@ -48,7 +49,7 @@
         <span class="help-block">Please enter a valid act content</span>
       </div>
       <div class="form-group">
-        <button type="submit" class="submit-btn btn btn-primary btn-block"><span class="glyphicon glyphicon-ok"></span></button>
+        <button type="submit" class="submit-btn btn btn-primary btn-block" id="act-cover-btn"><span class="glyphicon glyphicon-ok"></span></button>
       </div>
     </form><!-- end form-cover -->
   </div>
@@ -56,6 +57,7 @@
 {% endblock %}
 {% block script %}
   <script src="{% static 'js/plugin/jquery.cropit.js' %}"></script>
+  <script src="{% static 'js/act/new_act.js' %}"></script>
   <script>
     $(function() {
       $('.image-editor').cropit({

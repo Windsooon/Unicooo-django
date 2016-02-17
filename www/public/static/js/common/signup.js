@@ -1,10 +1,18 @@
 $(document).ready(function(){
-
+    $.validator.addMethod(
+        "regex",
+        function(value, element, regexp) {
+            var re = new RegExp(regexp);
+            return this.optional(element) || re.test(value);
+        },
+        "Please check your email."
+    );
     var validator = $("#signup_form").validate({
         rules: {
             email: {
                 required: true,
                 email: true,
+                regex: /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i,   
                 minlength: 7,
             },
             user_name: {
@@ -18,12 +26,12 @@ $(document).ready(function(){
         },
         messages: {
             user_name: {
-                required: "Please enter your username",
-                minlength: jQuery.validator.format("Please Enter at least {0} characters"),
+                required: "Please enter your username.",
+                minlength: jQuery.validator.format("Please Enter at least {0} characters."),
             },
             password: {
                 required: "Please enter your password",
-                minlength: jQuery.validator.format("Please Enter at least {0} characters")
+                minlength: jQuery.validator.format("Please Enter at least {0} characters.")
             },
             email: {
                 required: "Please enter a valid email address",
@@ -46,18 +54,19 @@ $(document).ready(function(){
             form_loading.append(form_inner_loading);
             form_outer_loading.append(form_loading);
             $form_submit_wrap.append(form_outer_loading);
-            console.log("submit");
             $.ajax({
                 url: "/api/users/",
                 type: "POST",
                 datatype: "json",
-                data:  {"email": $("#email_signup").val()},
+                data:  {"email": $("#email_signup").val(), "user_name": $("#username_signup").val(), "password": $("#password_signup").val()},
                 beforeSend:function() {},
                 success: function(xhr) {
-                    console.log(xhr.status);
+                    console.log("success");
+                    window.location.replace("/");
                 },
                 error: function(xhr, status, error) {
                     $form_submit_wrap.empty();
+                    $("#signup_form :input").prop("disabled", false);
                     $(".form-server-error").empty();
                     var form_submit_button = $("<button />", {"class": "submit-btn btn btn-primary btn-block"});
                     var form_submit_button_span = $("<span />", {"class": "glyphicon glyphicon-ok"});
