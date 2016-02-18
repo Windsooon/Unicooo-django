@@ -1,5 +1,49 @@
+@keyframes act_more
+{
+from {background: #3f51b5;}
+to {background: black;}
+}
+
+@-moz-keyframes myfirst /* Firefox */
+{
+from {background: #3f51b5;}
+to {background: black;}
+}
+
+@-webkit-keyframes myfirst /* Safari 和 Chrome */
+{
+from {background: #3f51b5;}
+to {background: black;}
+}
+
+@-o-keyframes myfirst /* Opera */
+{
+from {background: #3f51b5;}
+to {background: black;}
+}
+
 body {
     background-color: #f2f2f2;
+}
+
+.white-footer {
+    margin-top: 100px;
+    background-color: white;
+}
+
+.act-more {
+    background-color: #3f51b5;
+}
+
+.act-more:hover {
+    animation: act_more 0.7s forwards;
+    -moz-animation: act_more 0.7s forwards;	/* Firefox */
+    -webkit-animation: act_more 0.7s forwards;	/* Safari 和 Chrome */
+    -o-animation: act_more 0.7s forwards;	/* Opera */
+}
+
+.act-more h4 {
+    color: white;
 }
 
 .navbar-brand {

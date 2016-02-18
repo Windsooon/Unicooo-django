@@ -12,7 +12,7 @@ $(document).ready(function(){
     
     if($(window).width() <= 767) {
         $(".thumbnail img").each(function() {
-            $(this).attr("src", $(this).attr("src").replace("/320/", "/678/"));
+            $(this).attr("src", $(this).attr("src").replace("actCoverInterS", "actCoverInterB"));
         });
     }
 });

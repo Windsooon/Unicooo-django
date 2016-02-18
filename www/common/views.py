@@ -7,8 +7,10 @@ from django.contrib.auth import authenticate, login as django_login
 from django.contrib.auth.decorators import login_required
 from .form import UserCreateForm, UserLoginForm
 from .models import CustomAuth
+from activities.models import Act
 from qiniu import Auth
 import time
+import hashlib
 
 
 def dictfetchall(cursor):
@@ -40,11 +42,10 @@ def public_activities(request):
     render(request, "public_activities.html")
 
 def front_page(request):
-    cursor = connection.cursor()
-    cursor.execute("SELECT act_title, act_content, act_thumb_url, act_type, CASE WHEN act_type=0 THEN 'public' WHEN act_type=1 THEN 'group' ELSE 'personal' END AS act_type_str, a.user_name FROM ( SELECT ROW_NUMBER() OVER " +
-                   "(PARTITION BY act_type ORDER BY act_create_time ) AS r, t.* FROM activities_act t) x , common_user a WHERE x.r <= 3 and user_id = a.id;")
-    act_list = dictfetchall(cursor)
-    return render(request, "common/frontpage.html", {"act_list": act_list})
+    url = "https://o2ocy30id.qnssl.com/"
+    style_name = "-actCoverInterS"
+    act_list = Act.objects.filter(act_type=0).order_by("-act_create_time")[:9]
+    return render(request, "common/frontpage.html", {"act_list": act_list, "url": url, "style_name": style_name})
 
 @anonymous_required
 def sign_up(request):
@@ -104,6 +105,10 @@ bucket = "uni-image-test"
 def get_upload_token(request):
     auth = Auth(accessKey, secretKey)
     upToken = auth.upload_token(bucket, key=None)
-    serverTime = time.time()
-    return JsonResponse({"token": upToken, "key": serverTime})
+    sha1 = hashlib.sha1()
+    serverTime = round(time.time())
+    pre_key = str(request.user.id) + secretKey[-6:]
+    sha1.update(pre_key.encode("utf-8"))
+    key = str(serverTime) + sha1.hexdigest() 
+    return JsonResponse({"token": upToken, "key": key})
 

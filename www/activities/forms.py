@@ -37,5 +37,6 @@ class ActCreateForm(forms.ModelForm):
                     "class": "form-control",
                 }
             ),
+
         }
 

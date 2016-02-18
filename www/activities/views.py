@@ -43,6 +43,10 @@ class ActCreate(LoginRequiredMixin, CreateView):
         act_ident = Act.objects.all().aggregate(Max('act_ident'))["act_ident__max"] + 1
         self.object.act_ident = act_ident
         act_username = self.request.user.user_name
+        act_upload_key = self.request.POST["upload_key"]
+        act_cover_image_height = self.request.POST["image_height"]
+        act_cover_image_width = self.request.POST["image_width"]
+        self.object.act_thumb_url = act_upload_key
         self.object.act_url = "/act/" + act_username + "/" +  form.cleaned_data["act_title"]
         self.object.user_id = self.request.user.id 
         self.object.save()
@@ -55,10 +59,12 @@ class ActCreate(LoginRequiredMixin, CreateView):
 
 def act_list(request, act_list):
     if request.method == "GET":
+        url = "https://o2ocy30id.qnssl.com/"
+        style_name = "-actCoverInterS"
         if act_list in ("public", "group", "personal"):
             dict_act = {"public": 0, "group": 1, "personal": 2}
             act_details = Act.objects.filter(act_type=dict_act[act_list])[:12]
-            return render(request, "act/activities_list.html", {"act_list": act_details})
+            return render(request, "act/activities_list.html", {"act_list": act_details, "url": url, "style_name": style_name})
         else:
             error = "不存在此分类。"
             return render(request, "error.html", {"error": error})
