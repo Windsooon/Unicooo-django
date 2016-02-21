@@ -5,12 +5,15 @@
   <link href="{% static 'css/common.css' %}" rel="stylesheet"/>
   <link href="{% static 'css/act.css' %}" rel="stylesheet"/>
   <link href="{% static 'css/post.css' %}" rel="stylesheet"/>
+  <link href="{% static 'css/loading.css' %}" rel="stylesheet"/>
 {% endblock %}
 {% block content %}
 <div class="activity-container container">
   <div class="activity-details-thumb clearfix">
     <div class="activity-details-thumb-img col-sm-7 col-md-7 col-lg-7"> 
-        <a><img src="{{ act_details.act_thumb_url }}" /></a>
+      <a class="activity-details-thumb-a">
+        <img src="{{ act_details.act_thumb_url }}" />
+      </a>
     </div>
     <div class="activity-details-content col-sm-5 col-md-5 col-lg-5">
       <p class="act-details-title text-center">{{ act_details.act_title }}</p>
@@ -28,19 +31,35 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h4 class="modal-title">Join the Act</h4>
-            <span class="btn btn-primary btn-file btn-block">Choose Image
-              <input type="file" class="">
-            </span>
-            <img style="width:100%" src="http://7xokch.com1.z0.glb.clouddn.com/uni_image-guide.png" />
-          </div>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Modal title</h4>
+          </div>          
+          <!-- end modal-header -->
           <div class="modal-body">
+            <div class="post-upload-div">
+              <img id="post-upload-img" src="http://7xqy4j.com1.z0.glb.clouddn.com/1455693629.254711?imageView2/1/w/552/h/488/q/80/interlace/1" />
+            </div>
+            <span class="upload-cover btn btn-primary btn-file btn-block">Upload Image
+              <input type="file" class="cropit-image-input" id="post-upload-image" accept="image/*">
+            </span>
+            <div class="post-form">
+              <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label class="sr-only" for="" >Post Content</label>
+                  <input type="text" class="post-form-text form-control" id="" placeholder="Please enter you post content">
+                <h6 class="post-form-length">60</h6>
+                </div>
+                <button type="button" id="add-post-btn" class="btn btn-primary pull-right">Submit</button>
+              </form>
+            </div>
           </div>
-          <div class="modal-footer">
           </div>
         </div>
+        <div class="modal-footer">
+        </div>
       </div>
+    </div>
   </div>
 
   <!-- Display post details using modal -->
@@ -91,11 +110,27 @@
 
 {% endblock %}
 {% block script %}
-  <script src="{% static 'js/plugin/imageLoaded.min.js' %}"></script>
-  <script src="{% static 'js/plugin/jquery.masonry.min.js' %}"></script>
   <script> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
+  <script src="{% static 'js/plugin/imageLoaded.min.js' %}"></script>
+  <script src="{% static 'js/plugin/jquery.cropit.js' %}"></script>
+  <script src="{% static 'js/plugin/masonry.min.js' %}"></script>
   <script src="{% static 'js/post/posts_ajax.js' %}"></script>
+  <script src="{% static 'js/post/posts_upload.js' %}"></script>
   <script src="{% static 'js/comment/comment.js' %}"></script>
+  <script>
+    $(function() {
+      $('.post-image-editor').cropit({
+        imageState: {
+          src: 'http://7xqy4j.com1.z0.glb.clouddn.com/1455693629.254711?imageView2/1/w/552/h/488/q/80/interlace/1',
+        },
+      });
+  
+      $('.export').click(function() {
+        var imageData = $('.image-editor').cropit('export');
+        window.open(imageData);
+      });
+    });
+  </script>
   <script>
   $.material.init();
   </script>

@@ -24,21 +24,21 @@ $(document).ready(function(){
         getPost(post_id, e, getId);
     });
             
-
+    
     //显示剩余输入字数
-    $(".comment-form-text").keyup(function(){  
-        var $comment_length = $(".comment-form-length");
+    $(".post-form-text").keyup(function(){  
+        var $post_length = $(".post-form-length");
         //length未必存在
-        var currrent_length=$(".comment-form-text").val().length + 1;   
-        if (currrent_length <= 140) {
-            $comment_length.text(141-currrent_length);
+        var currrent_length=$(".post-form-text").val().length + 1;   
+        if (currrent_length <= 60) {
+            $post_length.text(60-currrent_length);
         }
         else {
-            $comment_length.text("beyond 140 char");
-            $comment_length.css("color","#3f51b5");
+            $post_length.text("beyond 60 char");
+            $post_length.css("color","#3f51b5");
         }
-
     }); 
+    
  
     function getPost(post_id, e, getId) {
         return $.ajax({

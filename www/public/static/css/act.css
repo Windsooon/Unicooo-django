@@ -20,12 +20,11 @@
 
 .cropit-image-preview {
     background-color: #f8f8f8;
-    background-size: cover;
+    background-size: contain;
     border: 5px solid #ccc;
     border-radius: 3px;
     width: 100%;
     height: 488px;
-    cursor: move;
     margin: 0 auto;
     overflow: hidden;
 }
@@ -104,7 +103,7 @@
     position: absolute;
     left: 0;
     top: 0;
-    background: linear-gradient(transparent 30px, white);
+    background-image: -webkit-gradient(linear, top, bottom, color-stop(0, rgba(230,160,21,0)), color-stop(1, rgb(230,160,21)));
 }
 
 .single-title {
@@ -145,6 +144,10 @@
 
 .activities_list_image img {
     width: 100%;
+}
+
+.activity-details-thumb-a {
+    display: block;
 }
 
 .activity-details-thumb {

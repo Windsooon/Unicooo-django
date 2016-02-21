@@ -1,15 +1,18 @@
 $(document).ready(function(){
+    var $container = $('#posts-container').masonry();
     var formData = new FormData();
     var formArray = new Array();
-    $act_cover_span = $("#act-cover-span");
-    $('#act-cover-image').on("click", function(){ 
+    var imageUrl = "https://o2ocy30id.qnssl.com/";
+    var imageStyle = "-actCoverInterS";
+    $post_cover_span = $(".upload-cover");
+    $('#post-upload-image').on("click", function(){ 
         formData = new FormData();
         formArrar = new Array();
         $.ajax({
             url: "/token",
             type: "GET",
             datatype: "json",
-            data: {"type": 0},
+            data: {"type": 1},
             success: function(data) {
                 formData.append("token", data["token"]);
                 formData.append("key", data["key"]);
@@ -19,7 +22,24 @@ $(document).ready(function(){
         });
     });
 
-    $('#act-cover-image').on("change", function(){ 
+    $("#post-upload-image").on('change', function () {
+        if (typeof (FileReader) != "undefined") {
+            var image_holder = $(".post-upload-div");
+            image_holder.empty();
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $("<img />", {
+                    "src": e.target.result,
+                    "class": "post-unfinished-image"
+                }).appendTo(image_holder);
+
+            }
+            image_holder.show();
+            reader.readAsDataURL($(this)[0].files[0]);
+        } 
+        else {
+            console.log("This browser does not support FileReader.");
+        }
         var file = this.files[0];
         var fr = new FileReader;
         fr.onload = function() { //file is loaded
@@ -41,31 +61,55 @@ $(document).ready(function(){
             processData: false, 
             contentType: false,
             beforeSend:function(){
-               $act_cover_span.empty(); 
-               $("#act-cover-btn").prop("disabled", true);
-               var act_outer_loading = $("<div />", {
+               $post_cover_span.empty(); 
+               var post_outer_loading = $("<div />", {
                           "class": "",
                       });
-               var act_loading = $("<div />", {
+               var post_loading = $("<div />", {
                           "class": "la-ball-clip-rotate la-sm",
                       });
-               var act_inner_loading = $("<div />");
-               act_loading.append(act_inner_loading);
-               act_outer_loading.append(act_loading);
-               $act_cover_span.append(act_outer_loading);
+               var post_inner_loading = $("<div />");
+               post_loading.append(post_inner_loading);
+               post_outer_loading.append(post_loading);
+               $post_cover_span.append(post_outer_loading);
             },
             error: function(data) {
                console.log("error");
-               $act_cover_span.empty(); 
-               $act_cover_span.html("Please check your internet conection.");
+               $post_cover_span.empty(); 
+               $post_cover_span.html("Please check your internet conection.");
                var upload_failed = $("<input>").attr({
                            "class": "cropit-image-input", 
                            type: "file",
                            id: "act-cover-image",
                        });                  
-               upload_failed.appendTo($act_cover_span).hide().fadeIn(500);
+               upload_failed.appendTo($post_cover_span).hide().fadeIn(500);
             },
             success: function(data) {
+               console.log(formArray[1]);
+               console.log(formArray[2]);
+               console.log(formArray[3]);
+               console.log(window.CSRF_TOKEN);
+               $(".post-upload-div img").removeClass("post-unfinished-image");
+               $(".post-upload-div img").addClass("post-finished-image");
+               var post_a = $("<a />", {
+                          "class": "",
+                          href: "#post_details",
+                          "data-toggle": "modal",
+                          "data-target": "#post-details",
+                      });
+               var post_image = $("<img />", {
+                          src: imageUrl + data["key"],
+                      });
+               var post_div = $("<div />", {
+                          "class": "post-container"
+                      });
+               post_a.append(post_image)
+               post_div.append(post_a);
+               $container.prepend(post_div)
+               $container.imagesLoaded(function() {
+                   $container.masonry('prepended', post_div);
+               });
+               //$container.masonry('prepended', $items);
                var upload_key = $("<input>").attr({
                            value: formArray[1],
                            name: "upload_key",
@@ -84,12 +128,11 @@ $(document).ready(function(){
                            type: "hidden",
                            id: "image_height",
                        }); 
-               $("#act-cover-btn").prop("disabled", false);
-               $act_cover_span.empty(); 
+               $post_cover_span.empty(); 
                var upload_success = $("<span />", {
                           text: "Success",
                       });
-               upload_success.appendTo($act_cover_span).hide().fadeIn(500);
+               upload_success.appendTo($post_cover_span).hide().fadeIn(500);
                $("#act_title").after(upload_key);
             },
         });

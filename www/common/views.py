@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
+from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.db import connection
 from django.contrib.auth import authenticate, login as django_login
@@ -100,15 +101,25 @@ def accounts(request, accounts):
 accessKey = "jBYdJ5zP1rWc2KfUWlsXAe8FD0sFyALSzyaPI8Ys" 
 secretKey = "XvIPtijF_b7LMrsB7c2FNpqMiqRxG7tyyH217lej"
 bucket = "uni-image-test"
+callBackUrl = "http://unicooo.com/callback/"
+callBackBody = "key=$(key)&name=$(fname)"
 
 @login_required 
 def get_upload_token(request):
+    upload_type = request.GET.get("type")
     auth = Auth(accessKey, secretKey)
     upToken = auth.upload_token(bucket, key=None)
     sha1 = hashlib.sha1()
     serverTime = round(time.time())
-    pre_key = str(request.user.id) + secretKey[-6:]
+    pre_key = str(request.user.id) + upload_type + secretKey[-6:]
     sha1.update(pre_key.encode("utf-8"))
     key = str(serverTime) + sha1.hexdigest() 
     return JsonResponse({"token": upToken, "key": key})
+
+@csrf_exempt
+def call_back(request):
+    key = request.POST.get("key")
+    name = request.POST.get("name")
+    return JsonResponse({"key": key, "name": name})
+
 

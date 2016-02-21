@@ -10,6 +10,14 @@
     border-bottom-left-radius: 6px;
 }
 
+.post-unfinished-image {
+  opacity:0.6;    
+}
+
+.post-finished-image {
+  opacity:1;    
+}
+
 #posts-container {
     margin: 0 auto;
 }

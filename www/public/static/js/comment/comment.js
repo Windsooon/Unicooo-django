@@ -78,4 +78,18 @@ var comment_click_handler = function(e) {
               complete:function(){
             },
          });
-}
+    }
+
+    //显示剩余输入字数
+    $(".comment-form-text").keyup(function(){  
+        var $comment_length = $(".comment-form-length");
+        //length未必存在
+        var currrent_length=$(".comment-form-text").val().length + 1;   
+        if (currrent_length <= 140) {
+            $comment_length.text(141-currrent_length);
+        }
+        else {
+            $comment_length.text("beyond 140 char");
+            $comment_length.css("color","#3f51b5");
+        }
+    }); 
