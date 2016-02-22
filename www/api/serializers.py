@@ -39,11 +39,11 @@ class ActSerializer(serializers.ModelSerializer):
 
 class PostAllSerializer(serializers.ModelSerializer):
     """Posts api fields"""
-    post_user = UserSerializer(source="user")
+    post_user = UserSerializer(source="user",read_only=True)
 
     class Meta:
         model = Post
-        fields = ("id", "user", "act","post_title", "post_content", "post_thumb_url", "post_create_time", "post_user") 
+        fields = ("id", "user", "act","post_title", "post_content", "post_thumb_url", "post_thumb_width", "post_thumb_height", "nsfw", "post_create_time", "post_user") 
 
 
 class CommentSerializer(serializers.ModelSerializer):

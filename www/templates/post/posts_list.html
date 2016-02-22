@@ -18,6 +18,8 @@
     <div class="activity-details-content col-sm-5 col-md-5 col-lg-5">
       <p class="act-details-title text-center">{{ act_details.act_title }}</p>
       <p class="act-details-content">{{ act_details.act_content }}</p>
+      <input type="hidden" value="{{ act_details.id }}" />
+      <input type="hidden" value={{ request.user.id }} />
     </div>
     <div class="pull-right">
       <button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#post-upload">join the act</button>
@@ -31,8 +33,8 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Modal title</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Modal title</h4>
           </div>          
           <!-- end modal-header -->
           <div class="modal-body">
@@ -43,24 +45,27 @@
               <input type="file" class="cropit-image-input" id="post-upload-image" accept="image/*">
             </span>
             <div class="post-form">
-              <form method="POST">
+              <form method="POST" id="post-content">
                 {% csrf_token %}
                 <div class="form-group">
                   <label class="sr-only" for="" >Post Content</label>
-                  <input type="text" class="post-form-text form-control" id="" placeholder="Please enter you post content">
+                  <input type="text" class="post-form-text form-control" placeholder="Please enter you post content">
                 <h6 class="post-form-length">60</h6>
                 </div>
-                <button type="button" id="add-post-btn" class="btn btn-primary pull-right">Submit</button>
+                <button type="submit" id="add-post-btn" class="btn btn-primary pull-right">Submit</button>
               </form>
             </div>
           </div>
+          <!-- end modal-body -->
+          <div class="modal-footer">
           </div>
         </div>
-        <div class="modal-footer">
-        </div>
+        <!-- end modal-content -->
       </div>
+      <!-- end modal-dialog -->
     </div>
   </div>
+</div>
 
   <!-- Display post details using modal -->
   <div id="post-details" class="modal fade" tabindex="-1" style="display: none">

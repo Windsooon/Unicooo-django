@@ -16,7 +16,6 @@ $(document).ready(function(){
             success: function(data) {
                 formData.append("token", data["token"]);
                 formData.append("key", data["key"]);
-                formArray[0] = data["token"];
                 formArray[1] = data["key"];
             },
         });
@@ -45,8 +44,8 @@ $(document).ready(function(){
         fr.onload = function() { //file is loaded
             var img = new Image;
             img.onload = function() {
-                formArray[2] = img.height;
-                formArray[3] = img.width;
+                formArray[2] = img.width;
+                formArray[3] = img.height;
             };
             img.src = fr.result; //is the data URL because called with readAsDataURL
         };
@@ -85,10 +84,6 @@ $(document).ready(function(){
                upload_failed.appendTo($post_cover_span).hide().fadeIn(500);
             },
             success: function(data) {
-               console.log(formArray[1]);
-               console.log(formArray[2]);
-               console.log(formArray[3]);
-               console.log(window.CSRF_TOKEN);
                $(".post-upload-div img").removeClass("post-unfinished-image");
                $(".post-upload-div img").addClass("post-finished-image");
                var post_a = $("<a />", {
@@ -136,5 +131,29 @@ $(document).ready(function(){
                $("#act_title").after(upload_key);
             },
         });
+    });
+
+    //$("#add-post-btn").on("click", function() {
+    //    console.log("hey");  
+    //});
+
+    $("#post-content").submit(function(e){
+      e.preventDefault();
+      $activity_input = $(".activity-details-content input");
+      var post_content = $(".post-form-text").val();
+      var csrf_token = $("#post-content input").eq(0).val();
+      formArray[4] = $activity_input.eq(0).val();
+      formArray[5] = $activity_input.eq(1).val();
+      formArray[6] = post_content
+      $.ajax({
+          url: "http://127.0.0.1:8000/api/posts/",
+          type: "POST",
+          data: {csrfmiddlewaretoken: csrf_token, "post_thumb_url": formArray[1], "post_thumb_width": formArray[2], "post_thumb_height": formArray[3], "nsfw": 1, "act": formArray[4], "user": formArray[5], "post_content": formArray[6]}, 
+          datatype: "json",
+          beforeSend:function(){
+          },
+          error: function(data) {
+          },
+       });
     });
 });

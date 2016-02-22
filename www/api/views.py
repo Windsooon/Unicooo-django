@@ -19,10 +19,6 @@ class ActList(generics.ListCreateAPIView):
         serializer.save(user=self.request.user)
 
     def get_queryset(self):
-        """
-        Optionally restricts the returned purchases to a given user,
-        by filtering against a `username` query parameter in the URL.
-        """
         queryset = Act.objects.all().order_by('id')
         act_type = self.request.query_params.get('act_type', None)
         if act_type is not None:
@@ -39,7 +35,7 @@ class ActDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class PostList(generics.ListCreateAPIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly)
     queryset = Post.objects.all()
     serializer_class = PostAllSerializer
 
@@ -47,10 +43,6 @@ class PostList(generics.ListCreateAPIView):
         serializer.save(user=self.request.user)
 
     def get_queryset(self):
-        """
-        Optionally restricts the returned purchases to a given user,
-        by filtering against a `username` query parameter in the URL.
-        """
         queryset = Post.objects.all()
         act_id = self.request.query_params.get('act_id', None)
         if act_id is not None:
