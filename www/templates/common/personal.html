@@ -10,15 +10,16 @@
   <div class="personal-header">
     <div class="personal-avatar-div">
       <img class="personal-avatar-image" src="http://7xokch.com1.z0.glb.clouddn.com/uni-testred.png" />
-      <p class="personal-avatar-p">{{request.user.user_name}}</p>
+      <p class="personal-avatar-p">{{personal}}</p>
       <input type="hidden" value={{request.user.id}} />
+      <p class="personal-details">{{request.user.user_details}}</p>
     </div>
   </div>
 </div>
 <div class="container">
 <div class="btn-group btn-group-justified" role="group" aria-label="...">
   <div class="btn-group" role="group">
-    <a class="btn btn-default" href="" id="act-create-btn" role="button">Act(create)</a>
+    <a class="btn btn-default" href="/create" id="act-create-btn" role="button">Act(create)</a>
   </div>
   <div class="btn-group" role="group">
     <a class="btn btn-default" href="" id="act-join-btn" role="button">Act(join)</a>

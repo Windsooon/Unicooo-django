@@ -46,14 +46,6 @@ body {
     color: white;
 }
 
-.navbar-brand {
-    position: absolute !important;
-    width: 100%;
-    left: 0;
-    top: 0;
-    text-align: center;
-    margin: auto;
-}
 a:hover {
     text-decoration: none;
 }
@@ -146,7 +138,7 @@ input {
 
 .personal-avatar-div {
     margin: 0 auto;
-    padding-bottom: 30px;
+    padding-bottom: 20px;
     border-bottom: 1px solid gray;
 }
 

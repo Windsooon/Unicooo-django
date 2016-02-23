@@ -31,32 +31,17 @@ class AjaxableResponseMixin(object):
         else:
             return response
 
-class ActCreate(LoginRequiredMixin, CreateView):
-    login_url = '/login/'
-    redirect_field_name = 'redirect_to'
-    model = Act
-    template_name = "act/new.html"
-    form_class = ActCreateForm
+def act_create(request):
+    if request.method == "GET":
+        form = ActCreateForm
+        return render(request, "act/new.html", {"form": form})
+#class ActCreate(LoginRequiredMixin, CreateView):
+#    login_url = '/login/'
+#    redirect_field_name = 'redirect_to'
+#    model = Act
+#    template_name = "act/new.html"
+#    form_class = ActCreateForm
     
-    def form_valid(self, form):
-        self.object = form.save(commit=False)  
-        act_ident = Act.objects.all().aggregate(Max('act_ident'))["act_ident__max"] + 1
-        self.object.act_ident = act_ident
-        act_username = self.request.user.user_name
-        act_upload_key = self.request.POST["upload_key"]
-        act_cover_image_height = self.request.POST["image_height"]
-        act_cover_image_width = self.request.POST["image_width"]
-        self.object.act_thumb_url = act_upload_key
-        self.object.act_url = "/act/" + act_username + "/" +  form.cleaned_data["act_title"]
-        self.object.user_id = self.request.user.id 
-        self.object.save()
-        response = super(ActCreate, self).form_valid(form)
-        return response
-
-    def form_invalid(self, form):
-        error = "failed"
-        return HttpResponse(form.errors)
-
 def act_list(request, act_list):
     if request.method == "GET":
         url = "https://o2ocy30id.qnssl.com/"

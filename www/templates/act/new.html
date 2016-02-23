@@ -9,7 +9,7 @@
 <div class="uniform container">
   <!--<span class="text-center center-block glyphicon glyphicon-road" aria-hidden="true"></span> -->
   <div class="well col-sm-12 col-md-12 col-lg-8 col-lg-offset-2">
-    <h2 class="create-text text-center">Create Your Own Activity<h2>
+    <h2 class="create-text text-center">Create Your Own Activity</h2>
     <hr>
     <form action="" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
@@ -27,7 +27,7 @@
         </div> <!-- end image-editor -->
       </div>
     </form><!-- end form-cover -->
-  <form action="" method="POST">
+  <form method="POST" id="new-act-form">
     {% csrf_token %}
     <fieldset>
       <div class="form-group">
@@ -41,15 +41,15 @@
       <div class="form-group label-floating is-empty">
         <label for="act_title" class="control-label">Act Title</label>
           {{ form.act_title }}
-        <span class="help-block">Please enter a valid act title</span>
       </div>
       <div class="form-group label-floating is-empty">
         <label for="act_content" class="control-label">Act Content</label>
           {{ form.act_content }}
-        <span class="help-block">Please enter a valid act content</span>
       </div>
-      <div class="form-group">
-        <button type="submit" class="submit-btn btn btn-primary btn-block" id="act-cover-btn"><span class="glyphicon glyphicon-ok"></span></button>
+      <div class="form-group form-group-loading">
+        <div class="submit-btn-wrap">
+          <button type="submit" class="submit-btn btn btn-primary btn-block" id="act-cover-btn"><span class="glyphicon glyphicon-ok"></span></button>
+        </div>
       </div>
     </form><!-- end form-cover -->
   </div>
@@ -57,15 +57,23 @@
 {% endblock %}
 {% block script %}
   <script src="{% static 'js/plugin/jquery.cropit.js' %}"></script>
+  <script src="{% static 'js/plugin/jquery.validate.min.js' %}"></script>
+  <script src="{% static 'js/plugin/hashids.min.js' %}"></script>
   <script src="{% static 'js/act/new_act.js' %}"></script>
   <script>
     $(function() {
       $('.image-editor').cropit({
-        maxZoom: 1.5,
-        allowDragNDrop: false,
-        imageState: {
-          src: 'http://7xokch.com1.z0.glb.clouddn.com/ice678.png',
-        },
+          maxZoom: 1.5,
+          onImageError: function() {
+              $(".error-msg").text("Please use an image that's at least " + $(".cropit-image-preview").outerWidth() + "px in width and " + $(".cropit-image-preview").outerHeight() + "px in height."), $(".cropit-image-preview").addClass("has-error"), window.setTimeout(function() {
+                  return function() {
+                      return $(".cropit-image-preview").removeClass("has-error")
+                  }
+              }(this), 3e3)
+            },
+          imageState: {
+              src: 'http://7xokch.com1.z0.glb.clouddn.com/ice678.png',
+          },
       });
   
       $('.export').click(function() {

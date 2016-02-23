@@ -1,59 +1,90 @@
 $(document).ready(function(){
-    var validator = $("#signup_form").validate({
-			rules: {
-                email: {
-					required: true,
-					email: true,
-					minlength: 8,
-					remote: "emails.action"
-				},
-				user_name: {
-					required: true,
-					minlength: 6,
-					remote: "users.action"
-				},
-				password: {
-					required: true,
-					minlength: 5
-				},
-			},
-			messages: {
-				username: {
-					required: "Enter a username",
-					minlength: jQuery.validator.format("Enter at least {0} characters"),
-					remote: jQuery.validator.format("{0} is already in use")
-				},
-				password: {
-					required: "Provide a password",
-					minlength: jQuery.validator.format("Enter at least {0} characters")
-				},
-				email: {
-					required: "Please enter a valid email address",
-					minlength: "Please enter a valid email address",
-					remote: jQuery.validator.format("{0} is already in use")
-				},
-			},
-			// the errorPlacement has to take the table layout into account
-			errorPlacement: function(error, element) {
-				if (element.is(":radio"))
-					error.appendTo(element.parent().next().next());
-				else if (element.is(":checkbox"))
-					error.appendTo(element.next());
-				else
-					error.appendTo(element.parent().next());
-			},
-			// specifying a submitHandler prevents the default submit, good for the demo
-			submitHandler: function() {
-				alert("submitted!");
-			},
-			// set this class to error-labels to indicate valid fields
-			success: function(label) {
-				// set &nbsp; as text for IE
-				label.html("&nbsp;").addClass("checked");
-			},
-			highlight: function(element, errorClass) {
-				$(element).parent().next().find("." + errorClass).removeClass("checked");
-			}
-		});
+    $.validator.addMethod(
+        "regex",
+        function(value, element, regexp) {
+            var re = new RegExp(regexp);
+            return this.optional(element) || re.test(value);
+        },
+        "Please check your email address."
+    );
+    var validator = $("#login_form").validate({
+        rules: {
+            email: {
+                required: true,
+                email: true,
+                regex: /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i,   
+                minlength: 7,
+            },
+            password: {
+                required: true,
+                minlength: 8
+            },
+        },
+        messages: {
+            email: {
+                required: "Please enter a valid email address.",
+                minlength: "Please enter a valid email address.",
+            },
+            password: {
+                required: "Please enter your password.",
+                minlength: jQuery.validator.format("Please Enter at least {0} characters.")
+            },
+        },
+        submitHandler: function(form) {
+            var $form_group_loading = $(".form-group-loading");
+            var $form_submit_wrap = $(".submit-btn-wrap");
+            //csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+            $("#login_form :input").prop("disabled", true);
+            $form_submit_wrap.empty()
+            var form_outer_loading = $("<div />", {
+                          "class": "loading-center",
+                      });
+            var form_loading = $("<div />", {
+                          "class": "la-ball-clip-rotate la-sm",
+                      });
+            var form_inner_loading = $("<div />");
+            form_loading.append(form_inner_loading);
+            form_outer_loading.append(form_loading);
+            $form_submit_wrap.append(form_outer_loading);
+            $.ajax({
+                url: "/api/login/",
+                type: "POST",
+                datatype: "json",
+                data:  {"email": $("#email_signup").val(), "user_name": $("#username_signup").val(), "password": $("#password_signup").val()},
+                beforeSend:function() {},
+                success: function(xhr) {
+                    console.log("success");
+                    window.location.replace("/");
+                },
+                error: function(xhr, status, error) {
+                    $form_submit_wrap.empty();
+                    $("#signup_form :input").prop("disabled", false);
+                    $(".form-server-error").empty();
+                    var form_submit_button = $("<button />", {"class": "submit-btn btn btn-primary btn-block"});
+                    var form_submit_button_span = $("<span />", {"class": "glyphicon glyphicon-ok"});
+                    form_submit_button.append(form_submit_button_span);
+                    $form_submit_wrap.append(form_submit_button);
+                    var form_server_error = $("<div />", {
+                          "class": "form-server-error"
+                      });
+                    $form_submit_wrap.before(form_server_error);
+                    if (xhr.status == 400) {
+                        $form_server_error_span = $("<span />", {"class": "pull-left form-server-error-span glyphicon glyphicon-exclamation-sign"});
+                        $form_server_error_p = $("<p />", {"class": "form-server-error-p", text: "Please check again your input."});
+                        $form_server_error_span.appendTo(form_server_error).hide().fadeIn();
+                        $form_server_error_p.appendTo(form_server_error).hide().fadeIn();
+                    }
+                },
+            });
+        },
+        success: function(label) {
+            //label.parent().parent().addClass("has-success");
+        },
+        highlight: function(element, errorClass) {
+            $(element).parent().next().find("." + errorClass).removeClass("checked");
+        }
+    });
 });
+
+
 

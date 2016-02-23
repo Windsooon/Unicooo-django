@@ -27,7 +27,6 @@
               <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
               <label for="email_login" class="control-label">Email address</label>
                 {{ form.email }}
-              <span class="help-block">Please enter a valid email address</span>
             </div>
           </div>
           <div class="form-group label-floating is-empty">
@@ -35,12 +34,14 @@
               <span class="input-group-addon"><span class="glyphicon glyphicon-star"></span></span>
               <label for="password_login" class="control-label">Password</label>
                 {{ form.password }}
-              <span class="help-block">Please enter your password</span>
             </div>
           </div>
-          <div class="form-group">
-            <button type="submit" class="submit-btn btn btn-primary btn-block"><span class="glyphicon glyphicon-ok"></span></button>
-        </div>
+          <div class="form-group form-group-loading">
+            <div class="submit-btn-wrap">
+              <button type="submit" class="submit-btn btn btn-primary btn-block"><span class="glyphicon glyphicon-ok"></span></button>
+            </div>
+          </div>
+        </fieldset>
       </form>
     <div class="pull-right">
       <a href="../../signup"><h5>Sign up an account</h5></a>
@@ -55,9 +56,6 @@
   <script src="{% static 'js/common/login.js' %}"></script>
   <script>
   $.material.init();
-  </script>
-  <script>
-  $("#login_form").validate();
   </script>
 {% endblock %}
 

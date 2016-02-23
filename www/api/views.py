@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as django_login
+from django.db.models import Max
 from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 from activities.models import Act

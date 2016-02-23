@@ -1,5 +1,8 @@
 $(document).ready(function(){
     var page = 1
+    var scrollTimeout;
+    $activity_input = $(".activity-details-content input");
+    var act_id = $activity_input.eq(0).val();
     var $container = $('#posts-container').masonry({
         columnWidth: 20,
         itemSelector: '.post-container',
@@ -8,15 +11,31 @@ $(document).ready(function(){
     });
     var ajax_state = false;
     ajax_post(page)
-    $(window).scroll(function(){
-        //console.log($(window).scrollTop());
-        //console.log($(".single-post:last").offset().top);
-        if (checkScroll() && ajax_state){
+    //$(window).scroll(function(){
+    //    //console.log($(window).scrollTop());
+    //    //console.log($(".single-post:last").offset().top);
+    //    if (checkScroll() && ajax_state){
+    //        page += 1;
+    //        ajax_state = false;
+    //        ajax_post(page)
+    //    }
+    //})
+    $(window).scroll(function () {
+        if (scrollTimeout) {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = null;
+        }
+        scrollTimeout = setTimeout(scrollHandler, 50);
+    });
+    scrollHandler = function () {
+        // Check your page position
+        if (checkScroll() && ajax_state) {
             page += 1;
             ajax_state = false;
-            ajax_post(page)
+            ajax_post(page);
         }
-    })
+    };
+
 
     
     $("#post-details").on("show.bs.modal", function(e) {
@@ -149,7 +168,7 @@ $(document).ready(function(){
             url: "/api/posts/",
             type: "GET",
             datatype: "json",
-            data:  {"page": page},
+            data:  {"act_id": act_id, "page": page},
             beforeSend:function(){
             },
             success: function(data) {
@@ -222,6 +241,9 @@ $(document).ready(function(){
                         $elems.fadeIn(500);
                         $container.masonry('appended', $elems, true); 
                     });
+                }
+                else {
+                    console.log("nothing"); 
                 }
             },
             complete:function(){

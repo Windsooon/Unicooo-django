@@ -14,5 +14,6 @@ urlpatterns = [
                   url(r'^signup/$', views.sign_up),
                   url(r'^login/$', views.login_in),
                   url(r'^(?P<personal>\w+)/$', views.personal, name="personal"),
+                  url(r'^(?P<personal>\w+)/create/$', views.personal, name="personal"),
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

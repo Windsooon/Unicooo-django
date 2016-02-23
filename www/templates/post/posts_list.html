@@ -19,10 +19,9 @@
       <p class="act-details-title text-center">{{ act_details.act_title }}</p>
       <p class="act-details-content">{{ act_details.act_content }}</p>
       <input type="hidden" value="{{ act_details.id }}" />
-      <input type="hidden" value={{ request.user.id }} />
     </div>
     <div class="pull-right">
-      <button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#post-upload">join the act</button>
+      <button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#post-upload" id="join-act-btn">join the act</button>
     </div>
   </div>
   <div id="posts-container">

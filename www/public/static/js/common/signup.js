@@ -75,7 +75,12 @@ $(document).ready(function(){
                     var form_server_error = $("<div />", {
                           "class": "form-server-error"
                       });
-                    $form_submit_wrap.before(form_server_error);
+                    if($('.form-server-error').length) {
+                        console.log("already");    
+                    } 
+                    else{
+                        $form_submit_wrap.before(form_server_error);
+                    }
                     if (xhr.status == 400) {
                         $form_server_error_span = $("<span />", {"class": "pull-left form-server-error-span glyphicon glyphicon-exclamation-sign"});
                         $form_server_error_p = $("<p />", {"class": "form-server-error-p", text: "Please check again your input."});
@@ -86,7 +91,6 @@ $(document).ready(function(){
             });
         },
         success: function(label) {
-            label.parent().parent().addClass("has-success");
         },
         highlight: function(element, errorClass) {
             $(element).parent().next().find("." + errorClass).removeClass("checked");
