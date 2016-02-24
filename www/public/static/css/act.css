@@ -85,11 +85,11 @@
 
 .single-content {
     border-top: 2px solid #2b6e90;
-    height: 100px;
+    height: 120px;
     max-height: 200px;
     padding: 8px;
-    overflow: hidden;
     text-overflow: ellipsis;
+    overflow: hidden;
     content: "";
     position: relative;
     border-bottom-right-radius: 6px;
@@ -111,6 +111,7 @@
     padding-top: 10px;
     padding-bottom: 10px;
     overflow: hidden;
+    margin-top: 20px;
 }
 
 .single-title-empty {
@@ -139,6 +140,10 @@
     font-family: SimHei;
     color: #545454;
     line-height: 16pt;
+    position:relative;
+    line-height:1.5em;
+    height:7.5em;
+    overflow:hidden;
 }
 
 #join-act-btn {
@@ -179,4 +184,43 @@
 .activity-details-thumb-img {
     padding: 0px;
 }
+
+.act-thumb-a {   
+  -webkit-transition: opacity 0.4s ease-in-out;
+  -moz-transition: opacity 0.4s ease-in-out;
+  -ms-transition: opacity 0.4s ease-in-out;
+  -o-transition: opacity 0.4s ease-in-out;
+  transition: opacity 0.4s ease-in-out;
+}
+
+.act-thumb-a:hover {
+    opacity: .8;
+    filter: alpha(opacity=80); /* For IE8 and earlier */
+}
+
+.fadeout {
+    position: relative; 
+    bottom: 4em;
+    height: 4em;
+    background: -webkit-linear-gradient(
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 1) 100%
+    ); 
+    background-image: -moz-linear-gradient(
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 1) 100%
+    );
+    background-image: -o-linear-gradient(
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 1) 100%
+    );
+    background-image: linear-gradient(
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 1) 100%
+    );
+    background-image: -ms-linear-gradient(
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 1) 100%
+    );
+} 
 

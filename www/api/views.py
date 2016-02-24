@@ -22,8 +22,11 @@ class ActList(generics.ListCreateAPIView):
     def get_queryset(self):
         queryset = Act.objects.all().order_by('id')
         act_type = self.request.query_params.get('act_type', None)
+        act_id = self.request.query_params.get('id', None)
         if act_type is not None:
             queryset = queryset.filter(act_type=act_type)
+        if act_id is not None:
+            queryset = queryset.filter(user_id=act_id)
         return queryset
 
 class ActDetail(generics.RetrieveUpdateDestroyAPIView):

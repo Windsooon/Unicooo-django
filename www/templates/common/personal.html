@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% block extra_head %}
-  <link href="{% static 'css/common.css' %}" rel="stylesheet"/>
 {% endblock %}
 {% block content %}
 <!-- container begin -->
@@ -17,17 +16,17 @@
   </div>
 </div>
 <div class="container">
-<div class="btn-group btn-group-justified" role="group" aria-label="...">
-  <div class="btn-group" role="group">
-    <a class="btn btn-default" href="/create" id="act-create-btn" role="button">Act(create)</a>
+  <div class="btn-group btn-group-justified" role="group" aria-label="...">
+    <div class="btn-group" role="group">
+      <a class="btn btn-default" href="" id="act-create-btn" role="button">Act(create)</a>
+    </div>
+    <div class="btn-group" role="group">
+      <a class="btn btn-default" href="" id="act-join-btn" role="button">Act(join)</a>
+    </div>
+    <div class="btn-group" role="group">
+      <a class="btn btn-default" href="" id="post-create-btn" role="button">Post</a>
+    </div>
   </div>
-  <div class="btn-group" role="group">
-    <a class="btn btn-default" href="" id="act-join-btn" role="button">Act(join)</a>
-  </div>
-  <div class="btn-group" role="group">
-    <a class="btn btn-default" href="" id="post-create-btn" role="button">Post</a>
-  </div>
-</div>
 </div>
 {% endblock %}
 {% block script %}

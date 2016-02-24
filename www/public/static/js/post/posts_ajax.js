@@ -64,7 +64,7 @@ $(document).ready(function(){
             url: "/api/posts/" + post_id + "/",
             type: "GET",
             datatype: "json",
-            beforeSend:function(){
+            beforeSend: function(){
             },
             success: function(data) {
               if (data) {
