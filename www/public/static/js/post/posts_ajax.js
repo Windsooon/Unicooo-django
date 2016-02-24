@@ -158,7 +158,6 @@ $(document).ready(function(){
         //comment_click_handler is in comment_ajax.js
         var user_id = data["user"];
         var post_id = data["id"];
-        console.log(data);
         $('#add-comment-btn').one('click', {"user_id": user_id, "post_id": post_id}, comment_click_handler);
     }
     
@@ -239,7 +238,7 @@ $(document).ready(function(){
                     $container.append($elems);
                     $container.imagesLoaded(function(){
                         $elems.fadeIn(500);
-                        $container.masonry('appended', $elems, true); 
+                        $container.masonry('appended', $elems); 
                     });
                 }
                 else {
