@@ -94,6 +94,13 @@ def personal(request, personal):
     else:
         return render(request, "404.html")
 
+def personal_list(request, personal, status):
+    if request.method == "GET":
+        return render(request, "common/personal.html", {"personal": personal, "status": status})
+    else:
+        return render(request, "404.html")
+
+
 def accounts(request, accounts):
     """User settings"""
     return render(request, "common/accounts.html")

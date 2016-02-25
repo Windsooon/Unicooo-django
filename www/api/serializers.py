@@ -28,10 +28,12 @@ class UserSerializer(serializers.ModelSerializer):
 class ActSerializer(serializers.ModelSerializer):
     """Activity api fields"""
     act_user = UserSerializer(source="user", read_only=True)
+    act_author = serializers.ReadOnlyField(source='user.user_name')
+
 
     class Meta:
         model = Act
-        fields = ("id", "act_title", "act_content", "act_thumb_url", 
+        fields = ("id", "act_author", "act_title", "act_content", "act_thumb_url", 
                   "act_ident", "act_type", "act_licence", "act_star", "act_status",
                   "act_url", "act_delete", "act_create_time", "act_user")
 
@@ -39,10 +41,11 @@ class ActSerializer(serializers.ModelSerializer):
 class PostAllSerializer(serializers.ModelSerializer):
     """Posts api fields"""
     post_user = UserSerializer(source="user", read_only=True)
+    post_author = serializers.ReadOnlyField(source='user.user_name')
 
     class Meta:
         model = Post
-        fields = ("id", "act", "post_title", "post_content", "post_thumb_url", "post_thumb_width", "post_thumb_height", "nsfw", "post_create_time", "post_user") 
+        fields = ("id", "act", "post_author", "post_title", "post_content", "post_thumb_url", "post_thumb_width", "post_thumb_height", "nsfw", "post_create_time", "post_user") 
 
 
 class CommentSerializer(serializers.ModelSerializer):

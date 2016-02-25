@@ -5,10 +5,10 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r"^admin/", include(admin.site.urls)),
-    url(r"^", include("common.urls")),
     url(r"^api/", include("api.urls")),
     url(r"^act/", include("activities.urls")),
     url(r"^post/", include("post.urls")),
+    url(r"^", include("common.urls")),
 
 ]
 

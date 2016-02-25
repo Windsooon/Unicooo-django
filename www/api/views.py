@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as django_login
 from django.db.models import Max
 from rest_framework import generics, status, permissions
+import operator
+from django.db.models import Q
+from functools import reduce
 from rest_framework.response import Response
 from activities.models import Act
 from common.models import MyUser
@@ -21,12 +24,22 @@ class ActList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         queryset = Act.objects.all().order_by('id')
+        post_queryset = Post.objects.all()
         act_type = self.request.query_params.get('act_type', None)
-        act_id = self.request.query_params.get('id', None)
+        act_author = self.request.query_params.get('act_author', None)
+        act_post = self.request.query_params.get('act_post', None)
         if act_type is not None:
             queryset = queryset.filter(act_type=act_type)
-        if act_id is not None:
-            queryset = queryset.filter(user_id=act_id)
+        if act_author is not None:
+            queryset = queryset.filter(user__user_name=act_author)
+        if act_post is not None:
+            post_object = post_queryset.filter(user__user_name=act_post)
+            id_set = set()
+            for post in post_object:
+                id_set.add(post.act.id)
+            query = reduce(operator.or_, (Q(id = item) for item in id_set))
+            print(query)
+            queryset = Act.objects.filter(query)
         return queryset
 
 class ActDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -49,8 +62,11 @@ class PostList(generics.ListCreateAPIView):
     def get_queryset(self):
         queryset = Post.objects.all()
         act_id = self.request.query_params.get('act_id', None)
+        post_author = self.request.query_params.get('post_author', None)
         if act_id is not None:
             queryset = queryset.filter(act=act_id)
+        if post_author is not None:
+            queryset = queryset.filter(user__user_name=post_author)
         return queryset
 
 

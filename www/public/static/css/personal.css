@@ -1,0 +1,37 @@
+.personal-header {
+    background-color: white;
+    height: 250px;
+}
+
+.personal-top {
+    margin-top: 60px;
+}
+
+.btn-group {
+    margin: 0;
+}
+
+.personal-header {
+    text-align: center;
+}
+
+.personal-avatar-div {
+    margin: 0 auto;
+    padding-top: 24px;
+    width: 160px;
+}
+
+.personal-avatar-div img {
+    border-radius: 50%;
+}
+
+.personal-avatar-image {
+    width: 160px;
+    height: 160px;
+}
+
+.personal-avatar-p {
+    font-size: 30px;
+}
+
+

@@ -9,8 +9,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="renderer" content="webkit">
   <meta http-equiv="Cache-Control" content="no-siteapp"/>
-  <link rel="icon" type="image/png" href="{% static 'i/favicon.ico' %}">
-  <link rel="apple-touch-icon-precomposed" href="{% static '/i/favicon.ico' %}">
+  <link rel="icon" type="image/png" href="{% static 'favicon.ico' %}">
+  <link rel="apple-touch-icon-precomposed" href="{% static 'favicon.ico' %}">
   {% block styles %}
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"/>
     <link href="{% static 'css/bootstrap-material-design.min.css' %}" rel="stylesheet"/>
@@ -68,7 +68,7 @@
               <li><a href="">Feed</a></li>
             <li><a href="#">Activities</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="{% url 'personal' request.user.user_name %}">Settings</a></li>
+            <li><a href="{% url 'personal' request.user.user_name %}act_create/">Settings</a></li>
           </ul>
         </li>
       {% else %}

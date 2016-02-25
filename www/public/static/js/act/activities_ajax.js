@@ -23,6 +23,7 @@ $(document).ready(function(){
             success: function(data) {
                 var frag = document.createDocumentFragment();
                 $.each(data.results, function(key, value){
+                    console.log(value);
                     var single_act = document.createElement("div");
                     single_act.className = "single-act col-sm-6 col-md-4 col-lg-4"
                     var act_container = document.createElement("div");
@@ -30,7 +31,7 @@ $(document).ready(function(){
                     //活动缩略图
                     var act_thumb_a = document.createElement("a");
                     act_thumb_a.className = "thumbnail act-thumb-a";
-                    act_thumb_a.setAttribute("href", "#act_details");
+                    act_thumb_a.setAttribute("href", "/act/" + value["act_user"]["user_name"] + "/" + value["act_title"]);
                     act_thumb_a.setAttribute("data-toggle", "modal");
                     var act_thumb_url = document.createElement("img");
                     //活动名称外层div
