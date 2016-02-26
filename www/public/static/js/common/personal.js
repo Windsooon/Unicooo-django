@@ -276,3 +276,6 @@ function getPost(post_id, e, getId) {
         var post_id = data["id"];
         $('#add-comment-btn').one('click', {"user_id": user_id, "post_id": post_id}, comment_click_handler);
     }
+
+
+

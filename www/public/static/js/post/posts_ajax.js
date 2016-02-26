@@ -7,7 +7,9 @@ $(document).ready(function(){
         columnWidth: 20,
         itemSelector: '.post-container',
         isFitWidth: true,
-        transitionDuration: 0,
+        transitionDuration: '0.3s',
+        hiddenStyle: { opacity: 0 },
+        visibleStyle: { opacity: 1 }
     });
     var ajax_state = false;
     ajax_post(page)
@@ -237,7 +239,7 @@ $(document).ready(function(){
                     var $elems = $(elems).hide();
                     $container.append($elems);
                     $container.imagesLoaded(function(){
-                        $elems.fadeIn(500);
+                        $elems.show();
                         $container.masonry('appended', $elems); 
                     });
                 }

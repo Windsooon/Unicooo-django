@@ -22,6 +22,10 @@ from {background: #3f51b5;}
 to {background: black;}
 }
 
+.navbar.navbar-inverse {
+    background-color: #303f9f;
+}
+
 body {
     background-color: #f2f2f2;
 }

@@ -8,7 +8,6 @@ $(document).ready(function(){
 
     //click "join the act" button
     $('#post-upload-image').on("click", function(){ 
-        console.log("upload-click")
         formData = new FormData();
         formArrar = new Array();
         $.ajax({
@@ -42,7 +41,7 @@ $(document).ready(function(){
             reader.readAsDataURL($(this)[0].files[0]);
         } 
         else {
-            console.log("This browser does not support FileReader.");
+            alert("This browser does not support FileReader.");
         }
         var file = this.files[0];
         var fr = new FileReader;
@@ -67,7 +66,6 @@ $(document).ready(function(){
             beforeSend:function(){
                $post_cover_span.empty(); 
                var post_outer_loading = $("<div />", {
-                          "class": "",
                       });
                var post_loading = $("<div />", {
                           "class": "la-ball-clip-rotate la-sm",
@@ -77,16 +75,21 @@ $(document).ready(function(){
                post_outer_loading.append(post_loading);
                $post_cover_span.append(post_outer_loading);
             },
-            error: function(data) {
-               console.log("error");
-               $post_cover_span.empty(); 
-               $post_cover_span.html("Please check your internet conection.");
-               var upload_failed = $("<input>").attr({
+            error: function(xhr, status, error) {
+                if (xhr.status >= 400 && xhr.status < 500) {
+                        error_text = "Please check again your input.";
+                }
+                else {
+                    error_text = "Please try again later.";
+                }
+                $post_cover_span.empty(); 
+                $post_cover_span.html(error_text);
+                var upload_failed = $("<input>").attr({
                            "class": "cropit-image-input", 
                            type: "file",
                            id: "act-cover-image",
                        });                  
-               upload_failed.appendTo($post_cover_span).hide().fadeIn(500);
+                upload_failed.appendTo($post_cover_span).hide().fadeIn(500);
             },
             success: function(data) {
                $(".post-upload-div img").attr("id", "post-upload-img");
@@ -104,7 +107,7 @@ $(document).ready(function(){
                            type: "hidden",
                            id: "image_width",
                        }); 
-                var upload_image_height = $("<input>").attr({
+               var upload_image_height = $("<input>").attr({
                            value: formArray[3],
                            name: "image_height",
                            type: "hidden",
@@ -136,7 +139,6 @@ $(document).ready(function(){
               $(".post-form-text").prop("disabled", true);
           },
           success: function(data) {
-              console.log(data);
               var post_a = $("<a />", {
                           "class": "post-container-a",
                           href: "#post_details",

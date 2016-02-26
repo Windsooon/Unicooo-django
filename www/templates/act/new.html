@@ -14,16 +14,14 @@
       {% csrf_token %}
       <div class="form-group">
         <label class="control-label sr-only" for="Cover Image">Cover Image</label>
-        <div class="image-editor">
-          <div class="cropit-image-preview-container">
-            <div class="cropit-image-preview"></div>
-          </div>
+        <div class="act-upload-div">
+          <img id="act-upload-img" src="http://7xokch.com1.z0.glb.clouddn.com/ice678.png" />
+        </div>
           <div class="upload-cover">
             <span class="btn btn-primary btn-file btn-block" id="act-cover-span">Upload your Cover Image
               <input type="file" class="cropit-image-input" id="act-cover-image">
             </span>
           </div>
-        </div> <!-- end image-editor -->
       </div>
     </form><!-- end form-cover -->
   <form method="POST" id="new-act-form">

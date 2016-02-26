@@ -5,7 +5,11 @@ var comment_click_handler = function(e) {
             type: "POST",
             datatype: "json",
             data:  {csrfmiddlewaretoken: window.CSRF_TOKEN, "reply_id": e.data.user_id, "post": e.data.post_id, "comment_content": comment_text},
+            beforeSend: function() {
+                $(".comment-form-text").prop("disabled", true);
+            },
             success: function(data) {
+                $(".comment-form-text").prop("disabled", false);
                 var comment_avatar_s = $("<img />", {
                           src: $("#base-user-avatar").val(),
                           "class": "comment-avatar-s",
@@ -75,7 +79,29 @@ var comment_click_handler = function(e) {
                       list_group_item.hide().appendTo(".list-group").fadeIn();
                       $(".comment-form-text").val("");
               },
-              complete:function(){
+              error: function(xhr, status, error) {
+                  $(".comment-form-text").prop("disabled", false);
+                  if (xhr.status >= 400 && xhr.status < 500) {
+                      error_text = "Please check again your input.";
+                  }
+                  else {
+                      error_text = "Please try again later";
+                  }
+                  if($('.comment-error-div').length) {
+                        console.log("already");    
+                    } 
+                  else{
+                      var comment_error = $("<div />", {"class": "comment-error-div"})
+                      var comment_error_p = $("<p />", {"class": "comment-error-p"})
+                      comment_error_p.text(error_text);
+                      comment_error.append(comment_error_p);
+                      $(".comment-form").before(comment_error);
+                      //$form_submit_wrap.before(form_server_error);
+                  }
+
+
+              }, 
+              complete: function(){
             },
          });
     }

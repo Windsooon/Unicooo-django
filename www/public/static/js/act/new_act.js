@@ -36,7 +36,7 @@ $(document).ready(function(){
             var act_ident = hashids.encode(act_title_int, act_content_int);
             var $form_group_loading = $(".form-group-loading");
             var $form_submit_wrap = $(".submit-btn-wrap");
-            //csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+            csrf_token = $("input[name='csrfmiddlewaretoken']").val();
             $("#new-act-form :input").prop("disabled", true);
             $form_submit_wrap.empty()
             var form_outer_loading = $("<div />", {
@@ -56,13 +56,12 @@ $(document).ready(function(){
                 data:  {csrfmiddlewaretoken: csrf_token, "act_title": act_title, "act_content": act_content, "act_thumb_url": formArray[1], "act_type": act_type, "act_ident": act_ident, "act_licence": act_licence, "act_url": act_url},
                 beforeSend:function() {},
                 success: function(xhr) {
-                    console.log("success");
                     window.location.replace("/");
                 },
                 error: function(xhr, status, error) {
                     $form_submit_wrap.empty();
                     $("#new-act-form :input").prop("disabled", false);
-                    if (xhr.status >= 400 && xhr.status <= 500) {
+                    if (xhr.status >= 400 && xhr.status < 500) {
                         error_text = "Please check again your input.";
                     }
                     else {
@@ -116,19 +115,26 @@ $(document).ready(function(){
     });
 
     $('#act-cover-image').on("change", function(){ 
-        $(".cropit-image-preview").css("opacity", ".6");
-        $("#new-act-form :input").prop("disabled", false);
+        if (typeof (FileReader) != "undefined") {
+            var image_holder = $(".act-upload-div");
+            image_holder.empty();
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $("<img />", {
+                    "src": e.target.result,
+                    "class": "act-unfinished-image",
+                    "id": "act-upload-img"
+                }).appendTo(image_holder);
+
+            }
+            image_holder.show();
+            reader.readAsDataURL($(this)[0].files[0]);
+        } 
+        else {
+            console.log("This browser does not support FileReader.");
+        }
         var file = this.files[0];
-        var fr = new FileReader;
-        fr.onload = function() { //file is loaded
-            var img = new Image;
-            img.onload = function() {
-                formArray[2] = img.height;
-                formArray[3] = img.width;
-            };
-            img.src = fr.result; //is the data URL because called with readAsDataURL
-        };
-        fr.readAsDataURL(file);
+        $("#new-act-form :input").prop("disabled", false);
         formData.append("file", file);
         $.ajax({
             url: "http://upload.qiniu.com",
@@ -152,32 +158,30 @@ $(document).ready(function(){
                act_outer_loading.append(act_loading);
                $act_cover_span.append(act_outer_loading);
             },
-            error: function(data) {
-               $act_cover_span.empty(); 
-               $act_cover_span.html("Please check your internet conection.");
-               var upload_failed = $("<input>").attr({
-                           "class": "cropit-image-input", 
-                           type: "file",
-                           id: "act-cover-image",
-                       });                  
-               upload_failed.appendTo($act_cover_span).hide().fadeIn(500);
+            error: function(xhr, status, error) {
+                if (xhr.status >= 400 && xhr.status < 500) {
+                        error_text = "Please check again your input.";
+                }
+                else {
+                    error_text = "Please try again later.";
+                }
+                $act_cover_span.empty(); 
+                $act_cover_span.html(error_text);
+                var upload_failed = $("<input>").attr({
+                            "class": "cropit-image-input", 
+                            type: "file",
+                            id: "act-cover-image",
+                        });                  
+                upload_failed.appendTo($act_cover_span).hide().fadeIn(500);
             },
             success: function(data) {
-                $(".cropit-image-preview").css("opacity", "1");
                 $("#act-cover-btn").prop("disabled", false);
                 $act_cover_span.empty(); 
                 var upload_success = $("<span />", {
                           text: "Success",
                       });
                 upload_success.appendTo($act_cover_span).hide().fadeIn(500);
-                //var upload_key = $("<input>").attr({
-                //           value: formArray[1],
-                //           name: "upload_key",
-                //           type: "hidden",
-                //           id: "upload_key",
-                //       });  
-                //$("#act_title").after(upload_key);
-            },
+             },
         });
     });
 });

@@ -4,32 +4,10 @@
   <link href="{% static 'css/act.css' %}" rel="stylesheet"/>
 {% endblock %}
 {% block content %}
-<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-  <!-- Indicators -->
-  <ol class="carousel-indicators">
-    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-  </ol>
-
-  <!-- Wrapper for slides -->
-  <div class="carousel-inner" role="listbox">
-    <div class="item active">
-      <img class="carousel-img" src="http://7xokch.com1.z0.glb.clouddn.com/apple_inclusion_blue.png?imageView2/2/format/jpeg/interlace/1"  alt="...">
-      <div class="carousel-caption">
-          <h3><a href="#">Learn more</a></h3>
-      </div>
-    </div>
-    <div class="item">
-      <img src="http://7xokch.com1.z0.glb.clouddn.com/apple_inclusion.png?imageView2/2/format/jpeg/interlace/1" alt="...">
-      <div class="carousel-caption">
-      </div>
-    </div>
-    <div class="item">
-      <img src="http://7xokch.com1.z0.glb.clouddn.com/apple_inclusion_yellow.png?imageView2/2/format/jpeg/interlace/1" alt="...">
-      <div class="carousel-caption">
-      </div>
-    </div>
+<div id="front-matrix">
+  <div id="intro">
+    <h1>Unicooo</h1>
+    <a href="https://github.com/jnicol/particleground/archive/master.zip" class="front-btn">Create your own Activities</a>
   </div>
 </div>
 <div class="activity-container container">
@@ -66,6 +44,23 @@
 {% endblock %}
 {% block script %}
   <script src="{% static 'js/common/frontpage.js' %}"></script>
+  <script src="{% static 'js/plugin/jquery.particleground.min.js' %}"></script>
+  <script>
+  $('#front-matrix').particleground({
+    //dotColor: '#ff0000',
+    //lineColor: '#ff0000',
+    //particleRadius: 5,
+    //minSpeedX: 0.1,
+    density: 13000,
+    //curvedLines: false,
+    //parallax: false,
+    //lineWidth: 2,
+    dotColor: '#ffffff',
+    lineColor: '#dbdbdb',
+    parallaxMultiplier: 10,
+    proximity: 70,
+  });
+  </script>
 {% endblock %}
 
 

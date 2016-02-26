@@ -50,7 +50,7 @@ $(document).ready(function(){
                 url: "/api/login/",
                 type: "POST",
                 datatype: "json",
-                data:  {"email": $("#email_signup").val(), "user_name": $("#username_signup").val(), "password": $("#password_signup").val()},
+                data:  {csrfmiddlewaretoken: csrf_token, "email": $("#email_signup").val(), "user_name": $("#username_signup").val(), "password": $("#password_signup").val()},
                 beforeSend:function() {},
                 success: function(xhr) {
                     console.log("success");
@@ -58,7 +58,7 @@ $(document).ready(function(){
                 },
                 error: function(xhr, status, error) {
                     $form_submit_wrap.empty();
-                    $("#signup_form :input").prop("disabled", false);
+                    $("#login_form :input").prop("disabled", false);
                     $(".form-server-error").empty();
                     var form_submit_button = $("<button />", {"class": "submit-btn btn btn-primary btn-block"});
                     var form_submit_button_span = $("<span />", {"class": "glyphicon glyphicon-ok"});
@@ -68,12 +68,16 @@ $(document).ready(function(){
                           "class": "form-server-error"
                       });
                     $form_submit_wrap.before(form_server_error);
-                    if (xhr.status == 400) {
-                        $form_server_error_span = $("<span />", {"class": "pull-left form-server-error-span glyphicon glyphicon-exclamation-sign"});
-                        $form_server_error_p = $("<p />", {"class": "form-server-error-p", text: "Please check again your input."});
-                        $form_server_error_span.appendTo(form_server_error).hide().fadeIn();
-                        $form_server_error_p.appendTo(form_server_error).hide().fadeIn();
+                    if (xhr.status >= 400 && xhr.status < 500) {
+                        error_text = "Please check again your input.";
                     }
+                    else {
+                        error_text = "Please try again later";
+                    }
+                    $form_server_error_span = $("<span />", {"class": "pull-left form-server-error-span glyphicon glyphicon-exclamation-sign"});
+                    $form_server_error_p = $("<p />", {"class": "form-server-error-p", text: error_text});
+                    $form_server_error_span.appendTo(form_server_error).hide().fadeIn();
+                    $form_server_error_p.appendTo(form_server_error).hide().fadeIn();
                 },
             });
         },

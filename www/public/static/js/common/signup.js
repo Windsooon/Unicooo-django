@@ -81,12 +81,16 @@ $(document).ready(function(){
                     else{
                         $form_submit_wrap.before(form_server_error);
                     }
-                    if (xhr.status == 400) {
-                        $form_server_error_span = $("<span />", {"class": "pull-left form-server-error-span glyphicon glyphicon-exclamation-sign"});
-                        $form_server_error_p = $("<p />", {"class": "form-server-error-p", text: "Please check again your input."});
-                        $form_server_error_span.appendTo(form_server_error).hide().fadeIn();
-                        $form_server_error_p.appendTo(form_server_error).hide().fadeIn();
+                    if (xhr.status >= 400 && xhr.status < 500) {
+                        error_text = "Please check again your input.";
                     }
+                    else {
+                        error_text = "Please try again later";
+                    }
+                    $form_server_error_span = $("<span />", {"class": "pull-left form-server-error-span glyphicon glyphicon-exclamation-sign"});
+                    $form_server_error_p = $("<p />", {"class": "form-server-error-p", text: "Please check again your input."});
+                    $form_server_error_span.appendTo(form_server_error).hide().fadeIn();
+                    $form_server_error_p.appendTo(form_server_error).hide().fadeIn();
                 },
             });
         },
