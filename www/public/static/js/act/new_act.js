@@ -55,8 +55,8 @@ $(document).ready(function(){
                 datatype: "json",
                 data:  {csrfmiddlewaretoken: csrf_token, "act_title": act_title, "act_content": act_content, "act_thumb_url": formArray[1], "act_type": act_type, "act_ident": act_ident, "act_licence": act_licence, "act_url": act_url},
                 beforeSend:function() {},
-                success: function(xhr) {
-                    window.location.replace("/");
+                success: function(data) {
+                    window.location.replace("/act/" + data["act_author"] + "/" + data["act_title"]);
                 },
                 error: function(xhr, status, error) {
                     $form_submit_wrap.empty();

@@ -36,6 +36,7 @@
   font-weight: 700;
   line-height: 1;
   color: #fff;
+  opacity: .6;
   text-decoration: none;
   -webkit-transition: all 0.4s;
      -moz-transition: all 0.4s;
@@ -43,8 +44,9 @@
           transition: all 0.4s;
 }
 .front-btn:hover {
-  color: #005544;
-  border-color: #005544;
+  color: #fff;
+  border-color: #fff;
+  opacity: 1;
 }
 
 
@@ -107,11 +109,24 @@
     margin-top: 80px;
 }
 
-#act-upload-img {
-    display: block;
-    margin: 0 auto;
+.act-upload-div {
     width: 678px;
     height: 488px;
+    display: block;
+    margin: 0 auto;
+    overflow:hidden;
+    position: relative;
+}
+
+#act-upload-img{
+    position: absolute;
+    top: -9999px;
+    bottom: -9999px;
+    left: -9999px;
+    right: -9999px;
+    margin: auto;
+    min-width: 678px;
+    min-height: 488px;
 }
 
 .activity-details-thumb-img a img {

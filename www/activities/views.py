@@ -71,7 +71,7 @@ def act_details(request, act_author, act_title):
             return render(request, "error.html", {"error": error})
         else:
             act_posts = Post.objects.filter(act_id=act_details.id)[:12]
-            return render(request, "post/posts_list.html", {"act_details": act_details})
+            return render(request, "post/posts_list.html", {"act_details": act_details, "act_author": act_author})
     else:
         error = "不允许使用此方法。"
         return render(request, "error.html", {"error": error})
