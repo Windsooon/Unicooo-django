@@ -3,6 +3,9 @@
  * Copyright 2015 Daniel Cardoso <@DanielCardoso>
  * Licensed under MIT
  */
+.outer_loading {
+    margin-top: 20px;
+}
 
 .la-ball-clip-rotate {
     margin: 0 auto;

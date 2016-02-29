@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block extra_head %}
+  <link href="{% static 'css/contect.css' %}" rel="stylesheet"/>
+{% endblock %}
+{% block content %}
+<div id="contect-matrix">
+  <div id="intro">
+    <h1>WE GEEK</h1>
+    <p class="contect-and">AND<p>
+    <h1>WE ARTIST</h1>
+    <a href="" class="contect-btn">Contect us if you think you are</a>
+  </div>
+</div>
+{% endblock %}
+{% block script %}
+  <script src="{% static 'js/plugin/jquery.particleground.min.js' %}"></script>
+  <script>
+    $(".contect-btn").mouseover(function() {
+      $(".contect-btn").text("Say hi to contect@unicooo.com");      
+    });
+  </script>
+  <script>
+    $('#contect-matrix').particleground({
+    //dotColor: '#ff0000',
+    //lineColor: '#ff0000',
+    //particleRadius: 20,
+    //proximity: 4,
+    //minSpeedX: 0.1,
+    //density: 13000,
+    //parallaxMultiplier: 1,
+    //curvedLines: false,
+    //parallax: false,
+    //lineWidth: 2,
+    dotColor: '#ffffff',
+    lineColor: '#dbdbdb',
+    parallaxMultiplier: 90,
+    proximity: 1,
+  });
+  </script>
+
+{% endblock %}
+{% block footer %}
+{% endblock %}
+

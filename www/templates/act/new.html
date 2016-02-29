@@ -58,28 +58,6 @@
   <script src="{% static 'js/plugin/hashids.min.js' %}"></script>
   <script src="{% static 'js/act/new_act.js' %}"></script>
   <script>
-    $(function() {
-      $('.image-editor').cropit({
-          maxZoom: 1.5,
-          onImageError: function() {
-              $(".error-msg").text("Please use an image that's at least " + $(".cropit-image-preview").outerWidth() + "px in width and " + $(".cropit-image-preview").outerHeight() + "px in height."), $(".cropit-image-preview").addClass("has-error"), window.setTimeout(function() {
-                  return function() {
-                      return $(".cropit-image-preview").removeClass("has-error")
-                  }
-              }(this), 3e3)
-            },
-          imageState: {
-              src: 'http://7xokch.com1.z0.glb.clouddn.com/ice678.png',
-          },
-      });
-  
-      $('.export').click(function() {
-        var imageData = $('.image-editor').cropit('export');
-        window.open(imageData);
-      });
-    });
-  </script>
-  <script>
   $.material.init();
   </script>
 {% endblock %}

@@ -6,7 +6,6 @@ $(document).ready(function(){
     var $container = $('#posts-container').masonry({
         columnWidth: 20,
         itemSelector: '.post-container',
-        isFitWidth: true,
         transitionDuration: '0.3s',
         hiddenStyle: { opacity: 0 },
         visibleStyle: { opacity: 1 }
@@ -160,7 +159,7 @@ $(document).ready(function(){
         //comment_click_handler is in comment_ajax.js
         var user_id = data["user"];
         var post_id = data["id"];
-        $('#add-comment-btn').one('click', {"user_id": user_id, "post_id": post_id}, comment_click_handler);
+        $('#add-comment-btn').on('click', {"user_id": user_id, "post_id": post_id}, comment_click_handler);
     }
     
     //get post per page
@@ -171,6 +170,16 @@ $(document).ready(function(){
             datatype: "json",
             data:  {"act_id": act_id, "page": page},
             beforeSend:function(){
+               var post_outer_loading = $("<div />", {
+                          "class": "outer_loading",
+                      });
+               var post_loading = $("<div />", {
+                          "class": "la-ball-clip-rotate",
+                      });
+               var post_inner_loading = $("<div />");
+               post_loading.append(post_inner_loading);
+               post_outer_loading.append(post_loading);
+               //$("#posts-container").after(post_outer_loading);
             },
             success: function(data) {
                 if (data.results.length > 0) {
@@ -244,10 +253,10 @@ $(document).ready(function(){
                     });
                 }
                 else {
-                    console.log("nothing"); 
                 }
             },
             complete:function(){
+                //$(".outer_loading").remove();
                 ajax_state = true;
             }
         });

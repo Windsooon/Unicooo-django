@@ -11,17 +11,10 @@
 }
 
 #post-upload-img {
+    width: 100%;
     display: block;
     margin-left: auto;
     margin-right: auto;
-}
-
-.post-unfinished-image {
-  opacity:0.6;    
-}
-
-.post-finished-image {
-  opacity:1;    
 }
 
 #posts-container {

@@ -81,12 +81,33 @@ class UserLoginForm(forms.ModelForm):
 class UserChangeForm(forms.ModelForm):
     """A form for change user"""
     password = ReadOnlyPasswordHashField()
-
     class Meta:
         model = MyUser
         fields = "__all__"
-
+        labels = {
+                "user_gender": "User Gender", 
+                "user_details": "User Details"
+        }
+        widgets = {
+            "user_gender": forms.Select(
+                attrs={
+                    "class": "form-control",
+                }
+            ),
+            "user_details": forms.TextInput(
+                attrs={
+                    "id": "user-details",
+                    "class": "form-control",
+                    "minlength": 10,
+                }
+            ),
+    }
+    
     def clean_password(self):
         return self.initial["password"]
+
+
+    
+
 
 

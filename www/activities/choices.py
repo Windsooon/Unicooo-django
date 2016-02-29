@@ -11,6 +11,10 @@ ACTLICENCE = (
     (3, "CC BY-NC"),
     (4, "CC BY-NC-SA"),
     (5, "CC BY-NC-ND"),
+)
 
-
+USERGENDER = (
+    (0, "UNKNOWN"),
+    (1, "MALE"),
+    (2, "FEMALE"),
 )

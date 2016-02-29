@@ -6,12 +6,13 @@ body {
     background-color: #f2f2f2;
 }
 
-.white-footer {
-    margin-top: 100px;
-    background-color: white;
+.footer-text {
+    color: gray;
+    font-weight: 400;
 }
 
-.act-more {
+.front-footer {
+    margin-top: 50px;
 }
 
 a:hover {
@@ -115,3 +116,16 @@ input {
 .icon-right {
     margin-right: 5px;
 }
+
+.unfinished-image {
+  opacity:0.6;    
+}
+
+.finished-image {
+  opacity:1;    
+}
+
+.front-footer {
+    height: 100px;
+}
+

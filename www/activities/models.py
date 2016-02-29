@@ -8,7 +8,7 @@ class Act(models.Model):
     act_title = models.CharField(max_length=30)
     act_content = models.CharField(max_length=1000)
     act_thumb_url = models.CharField(max_length=400)
-    act_ident = models.CharField(max_length=10, unique=True)
+    act_ident = models.CharField(max_length=50, unique=True)
     act_type = models.IntegerField(choices=ACTTYPE, default=ACTTYPE[0][0])
     act_licence = models.IntegerField(choices=ACTLICENCE, default=ACTLICENCE[0][0])
     act_star = models.IntegerField(default=0)

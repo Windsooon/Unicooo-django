@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block extra_head %}
+  <link href="{% static 'css/settings.css' %}" rel="stylesheet"/>
+{% endblock %}
+{% block content %}
+<!-- container begin -->
+<div class="uniform container">
+  <!-- signup_form begin -->
+  <div class="well settings-form col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6">
+      <div data-toggle="tooltip" data-placement="top" title="Click to change" class="avatar-label" class="col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6">
+          <span class="avatar-settings" >
+              {% if person.user_avatar %}
+              <label for="file-input">
+                <img src="{{ person.user_avatar }}"/>
+              </label>
+              {% else %}
+              <label for="file-input">
+                <div>
+                  <p class="avatar-settings-p">{{ person.user_name|slice:"1" }}</p>
+                </div> 
+              </label>
+              {% endif %}
+              <input id="file-input" type="file">
+          </span>
+          <span class="span-uni"><h3>{{ person.user_name }}</h3></span>
+        <hr>
+      </div>
+    <div class="col-lg-12">
+      <form method="POST" id="settings-form">
+        {% csrf_token %}
+        <fieldset>
+          <div class="form-group">
+            <label for="user_gender" class="control-label">User Gender</label>
+              {{ form.user_gender }}
+          </div>
+          <div class="form-group">
+            <label for="user_details" class="control-label">User Details</label>
+              {{ form.user_details }}
+          </div>
+          <div class="form-group form-group-loading">
+            <div class="submit-btn-wrap">
+              <button type="submit" class="submit-btn btn btn-primary btn-block" id="act-cover-btn"><span class="glyphicon glyphicon-ok"></span></button>
+            </div>
+          </div>
+        </form><!-- end form-cover -->
+    </div>
+  </div>
+  <!-- form end -->
+  </div>
+</div>
+{% endblock %}
+{% block script %}
+  <script> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
+  <script src="{% static 'js/plugin/jquery.validate.min.js' %}"></script>
+  <script src="{% static 'js/common/settings.js' %}"></script>
+  <script>
+    $.material.init();
+  </script>
+{% endblock %}
+
+
+

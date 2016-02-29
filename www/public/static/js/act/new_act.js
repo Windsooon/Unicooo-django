@@ -123,7 +123,7 @@ $(document).ready(function(){
             reader.onload = function (e) {
                 $("<img />", {
                     "src": e.target.result,
-                    "class": "act-unfinished-image",
+                    "class": "unfinished-image",
                     "id": "act-upload-img"
                 }).appendTo(image_holder);
 
@@ -183,6 +183,10 @@ $(document).ready(function(){
                       });
                 upload_success.appendTo($act_cover_span).hide().fadeIn(500);
              },
+            complete: function() {
+                $("#act-upload-img").removeClass("unfinished-image");
+                $("#act-upload-img").addClass("finished-image");
+            },
         });
     });
 });

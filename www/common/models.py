@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 from django.contrib.auth import get_user_model
-
+from activities.choices import USERGENDER
 
 class MyUserManager(BaseUserManager):
     def create_user(self, username, email, password=None, **kwargs):
@@ -26,7 +26,7 @@ class MyUser(AbstractBaseUser):
     email = models.EmailField(verbose_name='Email Address', max_length=255, unique=True)
     user_name = models.CharField(max_length=30, unique=True)
     user_avatar = models.URLField()
-    user_gender = models.IntegerField(default=0)
+    user_gender = models.IntegerField(choices=USERGENDER, default=USERGENDER[0][0])
     user_point = models.IntegerField(default=0)
     user_details = models.CharField(max_length=80)
     user_register_time = models.DateTimeField(auto_now=True)

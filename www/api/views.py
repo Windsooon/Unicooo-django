@@ -125,3 +125,9 @@ class UserList(generics.ListCreateAPIView):
                 django_login(request, new_user)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
+class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    queryset = MyUser.objects.all()
+    serializer_class = UserSerializer
+
+

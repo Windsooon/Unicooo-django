@@ -13,7 +13,8 @@ urlpatterns = [
                   url(r'^callback/$',views.call_back),
                   url(r'^signup/$', views.sign_up),
                   url(r'^login/$', views.login_in),
-                  url(r'^(?P<personal>\w+)/$', views.personal, name="personal"),
-                  url(r'^(?P<personal>\w+)/(?P<status>\w+)/$', views.personal_list, name="settings"),
+                  url(r'^contect/$', views.contect, name="contect"),
+                  url(r'^(?P<personal>\w+)/$', views.personal_settings, name="personal"),
+                  url(r'^(?P<personal>\w+)/(?P<status>\w+)/$', views.personal_list, name="status"),
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

@@ -6,9 +6,10 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.db import connection
 from django.contrib.auth import authenticate, login as django_login
 from django.contrib.auth.decorators import login_required
-from .form import UserCreateForm, UserLoginForm
+from .form import UserCreateForm, UserLoginForm, UserChangeForm
 from .models import CustomAuth
 from activities.models import Act
+from common.models import MyUser
 from qiniu import Auth
 import time
 import hashlib
@@ -88,9 +89,13 @@ def login_in(request):
     else:
         return render(request, "error.html", {"error": "Method not accepted."})
 
-def personal(request, personal):
+@login_required 
+def personal_settings(request, personal):
     if request.method == "GET":
-        return render(request, "common/personal.html", {"personal": personal})
+        print(personal)
+        person = MyUser.objects.get(user_name=personal)
+        form = UserChangeForm(request.POST or None, instance=person)
+        return render(request, "common/settings.html", {"person": person, "form": form})
     else:
         return render(request, "404.html")
 
@@ -104,6 +109,10 @@ def personal_list(request, personal, status):
 def accounts(request, accounts):
     """User settings"""
     return render(request, "common/accounts.html")
+
+def contect(request):
+    """Contect Us"""
+    return render(request, "common/contect.html")
 
 accessKey = "jBYdJ5zP1rWc2KfUWlsXAe8FD0sFyALSzyaPI8Ys" 
 secretKey = "XvIPtijF_b7LMrsB7c2FNpqMiqRxG7tyyH217lej"

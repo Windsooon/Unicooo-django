@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="description" content="">
   <meta name="keywords" content="index">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <meta name="renderer" content="webkit">
   <meta http-equiv="Cache-Control" content="no-siteapp"/>
   <link rel="icon" type="image/png" href="{% static 'favicon.ico' %}">
@@ -63,12 +63,12 @@
       {% if user.is_authenticated %}
         <li class="dropdown">
         <a href="#" id="base-user-username" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon-right glyphicon glyphicon-home" aria-hidden="true"></span><span class="request-user">{{request.user.user_name}}</span><span class="caret"></span></a>
-        <input type="hidden" value={{request.user.id}} />
+        <input id="user-id" type="hidden" value={{request.user.id}} />
           <ul class="dropdown-menu">
-              <li><a href="">Feed</a></li>
-            <li><a href="#">Activities</a></li>
+            <li><a href="">Feed</a></li>
+            <li><a href="{% url 'personal' request.user.user_name %}act_create/">Activities</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="{% url 'personal' request.user.user_name %}act_create/">Settings</a></li>
+            <li><a href="">Settings</a></li>
           </ul>
         </li>
       {% else %}
@@ -85,10 +85,21 @@
 {% block content %}
 {% endblock %}
 {% block footer %}
-{% block script %}
+  <section class="front-footer col-lg-8 col-lg-offset-2">
+    <hr>
+    <div class="col-lg-4">
+        <a href="{%url 'contect' %}"><p class="footer-text text-center">CONTECT US</p></a>
+    </div>
+    <div class="col-lg-4">
+        <a href=""><p class="footer-text text-center">THANK YOU</p></a>
+    </div>
+    <div class="col-lg-4">
+      <p class="footer-text text-center">Copyright © 2016 Unicooo Inc. 保留一切權利。</p>
+    </div>
+    <hr>
+  </section>
 {% endblock %}
+{% block script %}
 {% endblock %}
 </body>
 </html>
-
-      <form class="navbar-form navbar-left" role="search">

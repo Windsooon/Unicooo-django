@@ -32,7 +32,7 @@ $(document).ready(function(){
             reader.onload = function (e) {
                 $("<img />", {
                     "src": e.target.result,
-                    "class": "post-unfinished-image",
+                    "class": "unfinished-image",
                     "id": "post-upload-img"
                 }).appendTo(image_holder);
 
@@ -93,8 +93,6 @@ $(document).ready(function(){
             },
             success: function(data) {
                $(".post-upload-div img").attr("id", "post-upload-img");
-               $(".post-upload-div img").removeClass("post-unfinished-image");
-               $(".post-upload-div img").addClass("post-finished-image");
                var upload_key = $("<input>").attr({
                            value: formArray[1],
                            name: "upload_key",
@@ -119,6 +117,10 @@ $(document).ready(function(){
                       });
                upload_success.appendTo($post_cover_span).hide().fadeIn(500);
                $("#act_title").after(upload_key);
+            },
+            complete: function() {
+                $(".post-upload-div img").removeClass("unfinished-image");
+                $(".post-upload-div img").addClass("finished-image");
             },
         });
     });

@@ -22,9 +22,15 @@
       {% for act in act_list %}
         <div class="single-act col-sm-6 col-md-4 col-lg-4">
           <div class="act-container">
-              <a href="{% url 'act_details' act.user.user_name act.act_title %}" class="thumbnail"><img src="{{ url }}{{ act.act_thumb_url }}{{ style_name}}"  alt="">
-          <div class="single-title"><p class="act-title">{{ act.act_title }}</p></div>
-          <div class="single-content"><p class="act-content">{{ act.act_content }}</p></div>
+            <a href="{% url 'act_details' act.user.user_name act.act_title %}" class="thumbnail">
+              <img src="{{ url }}{{ act.act_thumb_url }}{{ style_name}}"  alt="">
+          <div class="single-title">
+            <p class="act-title">{{ act.act_title }}</p>
+          </div>
+          <div class="single-content">
+            <p class="act-content">{{ act.act_content }}</p>
+            <div class="fadeout"></div>
+          </div>
           </div>
       </a>
         </div>

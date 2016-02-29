@@ -1,12 +1,11 @@
 $(document).ready(function(){
     ajax_activity(0, 1);
-    console.log("hey");
     var ajax_state = true
     var page = 1
     $(window).scroll(function(){
         if (checkscroll() && ajax_state){
             ajax_state = false;
-            ajax_activity(act_type, page)
+            ajax_activity(0, page)
             page += 1;
         }
     })
@@ -23,7 +22,6 @@ $(document).ready(function(){
             success: function(data) {
                 var frag = document.createDocumentFragment();
                 $.each(data.results, function(key, value){
-                    console.log(value);
                     var single_act = document.createElement("div");
                     single_act.className = "single-act col-sm-6 col-md-4 col-lg-4"
                     var act_container = document.createElement("div");
