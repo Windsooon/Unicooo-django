@@ -53,7 +53,7 @@
     <div class="collapse navbar-collapse navbar-responsive-collapse" id="uni-nav">
       <form class="navbar-form navbar-left" role="search">
         <div class="form-group is-empty">
-          <span class="icon-right glyphicon glyphicon-search" aria-hidden="true"></span><input type="text" class="form-control col-md-8">
+          <span class="icon-right glyphicon glyphicon-search" aria-hidden="true"></span><input type="text" class="form-control col-md-8" placeholder="Enter Act Code">
           <span class="material-input"></span>
         </div>
       </form>
@@ -65,7 +65,7 @@
         <a href="#" id="base-user-username" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="icon-right glyphicon glyphicon-home" aria-hidden="true"></span><span class="request-user">{{request.user.user_name}}</span><span class="caret"></span></a>
         <input id="user-id" type="hidden" value={{request.user.id}} />
           <ul class="dropdown-menu">
-            <li><a href="">Feed</a></li>
+            <li><a href="{% url 'personal' request.user.user_name %}comments/">Comments</a></li>
             <li><a href="{% url 'personal' request.user.user_name %}act_create/">Activities</a></li>
             <li role="separator" class="divider"></li>
             <li><a href="">Settings</a></li>

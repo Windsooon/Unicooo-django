@@ -10,9 +10,8 @@ from activities.choices import ACTTYPE, ACTLICENCE
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = MyUser
-        fields = ("id", "email", "user_name", "password", "user_avatar", "user_gender", "user_point", "user_details", "user_register_time")
-        write_only_fields = ("password",)
-        read_only_fields = ("id", "user_avatar", "user_gender", "user_point", "user_details", "user_register_time")
+        fields = ("id",  "email", "password", "user_name", "user_avatar", "user_gender", "user_point", "user_details", "user_register_time")
+        read_only_fields = ("id", "user_avatar", "user_details", "user_gender", "user_point")
 
     def create(self, validated_data):
         user = MyUser.objects.create(
@@ -24,7 +23,12 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
-        
+class UserSettingsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MyUser
+        fields = ("user_gender", "user_details")
+        #read_only_fields = ("id", "user_avatar", "user_details", "user_gender", "user_point")
+
 class ActSerializer(serializers.ModelSerializer):
     """Activity api fields"""
     act_user = UserSerializer(source="user", read_only=True)
@@ -52,10 +56,12 @@ class CommentSerializer(serializers.ModelSerializer):
     """Comment api fields"""
     comment_user = UserSerializer(source="user", read_only=True)
     user = serializers.ReadOnlyField(source='user.id')
+    comment_author = serializers.ReadOnlyField(source='user.user_name')
+    comment_avatar = serializers.ReadOnlyField(source='user.user_avatar')
 
     class Meta:
         model = Comment
-        fields = ("id", "user", "post", "reply_id", "comment_content", "comment_create_time","comment_user")
+        fields = ("id", "user", "comment_author", "comment_avatar", "post", "reply_id", "comment_content", "comment_create_time","comment_user")
         
         
 class PostSerializer(serializers.ModelSerializer):

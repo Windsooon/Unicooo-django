@@ -71,10 +71,11 @@ $(document).ready(function(){
               if (data) {
                   getId(data);
                   var elems = [];
+                  var date = data["post_createtimt"].split("T", 1);
                   $(".list-group").empty();
                   $(e.currentTarget).find(".post-raw-details").attr("src",data["post_thumb_url"]);
                   $(".post-user").text(data["post_user"]["user_name"]);
-                  $(".post-posttime p").text(data["post_creattime"]);
+                  $(".post-posttime p").text(date);
                   $(".post-content-p").text(data["post_content"]);
                   $.each(data["post_comment"], function(key, value){
                       //comment avatar
@@ -185,6 +186,7 @@ $(document).ready(function(){
                 if (data.results.length > 0) {
                     var elems = [];
                     $.each(data.results, function(key, value){
+                        var date = value["post_create_time"].split("T", 1);
                         var single_post = document.createElement("div");
                         single_post.className = "post-container";
                         //post thumb image
@@ -208,7 +210,7 @@ $(document).ready(function(){
                         single_posttime.className = "post-posttime";
                         //post posttime text
                         var single_posttime_p = document.createElement("p");
-                        single_posttime_p.innerHTML = value["post_create_time"];
+                        single_posttime_p.innerHTML = date;
                         //post footer
                         var single_footer = document.createElement("div");
                         single_footer.className = "post-footer clearfix";
@@ -264,7 +266,7 @@ $(document).ready(function(){
     
    
     function checkScroll(){
-        if($(window).scrollTop()+500 > ($(".post-container:last").offset().top)){
+        if($(window).scrollTop()+400 > ($(".post-container:last").offset().top)){
             return true; 
         }
         else{

@@ -25,7 +25,7 @@ class MyUserManager(BaseUserManager):
 class MyUser(AbstractBaseUser):
     email = models.EmailField(verbose_name='Email Address', max_length=255, unique=True)
     user_name = models.CharField(max_length=30, unique=True)
-    user_avatar = models.URLField()
+    user_avatar = models.CharField(max_length=255)
     user_gender = models.IntegerField(choices=USERGENDER, default=USERGENDER[0][0])
     user_point = models.IntegerField(default=0)
     user_details = models.CharField(max_length=80)

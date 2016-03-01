@@ -9,8 +9,10 @@ from django.contrib.auth.decorators import login_required
 from .form import UserCreateForm, UserLoginForm, UserChangeForm
 from .models import CustomAuth
 from activities.models import Act
+from comment.models import Comment
 from common.models import MyUser
 from qiniu import Auth
+from .qiniuSettings import *
 import time
 import hashlib
 
@@ -84,6 +86,7 @@ def login_in(request):
         if user is not None:
             if user.is_active:
                 django_login(request, user)
+                return render(request, "error.html", {"error": "Method not accepted."})
         else:
             pass
     else:
@@ -92,7 +95,6 @@ def login_in(request):
 @login_required 
 def personal_settings(request, personal):
     if request.method == "GET":
-        print(personal)
         person = MyUser.objects.get(user_name=personal)
         form = UserChangeForm(request.POST or None, instance=person)
         return render(request, "common/settings.html", {"person": person, "form": form})
@@ -105,6 +107,9 @@ def personal_list(request, personal, status):
     else:
         return render(request, "404.html")
 
+def personal_comments(request, personal):
+    if request.method == "GET":
+        return render(request, "common/comments.html")
 
 def accounts(request, accounts):
     """User settings"""
@@ -113,12 +118,6 @@ def accounts(request, accounts):
 def contect(request):
     """Contect Us"""
     return render(request, "common/contect.html")
-
-accessKey = "jBYdJ5zP1rWc2KfUWlsXAe8FD0sFyALSzyaPI8Ys" 
-secretKey = "XvIPtijF_b7LMrsB7c2FNpqMiqRxG7tyyH217lej"
-bucket = "uni-image-test"
-callBackUrl = "http://unicooo.com/callback/"
-callBackBody = "key=$(key)&name=$(fname)"
 
 @login_required 
 def get_upload_token(request):

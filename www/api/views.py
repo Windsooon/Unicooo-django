@@ -10,8 +10,8 @@ from activities.models import Act
 from common.models import MyUser
 from post.models import Post
 from comment.models import Comment
-from .serializers import ActSerializer, PostAllSerializer, PostSerializer, UserSerializer, CommentSerializer
-from .permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly, IsAuthenticatedOrCreate
+from .serializers import ActSerializer, PostAllSerializer, PostSerializer, UserSerializer, UserSettingsSerializer, CommentSerializer
+from .permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly, IsAuthenticatedOrCreate, IsSelfOrReadOnly
 
 
 class ActList(generics.ListCreateAPIView):
@@ -60,7 +60,7 @@ class PostList(generics.ListCreateAPIView):
         serializer.save(user=self.request.user)
 
     def get_queryset(self):
-        queryset = Post.objects.all()
+        queryset = Post.objects.all().order_by('-post_create_time')
         act_id = self.request.query_params.get('act_id', None)
         post_author = self.request.query_params.get('post_author', None)
         if act_id is not None:
@@ -97,6 +97,15 @@ class CommentList(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+    def get_queryset(self):
+        queryset = Comment.objects.all()
+        reply_id = self.request.query_params.get('reply_id', None)
+       
+        if reply_id is not None:
+            queryset = queryset.filter(reply_id=reply_id)
+
+        return queryset
+
 
 class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsAdminOrReadOnly)
@@ -126,8 +135,8 @@ class UserList(generics.ListCreateAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsSelfOrReadOnly)
     queryset = MyUser.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = UserSettingsSerializer
 
 

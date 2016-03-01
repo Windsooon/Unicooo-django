@@ -33,7 +33,7 @@ $(document).ready(function(){
         submitHandler: function(form) {
             var $form_group_loading = $(".form-group-loading");
             var $form_submit_wrap = $(".submit-btn-wrap");
-            //csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+            csrf_token = $("input[name='csrfmiddlewaretoken']").val();
             $("#login_form :input").prop("disabled", true);
             $form_submit_wrap.empty()
             var form_outer_loading = $("<div />", {
@@ -47,13 +47,12 @@ $(document).ready(function(){
             form_outer_loading.append(form_loading);
             $form_submit_wrap.append(form_outer_loading);
             $.ajax({
-                url: "/api/login/",
+                url: "/login/",
                 type: "POST",
                 datatype: "json",
-                data:  {csrfmiddlewaretoken: csrf_token, "email": $("#email_signup").val(), "user_name": $("#username_signup").val(), "password": $("#password_signup").val()},
+                data:  {csrfmiddlewaretoken: csrf_token, "email": $("#email_login").val(),"password": $("#password_login").val()},
                 beforeSend:function() {},
                 success: function(xhr) {
-                    console.log("success");
                     window.location.replace("/");
                 },
                 error: function(xhr, status, error) {

@@ -1,3 +1,10 @@
+$(document).ready(function() {
+    var reply_id = $("#user-id").val();
+    var reply_id = 22;
+    var page = 1;
+    ajax_comment_list(reply_id, page)
+});
+
 var comment_click_handler = function(e) {
     var comment_text = $(".comment-form-text").val();
         $.ajax({
@@ -119,3 +126,59 @@ var comment_click_handler = function(e) {
             $comment_length.css("color","#3f51b5");
         }
     }); 
+
+function ajax_comment_list(reply_id, page){
+    $.ajax({
+        url: "/api/comments/",
+        type: "GET",
+        datatype: "json",
+        data: {"reply_id": reply_id, "page": page},
+        success: function(data) {
+            $.each(data.results, function(key, value){
+            var date = value["comment_create_time"].split("T", 1);
+            console.log(date);
+            var comment_outer_div = $("<div />", {
+                "class": "comment-outer-div",
+                });
+            var comment_image_div = $("<div />", {
+                "class": "comment-image-div",
+                });
+            var comment_image = $("<img />", {
+                src: value["comment_avatar"],
+                "class": "comment-image",
+                });
+            var comment_author = $("<div />", {
+                "class": "comment-author",
+                });
+            var comment_author_p = $("<p />", {
+                "class": "comment-author-p",
+                text: value["comment_author"]
+                });
+            var comment_content = $("<div />", {
+                "class": "comment-content",
+                });
+            var comment_content_p = $("<p />", {
+                "class": "comment-content-p",
+                text: value["comment_content"]
+                });
+            var comment_time = $("<div />", {
+                "class": "comment-time",
+                });
+            var comment_time_p = $("<p />", {
+                "class": "comment-time-p",
+                text: date,
+                });
+            comment_image_div.append(comment_image);
+            comment_author.append(comment_author_p); 
+            comment_content.append(comment_content_p); 
+            comment_time.append(comment_time_p); 
+            comment_outer_div.append(comment_image_div);
+            comment_outer_div.append(comment_author);
+            comment_outer_div.append(comment_content);
+            comment_outer_div.append(comment_time);
+            comment_outer_div.append('<hr />');
+            $(".comment-wrapper").append(comment_outer_div);
+          });
+        },
+    }); 
+}

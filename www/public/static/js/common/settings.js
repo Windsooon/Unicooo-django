@@ -29,7 +29,7 @@ $(document).ready(function() {
             form_outer_loading.append(form_loading);
             $form_submit_wrap.append(form_outer_loading);
             $.ajax({
-                url: "/api/users/" + $("#user-id").val() + "/",
+                url: "http://127.0.0.1:8000/api/users/" + $("#user-id").val() + "/",
                 type: "PUT",
                 datatype: "json",
                 data:  {csrfmiddlewaretoken: csrf_token, "user_gender": $("#id_user_gender option:selected").val(), "user_details": $("#user-details").val() },
@@ -39,7 +39,7 @@ $(document).ready(function() {
                 },
                 error: function(xhr, status, error) {
                     $form_submit_wrap.empty();
-                    $("#signup_form :input").prop("disabled", false);
+                    $("#settings-form :input").prop("disabled", false);
                     $(".form-server-error").empty();
                     var form_submit_button = $("<button />", {"class": "submit-btn btn btn-primary btn-block"});
                     var form_submit_button_span = $("<span />", {"class": "glyphicon glyphicon-ok"});
@@ -48,7 +48,7 @@ $(document).ready(function() {
                     var form_server_error = $("<div />", {
                           "class": "form-server-error"
                       });
-                    if($('.form-server-error').length) {
+                    if($('.form-server-error-p').length) {
                         console.log("already");    
                     } 
                     else{

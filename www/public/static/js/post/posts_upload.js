@@ -141,6 +141,7 @@ $(document).ready(function(){
               $(".post-form-text").prop("disabled", true);
           },
           success: function(data) {
+              var date = data["post_create_time"].split("T", 1);
               var post_a = $("<a />", {
                           "class": "post-container-a",
                           href: "#post_details",
@@ -168,7 +169,7 @@ $(document).ready(function(){
                       });
                var post_posttime_p = $("<p />", {
                           "class": "post-time",
-                          text: data["post_create_time"]
+                          text: date,
                       });
                var post_content = $("<div />", {
                           "class": "post-content",
