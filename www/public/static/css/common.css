@@ -2,6 +2,10 @@
     background-color: #303f9f;
 }
 
+.container {
+    min-height: 500px;
+}
+
 body {
     background-color: #f2f2f2;
 }

@@ -109,7 +109,12 @@ def personal_list(request, personal, status):
 
 def personal_comments(request, personal):
     if request.method == "GET":
-        return render(request, "common/comments.html")
+        if request.user.user_name == personal:
+            return render(request, "common/comments.html")
+        else: 
+            return render(request, "error.html", {"error": "Not allow"})
+    else:
+        return render(request, "404.html")
 
 def accounts(request, accounts):
     """User settings"""
