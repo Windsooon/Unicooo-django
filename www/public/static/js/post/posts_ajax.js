@@ -12,15 +12,6 @@ $(document).ready(function(){
     });
     var ajax_state = false;
     ajax_post(page)
-    //$(window).scroll(function(){
-    //    //console.log($(window).scrollTop());
-    //    //console.log($(".single-post:last").offset().top);
-    //    if (checkScroll() && ajax_state){
-    //        page += 1;
-    //        ajax_state = false;
-    //        ajax_post(page)
-    //    }
-    //})
     $(window).scroll(function () {
         if (scrollTimeout) {
             clearTimeout(scrollTimeout);
@@ -71,7 +62,6 @@ $(document).ready(function(){
               if (data) {
                   getId(data);
                   var elems = [];
-                  var date = data["post_createtimt"].split("T", 1);
                   $(".list-group").empty();
                   $(e.currentTarget).find(".post-raw-details").attr("src",data["post_thumb_url"]);
                   $(".post-user").text(data["post_user"]["user_name"]);
@@ -79,6 +69,7 @@ $(document).ready(function(){
                   $(".post-content-p").text(data["post_content"]);
                   $.each(data["post_comment"], function(key, value){
                       //comment avatar
+                      var date = value["comment_create_time"].split("T", 1);
                       var comment_avatar_s = $("<img />", {
                           src: value["comment_user"]["user_avatar"] ,
                           "class": "comment-avatar-s",
@@ -106,7 +97,7 @@ $(document).ready(function(){
                       });
 
                       var comment_posttime_span = $("<span />", {
-                          text: value["comment_create_time"],
+                          text: date,
                       });
 
                       var comment_posttime = $("<div />", {

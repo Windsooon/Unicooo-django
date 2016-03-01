@@ -1,28 +1,27 @@
-function personalActInit(personal){
-    var page = 1;
-    console.log(personal);
-    data = {"act_author": personal};
-    personal_act(personal, data, page);
-}
+$(document).ready(function() {
+});
 
-function personalActPostInit(personal){
+function personalInit(personal, status){
     var page = 1;
-    data = {"act_post": personal};
-    personal_act(personal, data, page);
+    if (status == "act_create") {
+        data = {"act_author": personal};
+        personal_act(personal, data, page);
+    }
+    else if (status == "act_join") {
+        data = {"act_post": personal};
+        personal_act(personal, data, page);
+    }
+    else {
+        var $container = $('.row').masonry({
+            columnWidth: 20,
+            itemSelector: '.post-container',
+            isFitWidth: true,
+            transitionDuration: 0,
+        });
+        var ajax_state = false;
+        personal_post(personal, page, $container);
+    }
 }
-
-function personalPostInit(personal){
-    var page = 1;
-    var $container = $('.row').masonry({
-        columnWidth: 20,
-        itemSelector: '.post-container',
-        isFitWidth: true,
-        transitionDuration: 0,
-    });
-    var ajax_state = false;
-    personal_post(personal, page, $container);
-}
-
 
 function personal_act(personal, data, page){
     $.ajax({

@@ -15,7 +15,9 @@ var comment_click_handler = function(e) {
                 $(".comment-form-text").prop("disabled", true);
             },
             success: function(data) {
-                $form_server_error_div.remove();
+                if ($(".form-server-error-div").length) {
+                    $(".form-server-error-div").remove();
+                }
                 var comment_avatar_s = $("<img />", {
                           src: $("#base-user-avatar").val(),
                           "class": "comment-avatar-s",
@@ -136,7 +138,6 @@ function ajax_comment_list(reply_id, page){
             if (data.results.length) {
                 $.each(data.results, function(key, value){
                     var date = value["comment_create_time"].split("T", 1);
-                    console.log(date);
                     var comment_outer_div = $("<div />", {
                         "class": "comment-outer-div",
                         });

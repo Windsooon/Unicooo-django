@@ -126,25 +126,10 @@
 {% block script %}
   <script> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
   <script src="{% static 'js/plugin/imageLoaded.min.js' %}"></script>
-  <script src="{% static 'js/plugin/jquery.cropit.js' %}"></script>
   <script src="{% static 'js/plugin/masonry.min.js' %}"></script>
   <script src="{% static 'js/post/posts_ajax.js' %}"></script>
   <script src="{% static 'js/post/posts_upload.js' %}"></script>
   <script src="{% static 'js/comment/comment.js' %}"></script>
-  <script>
-    $(function() {
-      $('.post-image-editor').cropit({
-        imageState: {
-          src: 'http://7xqy4j.com1.z0.glb.clouddn.com/1455693629.254711?imageView2/1/w/552/h/488/q/80/interlace/1',
-        },
-      });
-  
-      $('.export').click(function() {
-        var imageData = $('.image-editor').cropit('export');
-        window.open(imageData);
-      });
-    });
-  </script>
   <script>
   $.material.init();
   </script>

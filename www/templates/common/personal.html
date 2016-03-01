@@ -16,24 +16,24 @@
       <input type="hidden" value={{request.user.id}} />
       <p class="personal-details">{{request.user.user_details}}</p>
     </div>
-  </div>
   <div class="btn-group-div">
     <div class="btn-group btn-group-justified" role="group" aria-label="...">
       <div class="btn-group" role="group">
-          <a class="btn btn-default" href="{% url 'status' personal 'act_create' %}" id="act-create-btn" role="button"><span class="icon-right glyphicon glyphicon-pencil" aria-hidden="true"></span>Act</a>
+          <a class="btn btn-default blue" href="{% url 'status' personal 'act_create' %}" id="act-create-btn" role="button"><span class="icon-right glyphicon glyphicon-pencil" aria-hidden="true"></span>Act</a>
       </div>
       <div class="btn-group" role="group">
-        <a class="btn btn-default" href="{% url 'status' personal 'act_join' %}" id="act-join-btn" role="button"><span class="icon-right glyphicon glyphicon-fire" aria-hidden="true"></span>Act</a>
+        <a class="btn btn-default blue" href="{% url 'status' personal 'act_join' %}" id="act-join-btn" role="button"><span class="icon-right glyphicon glyphicon-fire" aria-hidden="true"></span>Act</a>
       </div>
       <div class="btn-group" role="group">
-        <a class="btn btn-default" href="{% url 'status' personal 'post' %}" id="post-create-btn" role="button"><span class="icon-right glyphicon glyphicon-bookmark" aria-hidden="true"></span>Post</a>
+        <a class="btn btn-default blue" href="{% url 'status' personal 'post' %}" id="post-create-btn" role="button"><span class="icon-right glyphicon glyphicon-bookmark" aria-hidden="true"></span>Post</a>
       </div>
     </div>
+  </div>
   </div>
 </div>
 <div class="container">
   
-  <div class="row">
+  <div class="row personal-post">
   </div>
 
   <div id="post-details" class="modal fade" tabindex="-1" style="display: none">
@@ -86,24 +86,13 @@
   <script src="{% static 'js/plugin/masonry.min.js' %}"></script>
   <script src="{% static 'js/common/personal.js' %}"></script>
   <script src="{% static 'js/comment/comment.js' %}"></script>
-  {% if status == "act_create" %}
-    <script>
-      var personal = "{{personal}}"
-      personalActInit(personal);
-    </script>
-  {% elif status == "act_join" %}
-    <script>
-      var personal = "{{personal}}"
-      personalActPostInit(personal);
-    </script>
-  {% else %}
-    <script>
-      var personal = "{{personal}}"
-      personalPostInit(personal);
-    </script>
-  {% endif %}
   <script>
-  $.material.init();
+    var personal = "{{ personal }}"
+    var status = "{{ status }}"
+    personalInit(personal, status);
+  </script>
+  <script>
+    $.material.init();
   </script>
 {% endblock %}
 
