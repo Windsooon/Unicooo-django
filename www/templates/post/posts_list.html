@@ -12,7 +12,7 @@
   <div class="activity-details-thumb clearfix">
     <div class="activity-details-thumb-img col-sm-7 col-md-7 col-lg-7"> 
       <a class="activity-details-thumb-a">
-        <img src="{{ act_details.act_thumb_url }}" />
+        <img src="{{ act_thumb }}" />
       </a>
     </div>
     <div class="activity-details-content col-sm-5 col-md-5 col-lg-5">
@@ -24,13 +24,23 @@
       <input type="hidden" value="{{ act_details.id }}" />
     </div>
     <div class="author-div pull-right">
-      <a class="author-a" href="{%url 'personal' act_author %}">
-        <img class="author-img pull-right" src="http://7xi6sp.com1.z0.glb.clouddn.com/uni_cherry665.png"/> 
-        <p class="author-p">{{ act_author }}</p>
+      <a class="author-a" href="{%url 'personal' act_author.user_name %}act_create">
+          {% if act_avatar.user_avatar %}
+            <img class="author-img pull-right" src="{{ act_avatar.user_avatar }}"/> 
+          {% else %}
+            <div class="act-avatar-div" >
+              <p class="act-avatar-p">{{ act_author.user_name|slice:"1" }}</p>
+            </div>
+          {% endif %}
+          <p class="author-p">{{ act_author.user_name }}</p>
       </a>
     </div>
     <div class="pull-right">
-      <button type="button" class="btn btn-lg btn-primary" data-toggle="modal" data-target="#post-upload" id="join-act-btn">join the act</button>
+      {% if request.user.is_authenticated %}
+        <button type="button" class="btn btn-lg btn-primary join-act-btn" data-toggle="modal" data-target="#post-upload">join the act</button>
+      {% else %}
+      <a class="btn btn-lg btn-primary join-act-btn" href="{%url 'login' %}" role="button">Sign up to join</a>
+      {% endif %}
     </div>
   </div>
   <div id="posts-container">
@@ -47,7 +57,7 @@
           <!-- end modal-header -->
           <div class="modal-body">
             <div class="post-upload-div">
-              <img id="post-upload-img" src="http://7xqy4j.com1.z0.glb.clouddn.com/1455693629.254711?imageView2/1/w/552/h/488/q/80/interlace/1" />
+                <img id="post-upload-img" src="{{ httpsUrl }}post-example.jpg" />
             </div>
             <span class="upload-cover btn btn-primary btn-file btn-block">Upload Image
               <input type="file" class="cropit-image-input" id="post-upload-image" accept="image/*">

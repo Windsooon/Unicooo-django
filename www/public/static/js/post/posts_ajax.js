@@ -60,16 +60,18 @@ $(document).ready(function(){
             },
             success: function(data) {
               if (data) {
+                  var httpsUrl = "https://o3e6g3hdp.qnssl.com/"
+                  var imageStyle = "-postDetails"
+                  var post_thumb_url = httpsUrl + data["post_thumb_url"] + imageStyle;
                   getId(data);
                   var elems = [];
                   $(".list-group").empty();
-                  $(e.currentTarget).find(".post-raw-details").attr("src",data["post_thumb_url"]);
+                  $(e.currentTarget).find(".post-raw-details").attr("src",post_thumb_url);
                   $(".post-user").text(data["post_user"]["user_name"]);
-                  $(".post-posttime p").text(date);
+                  $(".post-posttime p").text(data["post_createtime"]);
                   $(".post-content-p").text(data["post_content"]);
                   $.each(data["post_comment"], function(key, value){
                       //comment avatar
-                      var date = value["comment_create_time"].split("T", 1);
                       var comment_avatar_s = $("<img />", {
                           src: value["comment_user"]["user_avatar"] ,
                           "class": "comment-avatar-s",
@@ -97,7 +99,7 @@ $(document).ready(function(){
                       });
 
                       var comment_posttime_span = $("<span />", {
-                          text: date,
+                          text: value["comment_create_time"],
                       });
 
                       var comment_posttime = $("<div />", {
@@ -175,6 +177,8 @@ $(document).ready(function(){
             },
             success: function(data) {
                 if (data.results.length > 0) {
+                    var httpsUrl = "https://o3e6g3hdp.qnssl.com/"
+                    var imageStyle = "-actCoverBig"
                     var elems = [];
                     $.each(data.results, function(key, value){
                         var date = value["post_create_time"].split("T", 1);
@@ -188,7 +192,7 @@ $(document).ready(function(){
                         post_thumb_a.setAttribute("data-target", "#post-details");
                         post_thumb_a.setAttribute("data-post-id", value["id"]);
                         var post_thumb_url = document.createElement("img");
-                        post_thumb_url.src = value["post_thumb_url"];
+                        post_thumb_url.src = httpsUrl + value["post_thumb_url"] + imageStyle;
                         post_thumb_url.setAttribute("onerror", "imgError(this);");
                         //post border
                         var single_border = document.createElement("div");
@@ -248,9 +252,11 @@ $(document).ready(function(){
                 else {
                 }
             },
-            complete:function(){
+            complete:function(data){
                 //$(".outer_loading").remove();
-                ajax_state = true;
+                if (data.next != null) {
+                    ajax_state = true;
+                }
             }
         });
     }//ajax_post end

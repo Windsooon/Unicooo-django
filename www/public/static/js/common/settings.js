@@ -29,7 +29,7 @@ $(document).ready(function() {
             form_outer_loading.append(form_loading);
             $form_submit_wrap.append(form_outer_loading);
             $.ajax({
-                url: "http://127.0.0.1:8000/api/users/" + $("#user-id").val() + "/",
+                url: "/api/users/" + $("#user-id").val() + "/",
                 type: "PUT",
                 datatype: "json",
                 data:  {csrfmiddlewaretoken: csrf_token, "user_gender": $("#id_user_gender option:selected").val(), "user_details": $("#user-details").val() },

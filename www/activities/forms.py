@@ -17,14 +17,14 @@ class ActCreateForm(forms.ModelForm):
                 attrs={
                     "id": "act_title",
                     "class": "form-control",
-                    "minlength": 3,
+                    "minlength": 6,
                 }
             ),
             "act_content": forms.Textarea(
                 attrs={
                     "id": "act_content",
                     "class": "form-control",
-                    "minlength": 15,
+                    "minlength": 6,
                 }
             ),
             "act_type": forms.Select(

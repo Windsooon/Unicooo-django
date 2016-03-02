@@ -25,13 +25,15 @@ function personalInit(personal, status){
 
 function personal_act(personal, data, page){
     $.ajax({
-        url: "http://127.0.0.1:8000/api/acts/",
+        url: "/api/acts/",
         type: "GET",
         datatype: "json",
         data: data,
         beforeSend:function(){
         },
         success: function(data) {
+            var httpsUrl = "https://o3e6g3hdp.qnssl.com/"
+            var imageStyle = "-actCoverSmall"
             var frag = document.createDocumentFragment();
             $.each(data.results, function(key, value){
                 var single_act = document.createElement("div");
@@ -58,7 +60,7 @@ function personal_act(personal, data, page){
                 var single_content_p = document.createElement("p");
                 single_content_p.className = "act-content";
                 single_content_p.innerHTML = value["act_content"];
-                act_thumb_url.src = value["act_thumb_url"];
+                act_thumb_url.src = httpsUrl + value["act_thumb_url"] + imageStyle;
                 act_thumb_url.setAttribute("onerror", "imgError(this);");
                 act_thumb_a.appendChild(act_thumb_url);
                 act_thumb_a.appendChild(single_title);

@@ -11,18 +11,25 @@
   <!-- personal info begin -->
   <div class="personal-header">
     <div class="personal-avatar-div">
-      <img class="personal-avatar-image" src="http://7xokch.com1.z0.glb.clouddn.com/uni-testred.png" />
+        {% if person.user_avatar %}
+          <img class="personal-avatar-image" src="{{ person.user_avatar }}" />
+        {% else %}
+          <div class="personal-img-wrapper">
+            <p class="personal-img-p">{{ personal|slice:"1" }}</p>
+          </div>
+        {% endif %}
       <p class="personal-avatar-p">{{personal}}</p>
       <input type="hidden" value={{request.user.id}} />
       <p class="personal-details">{{request.user.user_details}}</p>
     </div>
-  <div class="btn-group-div">
+    <hr>
+  <div class="personal-btn-group btn-group-div">
     <div class="btn-group btn-group-justified" role="group" aria-label="...">
       <div class="btn-group" role="group">
           <a class="btn btn-default blue" href="{% url 'status' personal 'act_create' %}" id="act-create-btn" role="button"><span class="icon-right glyphicon glyphicon-pencil" aria-hidden="true"></span>Act</a>
       </div>
       <div class="btn-group" role="group">
-        <a class="btn btn-default blue" href="{% url 'status' personal 'act_join' %}" id="act-join-btn" role="button"><span class="icon-right glyphicon glyphicon-fire" aria-hidden="true"></span>Act</a>
+        <a class="btn btn-default blue" href="{% url 'status' personal 'act_join' %}" id="act-join-btn" role="button"><span class="icon-right glyphicon glyphicon-paperclip" aria-hidden="true"></span>Act</a>
       </div>
       <div class="btn-group" role="group">
         <a class="btn btn-default blue" href="{% url 'status' personal 'post' %}" id="post-create-btn" role="button"><span class="icon-right glyphicon glyphicon-bookmark" aria-hidden="true"></span>Post</a>

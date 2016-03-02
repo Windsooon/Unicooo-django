@@ -75,6 +75,11 @@ input {
     font-size: 14px;    
 }
 
+
+.form-group-loading {
+    margin-bottom: 20px;
+}
+
 .btn-file {
     position: relative;
     overflow: hidden;
@@ -131,4 +136,13 @@ input {
   opacity:1;    
 }
 
+.account-wrapper {
+    position: relative;
+}
+
+.account-settings {
+    position: absolute;
+    bottom: 5px;
+    right: 20px;
+}
 

@@ -5,11 +5,11 @@ $(document).ready(function(){
         rules: {
             act_title: {
                 required: true,
-                minlength: 10,
+                minlength: 6,
             },
             act_content: {
                 required: true,
-                minlength: 10,
+                minlength: 6,
             },
         },
         messages: {
@@ -51,7 +51,7 @@ $(document).ready(function(){
             form_outer_loading.append(form_loading);
             $form_submit_wrap.append(form_outer_loading);
             $.ajax({
-                url: "http://127.0.0.1:8000/api/acts/",
+                url: "/api/acts/",
                 type: "POST",
                 datatype: "json",
                 data:  {csrfmiddlewaretoken: csrf_token, "act_title": act_title, "act_content": act_content, "act_thumb_url": formArray[1], "act_type": act_type, "act_ident": act_ident, "act_licence": act_licence, "act_url": act_url},
@@ -138,7 +138,7 @@ $(document).ready(function(){
         $("#new-act-form :input").prop("disabled", false);
         formData.append("file", file);
         $.ajax({
-            url: "http://upload.qiniu.com",
+            url: "https://up.qbox.me",
             type: "POST",
             data: formData,
             datatype: "json",

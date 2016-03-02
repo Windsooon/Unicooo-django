@@ -11,6 +11,7 @@ from .models import CustomAuth
 from activities.models import Act
 from comment.models import Comment
 from common.models import MyUser
+from common.qiniuSettings import httpsUrl, imageStyle
 from qiniu import Auth
 from .qiniuSettings import *
 import time
@@ -46,10 +47,8 @@ def public_activities(request):
     render(request, "public_activities.html")
 
 def front_page(request):
-    url = "https://o2ocy30id.qnssl.com/"
-    style_name = "-actCoverInterS"
     act_list = Act.objects.filter(act_type=0).order_by("-act_create_time")[:9]
-    return render(request, "common/frontpage.html", {"act_list": act_list, "url": url, "style_name": style_name})
+    return render(request, "common/frontpage.html", {"act_list": act_list, "httpsUrl": httpsUrl, "imageStyle": imageStyle})
 
 @anonymous_required
 def sign_up(request):
@@ -103,7 +102,12 @@ def personal_settings(request, personal):
 
 def personal_list(request, personal, status):
     if request.method == "GET":
-        return render(request, "common/personal.html", {"personal": personal, "status": status})
+        try:
+            person = MyUser.objects.get(user_name=personal)
+        except: 
+            return render(request, "404.html")
+        else:
+            return render(request, "common/personal.html", {"person": person, "personal": personal, "status": status})
     else:
         return render(request, "404.html")
 

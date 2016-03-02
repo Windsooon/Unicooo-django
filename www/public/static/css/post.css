@@ -17,8 +17,17 @@
     margin-right: auto;
 }
 
+.post-image-b {
+    width: 552px;
+}
+
+.post-image-b img {
+    width: 100%;
+}
+
 #posts-container {
     margin: 0 auto;
+    min-height: 300px;
 }
 
 .post-container {

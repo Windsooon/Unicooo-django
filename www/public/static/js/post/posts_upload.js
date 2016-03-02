@@ -2,8 +2,8 @@ $(document).ready(function(){
     var $container = $('#posts-container').masonry();
     var formData = new FormData();
     var formArray = new Array();
-    var imageUrl = "https://o2ocy30id.qnssl.com/";
-    var imageStyle = "-actCoverInterS";
+    var imageUrl = "https://o3e6g3hdp.qnssl.com/";
+    var imageStyle = "-actCoverBig";
     $post_cover_span = $(".upload-cover");
 
     //click "join the act" button
@@ -16,6 +16,7 @@ $(document).ready(function(){
             datatype: "json",
             data: {"type": 1},
             success: function(data) {
+                console.log(data["token"]);
                 formData.append("token", data["token"]);
                 formData.append("key", data["key"]);
                 formArray[1] = data["key"];
@@ -56,7 +57,7 @@ $(document).ready(function(){
         fr.readAsDataURL(file);
         formData.append("file", file);
         $.ajax({
-            url: "http://upload.qiniu.com",
+            url: "https://up.qbox.me",
             type: "POST",
             data: formData,
             datatype: "json",
@@ -133,7 +134,7 @@ $(document).ready(function(){
       formArray[4] = $activity_input.eq(0).val();
       formArray[6] = post_content
       $.ajax({
-          url: "http://127.0.0.1:8000/api/posts/",
+          url: "/api/posts/",
           type: "POST",
           data: {csrfmiddlewaretoken: csrf_token, "post_thumb_url": formArray[1], "post_thumb_width": formArray[2], "post_thumb_height": formArray[3], "nsfw": 1, "act": formArray[4], "post_content": formArray[6]}, 
           datatype: "json",

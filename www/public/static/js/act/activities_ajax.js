@@ -2,14 +2,23 @@ $(document).ready(function(){
     ajax_activity(0, 1);
     var ajax_state = true
     var page = 1
-    $(window).scroll(function(){
-        if (checkscroll() && ajax_state){
-            ajax_state = false;
-            ajax_activity(0, page)
-            page += 1;
+    var scrollTimeout;
+    $(window).scroll(function () {
+        if (scrollTimeout) {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = null;
         }
-    })
-
+        scrollTimeout = setTimeout(scrollHandler, 50);
+    });
+    scrollHandler = function () {
+        // Check your page position
+        if (checkScroll() && ajax_state) {
+            page += 1;
+            ajax_state = false;
+            ajax_activity(0, page);
+        }
+    };
+    
     //activity板块进行ajax请求
     function ajax_activity(act_type, page){
         $.ajax({
@@ -21,6 +30,8 @@ $(document).ready(function(){
             },
             success: function(data) {
                 var frag = document.createDocumentFragment();
+                var httpsUrl = "https://o3e6g3hdp.qnssl.com/";
+                var imageStyle = "-actCoverSmall";
                 $.each(data.results, function(key, value){
                     var single_act = document.createElement("div");
                     single_act.className = "single-act col-sm-6 col-md-4 col-lg-4"
@@ -53,7 +64,7 @@ $(document).ready(function(){
                     var single_content_p = document.createElement("p");
                     single_content_p.className = "act-content";
                     single_content_p.innerHTML = value["act_content"];
-                    act_thumb_url.src = value["act_thumb_url"];
+                    act_thumb_url.src = httpsUrl + value["act_thumb_url"] + imageStyle;
                     act_thumb_url.setAttribute("onerror", "imgError(this);");
                     act_thumb_a.appendChild(act_thumb_url);
                     act_thumb_a.appendChild(single_title);
@@ -67,8 +78,10 @@ $(document).ready(function(){
                 })
                 $(".row").append(frag).animate();
             },
-            complete:function(){
-                ajax_state = true;
+            complete:function(data){
+                if (data.next != null) {
+                    ajax_state = true;
+                }
             }
         });
     }//ajax_activity结束
@@ -91,4 +104,13 @@ function imgError(image) {
     image.src = "../../static/img/error.png";
     return true;
 }
+
+function checkScroll(){
+        if($(window).scrollTop()+400 > ($(".single-act:last").offset().top)){
+            return true; 
+        }
+        else{
+            return false;
+        }
+    }
 
