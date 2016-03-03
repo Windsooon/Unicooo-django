@@ -48,6 +48,7 @@ def public_activities(request):
 
 def front_page(request):
     act_list = Act.objects.filter(act_type=0).order_by("-act_create_time")[:9]
+    imageStyle = "-actCoverSmall"
     return render(request, "common/frontpage.html", {"act_list": act_list, "httpsUrl": httpsUrl, "imageStyle": imageStyle})
 
 @anonymous_required

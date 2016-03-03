@@ -98,7 +98,7 @@ class CommentList(generics.ListCreateAPIView):
         serializer.save(user=self.request.user)
 
     def get_queryset(self):
-        queryset = Comment.objects.all()
+        queryset = Comment.objects.all().order_by("-comment_create_time")
         reply_id = self.request.query_params.get('reply_id', None)
        
         if reply_id is not None:

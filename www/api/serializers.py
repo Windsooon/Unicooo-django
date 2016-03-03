@@ -42,16 +42,6 @@ class ActSerializer(serializers.ModelSerializer):
                   "act_url", "act_delete", "act_create_time", "act_user")
 
 
-class PostAllSerializer(serializers.ModelSerializer):
-    """Posts api fields"""
-    post_user = UserSerializer(source="user", read_only=True)
-    post_author = serializers.ReadOnlyField(source='user.user_name')
-
-    class Meta:
-        model = Post
-        fields = ("id", "act", "post_author", "post_title", "post_content", "post_thumb_url", "post_thumb_width", "post_thumb_height", "nsfw", "post_create_time", "post_user") 
-
-
 class CommentSerializer(serializers.ModelSerializer):
     """Comment api fields"""
     comment_user = UserSerializer(source="user", read_only=True)
@@ -63,7 +53,17 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = ("id", "user", "comment_author", "comment_avatar", "post", "reply_id", "comment_content", "comment_create_time","comment_user")
         
-        
+
+class PostAllSerializer(serializers.ModelSerializer):
+    """Posts api fields"""
+    post_user = UserSerializer(source="user", read_only=True)
+    post_author = serializers.ReadOnlyField(source='user.user_name')
+
+    class Meta:
+        model = Post
+        fields = ("id", "act", "post_author", "post_title", "post_content", "post_thumb_url", "post_thumb_width", "post_thumb_height", "nsfw", "post_create_time", "post_user",) 
+       
+       
 class PostSerializer(serializers.ModelSerializer):
     """Post api fields"""
     post_comment = CommentSerializer(many=True, source="comment_post")

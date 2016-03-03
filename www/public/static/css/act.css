@@ -94,6 +94,7 @@
     border: 1px solid #bfbfbf;
     border-radius: 6px;
     background-color: white;
+    cursor: pointer;
 }
 
 .author-img {
@@ -133,6 +134,10 @@
     background-color: #c8c7cd;
     position: relative;
     padding-top: 8px;
+}
+
+.author-a {
+    display: block;
 }
 
 .act-avatar-p {
@@ -187,11 +192,11 @@
 
 @media only screen and (min-width: 768px) and (max-width: 990px) { 
     .act-details-div {
-        height: 8em;
+        height: 6em;
     }
 
     .act-details-content {
-        height: 6em;
+        height: 4em;
     }
 }
 
@@ -203,6 +208,15 @@
   .front-btn {
     font-size: 15px;
   }
+
+  .act-details-div {
+    height: 20em;
+  }
+
+  .act-details-content {
+    height: 6em;
+  }
+
 }
 
 @media only screen and (max-width: 320px) {
@@ -214,6 +228,15 @@
   .front-btn {
     font-size: 10px;
   }
+
+  .act-details-div {
+    height: 20em;
+  }
+
+  .act-details-content {
+    height: 6em;
+  }
+
 }
 
 .act-details-div {
@@ -237,9 +260,9 @@
 }
 
 .author-div {
-    margin-right: 40px;
-    margin-top: 30px;
-    margin-bottom: 60px;
+    position: absolute;
+    right: 31px;
+    bottom: 50px;
 }
 
 .single-act-border {
@@ -324,6 +347,10 @@
 
 .activity-details-thumb-a {
     display: block;
+}
+
+.activity-details-thumb-a img {
+    width: 100%;
 }
 
 .activity-details-thumb {

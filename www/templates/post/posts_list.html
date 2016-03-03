@@ -23,7 +23,7 @@
       </div>
       <input type="hidden" value="{{ act_details.id }}" />
     </div>
-    <div class="author-div pull-right">
+    <div class="author-div">
       <a class="author-a" href="{%url 'personal' act_author.user_name %}act_create">
           {% if act_avatar.user_avatar %}
             <img class="author-img pull-right" src="{{ act_avatar.user_avatar }}"/> 
@@ -67,10 +67,10 @@
                 {% csrf_token %}
                 <div class="form-group">
                   <label class="sr-only" for="" >Post Content</label>
-                  <input type="text" class="post-form-text form-control" placeholder="Please enter you post content">
+                  <input type="text" class="post-form-text form-control" placeholder="Please enter you post content" disabled>
                 <h6 class="post-form-length">60</h6>
                 </div>
-                <button type="submit" id="add-post-btn" class="btn btn-primary pull-right">Submit</button>
+                <button type="submit" id="add-post-btn" disabled class="btn btn-primary pull-right">Submit</button>
               </form>
             </div>
           </div>
@@ -93,6 +93,7 @@
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             <h4 class="modal-title">Post details</h4>
+            <input type="hidden" id="input-post-id"/>
           </div>
           <div class="modal-body">
             <div class="post-image-b">
@@ -100,14 +101,15 @@
             </div>
             <div class="post-border">
               <div class="post-title">
-                <p class="post-user"></p>
+                <p class="post-details-user"></p>
+                <input type="hidden" id="input-post-author-id"/>
               </div>
               <div class="post-posttime">  
-                <p></p>
+                <p class="post-details-posttime"></p>
               </div>
             </div>
             <div class="post-content">
-              <p class="post-content-p"></p>
+              <p class="post-details-content-p"></p>
             </div>
           </div>
           <div class="modal-footer">
@@ -134,7 +136,6 @@
 
 {% endblock %}
 {% block script %}
-  <script> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
   <script src="{% static 'js/plugin/imageLoaded.min.js' %}"></script>
   <script src="{% static 'js/plugin/masonry.min.js' %}"></script>
   <script src="{% static 'js/post/posts_ajax.js' %}"></script>

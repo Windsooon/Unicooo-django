@@ -32,26 +32,13 @@ $(document).ready(function(){
     
     $("#post-details").on("show.bs.modal", function(e) {
         var post_id = $(e.relatedTarget).data('post-id');
-        getPost(post_id, e, getId);
+        getPost(post_id, e);
     });
+    
+    $("#add-comment-btn").on("click", comment_click_handler);
             
     
-    //显示剩余输入字数
-    $(".post-form-text").keyup(function(){  
-        var $post_length = $(".post-form-length");
-        //length未必存在
-        var currrent_length=$(".post-form-text").val().length + 1;   
-        if (currrent_length <= 60) {
-            $post_length.text(60-currrent_length);
-        }
-        else {
-            $post_length.text("beyond 60 char");
-            $post_length.css("color","#3f51b5");
-        }
-    }); 
-    
- 
-    function getPost(post_id, e, getId) {
+    function getPost(post_id, e) {
         return $.ajax({
             url: "/api/posts/" + post_id + "/",
             type: "GET",
@@ -63,13 +50,15 @@ $(document).ready(function(){
                   var httpsUrl = "https://o3e6g3hdp.qnssl.com/"
                   var imageStyle = "-postDetails"
                   var post_thumb_url = httpsUrl + data["post_thumb_url"] + imageStyle;
-                  getId(data);
                   var elems = [];
+                  var post_date = data["post_create_time"].split("T", 1);
                   $(".list-group").empty();
                   $(e.currentTarget).find(".post-raw-details").attr("src",post_thumb_url);
-                  $(".post-user").text(data["post_user"]["user_name"]);
-                  $(".post-posttime p").text(data["post_createtime"]);
-                  $(".post-content-p").text(data["post_content"]);
+                  $("#input-post-id").val(post_id);
+                  $("#input-post-author-id").val(data["user"]);
+                  $(".post-details-user").text(data["post_user"]["user_name"]);
+                  $(".post-details-posttime").text(post_date);
+                  $(".post-details-content-p").text(data["post_content"]);
                   $.each(data["post_comment"], function(key, value){
                       //comment avatar
                       var date = value["comment_create_time"].split("T", 1);
@@ -155,13 +144,6 @@ $(document).ready(function(){
         });
     }
     
-    //get current post id and user id
-    function getId(data) {
-        //comment_click_handler is in comment_ajax.js
-        var user_id = data["user"];
-        var post_id = data["id"];
-        $('#add-comment-btn').on('click', {"user_id": user_id, "post_id": post_id}, comment_click_handler);
-    }
     
     //get post per page
     function ajax_post(page){
@@ -185,12 +167,15 @@ $(document).ready(function(){
             success: function(data) {
                 if (data.results.length > 0) {
                     var httpsUrl = "https://o3e6g3hdp.qnssl.com/"
-                    var imageStyle = "-actCoverBig"
+                    var imageStyle = "-postList"
                     var elems = [];
                     $.each(data.results, function(key, value){
                         var date = value["post_create_time"].split("T", 1);
                         var single_post = document.createElement("div");
-                        single_post.className = "post-container";
+                        single_post.className = "post-container col-xs-12 col-sm-6 col-md-6 col-lg-4";
+                        //post container col
+                        var single_post_col = document.createElement("div");
+                        single_post_col.className = "post-container-col";
                         //post thumb image
                         var post_thumb_a = document.createElement("a");
                         //post_thumb_a.className = value["id"];
@@ -233,7 +218,6 @@ $(document).ready(function(){
                         single_content_p.className = "post-content-p";
                         single_content_p.innerHTML =  value["post_content"];
                         post_thumb_a.appendChild(post_thumb_url);
-                        single_post.appendChild(post_thumb_a);
                         single_posttime.appendChild(single_posttime_p);
                         single_title.appendChild(single_title_p);
                         single_footer.appendChild(single_footer_like);
@@ -243,9 +227,11 @@ $(document).ready(function(){
                         single_border.appendChild(single_title);
                         single_border.appendChild(single_posttime);
                         //single_post
-                        single_post.appendChild(single_border);
-                        single_post.appendChild(single_content);
-                        single_post.appendChild(single_footer);
+                        single_post_col.appendChild(post_thumb_a);
+                        single_post_col.appendChild(single_border);
+                        single_post_col.appendChild(single_content);
+                        single_post_col.appendChild(single_footer);
+                        single_post.appendChild(single_post_col);
                         elems.push(single_post);
                     })
                     var $elems = $(elems);
@@ -260,7 +246,7 @@ $(document).ready(function(){
                 }
             },
             complete:function(data){
-                //$(".outer_loading").remove();
+                console.log(data.next);
                 if (data.next != null) {
                     ajax_state = true;
                 }

@@ -13,7 +13,7 @@ var comment_click_handler = function(e) {
             url: "/api/comments/",
             type: "POST",
             datatype: "json",
-            data:  {csrfmiddlewaretoken: window.CSRF_TOKEN, "reply_id": e.data.user_id, "post": e.data.post_id, "comment_content": comment_text},
+            data:  {csrfmiddlewaretoken: window.CSRF_TOKEN, "reply_id": $("#input-post-author-id").val(), "post": $("#input-post-id").val(), "comment_content": comment_text},
             beforeSend: function() {
                 $(".comment-form-text").prop("disabled", true);
             },
@@ -96,7 +96,7 @@ var comment_click_handler = function(e) {
                       list_group_item.append(comment_all);
                       list_group_item.hide().appendTo(".list-group").fadeIn();
                       $(".comment-form-text").val("");
-                      $(".comment-form").fadeOut();
+                      //$(".comment-form").fadeOut();
               },
               error: function(xhr, status, error) {
                   if (xhr.status >= 400 && xhr.status < 500) {
@@ -123,7 +123,6 @@ var comment_click_handler = function(e) {
                 $(".comment-form-text").prop("disabled", false);
             },
          });
-         $('#add-comment-btn').unbind("click");
     }
 
     //显示剩余输入字数
@@ -173,7 +172,7 @@ function ajax_comment_list(reply_id, page){
                         text: value["comment_author"]
                         });
                     var comment_content = $("<div />", {
-                        "class": "comment-content",
+                        "class": "comment-content-list",
                         });
                     var comment_content_p = $("<p />", {
                         "class": "comment-content-p",

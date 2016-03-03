@@ -4,7 +4,29 @@ $(document).ready(function(){
     var formArray = new Array();
     var imageUrl = "https://o3e6g3hdp.qnssl.com/";
     var imageStyle = "-actCoverBig";
+    var post_upload_status = false;
     $post_cover_span = $(".upload-cover");
+
+    //显示剩余输入字数
+    $(".post-form-text").keyup(function(){  
+        var $post_length = $(".post-form-length");
+        //length未必存在
+        var currrent_length = $(".post-form-text").val().length + 1;   
+        if (currrent_length <= 60) {
+            $post_length.text(61-currrent_length);
+            if ($('#add-post-btn').is(":disabled") && post_upload_status) {
+                $('#add-post-btn').prop('disabled', false);
+            }
+        }
+        else {
+            $post_length.text("beyond 60 char");
+            $post_length.css("color","#3f51b5");
+            $('#add-post-btn').prop('disabled', true);
+        }
+    }); 
+    
+ 
+
 
     //click "join the act" button
     $('#post-upload-image').on("click", function(){ 
@@ -55,6 +77,7 @@ $(document).ready(function(){
         };
         fr.readAsDataURL(file);
         formData.append("file", file);
+        $(".post-form-text").prop("disabled", false);
         $.ajax({
             url: "https://up.qbox.me",
             type: "POST",
@@ -119,8 +142,14 @@ $(document).ready(function(){
                $("#act_title").after(upload_key);
             },
             complete: function() {
+                post_upload_status = true;
                 $(".post-upload-div img").removeClass("unfinished-image");
                 $(".post-upload-div img").addClass("finished-image");
+                var post_length = $(".post-form-text").val().length + 1;
+                if ( 2 <= post_length <= 60 && $('#add-post-btn').is(":disabled")) {
+                    $('#add-post-btn').prop('disabled', false);
+            }
+
             },
         });
     });
@@ -129,7 +158,7 @@ $(document).ready(function(){
       e.preventDefault();
       $activity_input = $(".activity-details-content input");
       var post_content = $(".post-form-text").val();
-      var csrf_token = $("#post-content input").eq(0).val();
+      var csrf_token = $("input[name='csrfmiddlewaretoken']").val();
       formArray[4] = $activity_input.eq(0).val();
       formArray[6] = post_content
       $.ajax({

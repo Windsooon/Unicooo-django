@@ -36,8 +36,8 @@
     font-style: italic;
 }
 
-.comment-content{
-    margin-left: 70px;
+.comment-content-list{
+    margin-left: 80px;
 }
 
 .comment-time{
@@ -68,8 +68,8 @@
 }
 
 .comment-content {
-    margin-left: 50px;
     padding-left: 10px;
+    margin-left:50px;
 }
 .comment-avatar-s {
     width: 50px; 
