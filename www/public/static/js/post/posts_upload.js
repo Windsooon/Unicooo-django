@@ -16,7 +16,6 @@ $(document).ready(function(){
             datatype: "json",
             data: {"type": 1},
             success: function(data) {
-                console.log(data["token"]);
                 formData.append("token", data["token"]);
                 formData.append("key", data["key"]);
                 formArray[1] = data["key"];

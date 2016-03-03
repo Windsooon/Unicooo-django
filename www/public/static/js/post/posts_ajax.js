@@ -72,6 +72,7 @@ $(document).ready(function(){
                   $(".post-content-p").text(data["post_content"]);
                   $.each(data["post_comment"], function(key, value){
                       //comment avatar
+                      var date = value["comment_create_time"].split("T", 1);
                       var comment_avatar_s = $("<img />", {
                           src: value["comment_user"]["user_avatar"] ,
                           "class": "comment-avatar-s",
@@ -93,13 +94,18 @@ $(document).ready(function(){
                           href:  value["comment_user"]["user_name"],
                           "class": "comment-username-a",
                       });
+                        
+                      var comment_username_p = $("<p />", {
+                          "class": "comment-username-p",
+                          text: value["comment_user"]["user_name"],
+                      });
 
                       var comment_username = $("<div />", {
                           "class": "comment-username",
                       });
 
-                      var comment_posttime_span = $("<span />", {
-                          text: value["comment_create_time"],
+                      var comment_posttime_p = $("<p />", {
+                          text: date,
                       });
 
                       var comment_posttime = $("<div />", {
@@ -110,10 +116,10 @@ $(document).ready(function(){
                           "class": "comment-header"
                       });
                         
+                      comment_username_a.append(comment_username_p);
                       comment_username.append(comment_username_a);
-                      comment_posttime.append(comment_posttime_span);
+                      comment_posttime.append(comment_posttime_p);
                       comment_header.append(comment_username);
-                      comment_header.append(comment_posttime);
 
                       var comment_content = $("<div />", {
                           "class": "comment-content"
@@ -131,6 +137,7 @@ $(document).ready(function(){
 
                       comment_all.append(comment_header);
                       comment_all.append(comment_content);
+                      comment_all.append(comment_posttime);
 
                        var list_group_item = $("<li />", {
                           "class": "list-group-item"

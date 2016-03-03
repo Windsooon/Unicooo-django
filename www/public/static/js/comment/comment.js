@@ -6,6 +6,9 @@ $(document).ready(function() {
 
 var comment_click_handler = function(e) {
     var comment_text = $(".comment-form-text").val();
+    if (comment_text.length < 1) {
+        return false;
+    }
         $.ajax({
             url: "/api/comments/",
             type: "POST",
@@ -36,15 +39,21 @@ var comment_click_handler = function(e) {
 
                       //comment user and content
                       var comment_username_a = $("<a />", {
-                          href:  $("#base-user-username").val(),
+                          href: $("#base-user-username").val(),
                           "class": "comment-username-a",
+                      });
+
+                      var comment_username_p = $("<p />", {
+                          "class": "comment-username-p",
+                          text: $(".request-user").text(),
                       });
 
                       var comment_username = $("<div />", {
                           "class": "comment-username",
                       });
 
-                      var comment_posttime_span = $("<span />", {
+                      var comment_posttime_p = $("<p />", {
+                          "class": "comment-posttime-p",
                           text: "just now",
                       });
 
@@ -55,11 +64,11 @@ var comment_click_handler = function(e) {
                       var comment_header = $("<div />", {
                           "class": "comment-header"
                       });
-                        
+                       
+                      comment_username_a.append(comment_username_p);
                       comment_username.append(comment_username_a);
-                      comment_posttime.append(comment_posttime_span);
+                      comment_posttime.append(comment_posttime_p);
                       comment_header.append(comment_username);
-                      comment_header.append(comment_posttime);
 
                       var comment_content = $("<div />", {
                           "class": "comment-content"
@@ -77,6 +86,7 @@ var comment_click_handler = function(e) {
 
                       comment_all.append(comment_header);
                       comment_all.append(comment_content);
+                      comment_all.append(comment_posttime);
 
                        var list_group_item = $("<li />", {
                           "class": "list-group-item"
@@ -86,6 +96,7 @@ var comment_click_handler = function(e) {
                       list_group_item.append(comment_all);
                       list_group_item.hide().appendTo(".list-group").fadeIn();
                       $(".comment-form-text").val("");
+                      $(".comment-form").fadeOut();
               },
               error: function(xhr, status, error) {
                   if (xhr.status >= 400 && xhr.status < 500) {
@@ -112,6 +123,7 @@ var comment_click_handler = function(e) {
                 $(".comment-form-text").prop("disabled", false);
             },
          });
+         $('#add-comment-btn').unbind("click");
     }
 
     //显示剩余输入字数
@@ -121,13 +133,18 @@ var comment_click_handler = function(e) {
         var currrent_length=$(".comment-form-text").val().length + 1;   
         if (currrent_length <= 140) {
             $comment_length.text(141-currrent_length);
+            if ($('#add-comment-btn').is(":disabled")) {
+                $('#add-comment-btn').prop('disabled', false);
+            }
         }
         else {
             $comment_length.text("beyond 140 char");
             $comment_length.css("color","#3f51b5");
+            $('#add-comment-btn').prop('disabled', true);
         }
     }); 
 
+//personal page comments
 function ajax_comment_list(reply_id, page){
     $.ajax({
         url: "/api/comments/",

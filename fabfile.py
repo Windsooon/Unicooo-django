@@ -12,17 +12,16 @@ env.sudo_user = "root"
 
 env.hosts = ["119.29.68.183"]
 
-db_user = "db-user"
-
-db_password = "db-password"
-
-
 _TAR_FILE = "dist-unicooo.tar.gz"
+
+def _current_path():
+    return os.path.abspath('.')
 
 def build():
     includes = ["activities", "api", "bin", "comment", "common", "log", "post", "public", "run", "templates", "unicooo", "*.py"]
     excludes = ['*.pyc', '*.pyo']
-    with lcd(os.path.join(os.path.abspath('.'), 'www')):
+    local('rm -f dist/%s' % _TAR_FILE)
+    with lcd(os.path.join(_current_path(), 'www')):
         cmd = ['tar', '--dereference', '-czvf', '../dist/%s' % _TAR_FILE]
         cmd.extend(['--exclude=\'%s\'' % ex for ex in excludes])
         cmd.extend(includes)
