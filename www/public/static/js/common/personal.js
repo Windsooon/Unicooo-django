@@ -5,7 +5,7 @@ $(document).ready(function() {
 function personalInit(personal, status, page, container){
     if (status == "act_create") {
         data = {"act_author": personal};
-        personal_act(personal, data, page);
+        get_act_list(data, page);
     }
     else if (status == "act_join") {
         data = {"act_post": personal};
