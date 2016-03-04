@@ -40,9 +40,13 @@
   </div>
 </div>
 <div class="activity-container container">
+  {% if status == "post" %}
+  <div class="post-list">
+  </div>
+  {% else %}
   <div class="row">
   </div>
-
+  {% endif %}
 
   <div id="post-details" class="modal fade" tabindex="-1" style="display: none">
       <div class="modal-dialog">
@@ -52,6 +56,7 @@
             <h4 class="modal-title">Post details</h4>
             <input type="hidden" id="input-post-id"/>
           </div>
+          <!-- end modal-header -->
           <div class="modal-body">
             <div class="post-image-b">
               <img class="post-raw-details" />
@@ -69,6 +74,7 @@
               <p class="post-details-content-p"></p>
             </div>
           </div>
+          <!-- end modal-body -->
           <div class="modal-footer">
             <!-- Key content display all comment -->
             <ul class="list-group">
@@ -87,34 +93,41 @@
           </div>
           <!-- end modal-footer -->
         </div>
-        <!-- end modal-body -->
+        <!-- end modal-content -->
       </div>
-      <!-- end modal-content -->
+      <!-- end modal-dialog -->
+    </div>
+    <!-- end post-details -->
   </div>
-  <!-- end modal-dialog -->
+  <!-- end row -->
 </div>
-<!-- end post-details -->
-</div>
+<!-- end container -->
 {% endblock %}
 {% block script %}
   <script> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
   <script src="{% static 'js/plugin/imageLoaded.min.js' %}"></script>
   <script src="{% static 'js/plugin/masonry.min.js' %}"></script>
-  <script src="{% static 'js/act/get_act.js' %}"></script>
+  <script src="{% static 'js/common/act_post_list.js' %}"></script>
   <script src="{% static 'js/common/personal.js' %}"></script>
   <script>
     var personal = "{{ personal }}"
     var status = "{{ status }}"
     var page = 1;
     var ajax_state = true;
-    var $container = $('.row').masonry({
-            itemSelector: '.act-outer-container',
-            isFitWidth: true,
+    if (status == "post") {
+        var $container = $('.post-list').masonry({
+            columnWidth: 20,
+            itemSelector: '.post-container',
             transitionDuration: '0.3s',
             hiddenStyle: { opacity: 0 },
             visibleStyle: { opacity: 1 }
-    });
-
+        });
+        var $inner_container = $(".post-container");
+    }
+    else {
+        var $container = $('.row');
+        var $inner_container = $(".act-outer-container");
+    }
     personalInit(personal, status, page, $container);
     $(window).scroll(function () {
         var scrollTimeout;
@@ -122,12 +135,18 @@
             clearTimeout(scrollTimeout);
             scrollTimeout = null;
         }
-        scrollTimeout = setTimeout(scrollHandler, 50);
+        scrollTimeout = setTimeout(scrollHandler, 250);
     });
 
     scrollHandler = function () {
         // Check your page position
-        if (checkScroll($(".act-outer-container")) && ajax_state) {
+        if (status == "post") {
+            var $inner_container = $(".post-container");
+        }
+        else {
+            var $inner_container = $(".act-outer-container");
+        }
+        if (checkScroll($inner_container) && ajax_state) {
             page += 1;
             ajax_state = false;
             personalInit(personal, status, page, $container);

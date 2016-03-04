@@ -1,11 +1,6 @@
-$(document).ready(function() {
-    var reply_id = $("#user-id").val();
-    var page = 1;
-    ajax_comment_list(reply_id, page)
-});
-
 var comment_click_handler = function(e) {
     var comment_text = $(".comment-form-text").val();
+    var csrf_token = $("input[name='csrfmiddlewaretoken']").val();
     if (comment_text.length < 1) {
         return false;
     }
@@ -13,7 +8,7 @@ var comment_click_handler = function(e) {
             url: "/api/comments/",
             type: "POST",
             datatype: "json",
-            data:  {csrfmiddlewaretoken: window.CSRF_TOKEN, "reply_id": $("#input-post-author-id").val(), "post": $("#input-post-id").val(), "comment_content": comment_text},
+            data:  {csrfmiddlewaretoken: csrf_token, "reply_id": $("#input-post-author-id").val(), "post": $("#input-post-id").val(), "comment_content": comment_text},
             beforeSend: function() {
                 $(".comment-form-text").prop("disabled", true);
             },

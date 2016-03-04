@@ -46,6 +46,10 @@
     border-top-right-radius: 6px;
 }
 
+.post-container-img {
+    width: 100%;
+}
+
 .post-container-col a {
     display: block;
 }

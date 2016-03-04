@@ -178,10 +178,11 @@ $(document).ready(function(){
                           "data-target": "#post-details",
                       });
                var post_image = $("<img />", {
+                          "class": "post-container-img",
                           src: imageUrl + data["post_thumb_url"],
                       });
                var post_div = $("<div />", {
-                          "class": "post-container"
+                          "class": "post-container col-xs-12 col-sm-6 col-md-6 col-lg-4"
                       });
                var post_border = $("<div />", {
                           "class": "post-border"

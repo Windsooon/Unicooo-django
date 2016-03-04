@@ -8,11 +8,12 @@ function personalInit(personal, status, page, container){
         get_act_list(data, container);
     }
     else if (status == "act_join") {
-        data = {"act_post": personal};
-        personal_act(personal, data, page);
+        data = {"act_post": personal, "page": page};
+        get_act_list(data, container);
     }
     else {
-        personal_post(personal, page, container);
+        data = {"post_author": personal, "page": page};
+        get_post_list(data, container);
     }
 }
 
