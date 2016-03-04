@@ -246,7 +246,6 @@ $(document).ready(function(){
                 }
             },
             complete:function(data){
-                console.log(data.next);
                 if (data.next != null) {
                     ajax_state = true;
                 }

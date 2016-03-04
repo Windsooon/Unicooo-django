@@ -1,4 +1,4 @@
-function get_act_list(data, container, page){
+function get_act_list(data, container){
     $.ajax({
         url: "/api/acts/",
         type: "GET",
@@ -9,10 +9,8 @@ function get_act_list(data, container, page){
         success: function(data) {
             var httpsUrl = "https://o3e6g3hdp.qnssl.com/"
             var imageStyle = "-actCoverSmall"
-            var frag = document.createDocumentFragment();
-            var elems = [];
-            $.each(data.results, function(key, value){
-                if (data.results.length > 0) {
+            if (data.results.length > 0) {
+                $.each(data.results, function(key, value){
                     //outer single act div
                     var $act_outer_container = $("<div />", {
                             "class": "act-outer-container col-sm-6 col-md-4 col-lg-4",
@@ -25,7 +23,7 @@ function get_act_list(data, container, page){
                     var $act_thumb_a = $("<a />", {
                             "class": "act-thumb-a",
                             href: "/act/" + value["act_user"]["user_name"] + "/" + value["act_title"],
-                            data-toggle: "modal",
+                            "data-toggle": "modal",
                             });
                     var $act_thumb_img = $("<img />", {
                             "class": "act-thumb-img",
@@ -59,24 +57,32 @@ function get_act_list(data, container, page){
                     //act inside div append
                     $act_inner_container.append($act_thumb_a);
                     $act_outer_container.append($act_inner_container);
-                    elems.push($act_outer_container);
+                    $act_outer_container.appendTo(container).hide().fadeIn();
+                    //container.masonry( 'appended', $act_outer_container )
                 });
-                    var $elems = $(elems);
-                    var $elems = $(elems).hide();
-                    container.append($elems);
-                    container.imagesLoaded(function(){
-                        $elems.show();
-                        container.masonry('appended', $elems); 
-                    });
             }
             else {
-                console.log("no data");
             }
+            //end for each
+            //container.imagesLoaded(function(){
+            //    $elems.show();
+            //    container.masonry('appended', $elems); 
+            //});
         },
         complete:function(){
-            if (data.next != null) {
-                    ajax_state = true;
-            }
+            ajax_state = true;
         }
     });
 }
+
+
+function checkScroll(innerContainer){
+    if($(window).scrollTop()+500 > (innerContainer.last().offset().top)){
+        return true; 
+    }
+    else{
+        return false;
+    }
+}
+
+

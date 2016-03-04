@@ -39,9 +39,10 @@
   </div>
   </div>
 </div>
-<div class="container">
-  <div class="personal-post">
+<div class="activity-container container">
+  <div class="row">
   </div>
+
 
   <div id="post-details" class="modal fade" tabindex="-1" style="display: none">
       <div class="modal-dialog">
@@ -101,15 +102,13 @@
   <script src="{% static 'js/plugin/masonry.min.js' %}"></script>
   <script src="{% static 'js/act/get_act.js' %}"></script>
   <script src="{% static 'js/common/personal.js' %}"></script>
-  <script src="{% static 'js/comment/comment.js' %}"></script>
   <script>
     var personal = "{{ personal }}"
     var status = "{{ status }}"
     var page = 1;
     var ajax_state = true;
-    var $container = $('.personal-post').masonry({
-            columnWidth: 20,
-            itemSelector: '.post-container',
+    var $container = $('.row').masonry({
+            itemSelector: '.act-outer-container',
             isFitWidth: true,
             transitionDuration: '0.3s',
             hiddenStyle: { opacity: 0 },
@@ -128,21 +127,13 @@
 
     scrollHandler = function () {
         // Check your page position
-        if (checkScroll() && ajax_state) {
+        if (checkScroll($(".act-outer-container")) && ajax_state) {
             page += 1;
             ajax_state = false;
             personalInit(personal, status, page, $container);
         }
     };
 
-    function checkScroll(){
-        if($(window).scrollTop()+400 > ($(".post-container:last").offset().top)){
-            return true; 
-        }
-        else{
-            return false;
-        }
-    }
   </script>
   <script>
     $.material.init();

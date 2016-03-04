@@ -1,8 +1,16 @@
+var ajax_state = true;
 $(document).ready(function(){
-    ajax_activity(0, 1);
-    var ajax_state = true
-    var page = 1
+    var page = 1;
+    var data = {"act_type": 0, "page": page};
     var scrollTimeout;
+    var $container = $(".row").masonry({
+        itemSelector: '.act-outer-container',
+        transitionDuration: '0.3s',
+        hiddenStyle: { opacity: 0 },
+        visibleStyle: { opacity: 1 }
+    });
+    get_act_list(data, $container)
+    //scroll load more
     $(window).scroll(function () {
         if (scrollTimeout) {
             clearTimeout(scrollTimeout);
@@ -12,105 +20,12 @@ $(document).ready(function(){
     });
     scrollHandler = function () {
         // Check your page position
-        if (checkScroll() && ajax_state) {
-            page += 1;
+        if (checkScroll($(".act-outer-container")) && ajax_state) {
+            data.page += 1;
             ajax_state = false;
-            ajax_activity(0, page);
+            get_act_list(data, $container)
         }
     };
-    
-    //activity板块进行ajax请求
-    function ajax_activity(act_type, page){
-        $.ajax({
-            url: "/api/acts/",
-            type: "GET",
-            datatype: "json",
-            data:  {"act_type": act_type, "page": page},
-            beforeSend:function(){
-            },
-            success: function(data) {
-                var frag = document.createDocumentFragment();
-                var httpsUrl = "https://o3e6g3hdp.qnssl.com/";
-                var imageStyle = "-actCoverSmall";
-                $.each(data.results, function(key, value){
-                    var single_act = document.createElement("div");
-                    single_act.className = "single-act col-sm-6 col-md-4 col-lg-4"
-                    var act_container = document.createElement("div");
-                    act_container.className = "act-container";
-                    //活动缩略图
-                    var act_thumb_a = document.createElement("a");
-                    act_thumb_a.className = "thumbnail act-thumb-a";
-                    act_thumb_a.setAttribute("href", "/act/" + value["act_user"]["user_name"] + "/" + value["act_title"]);
-                    act_thumb_a.setAttribute("data-toggle", "modal");
-                    var act_thumb_url = document.createElement("img");
-                    //活动名称外层div
-                    var single_title = document.createElement("div");
-                    single_title.className = "single-title";
-                    //活动fadeout
-                    var fade_out = document.createElement("div");
-                    fade_out.className = "fadeout";
-                    //活动内容外层div
-                    var single_content = document.createElement("div");
-                    single_content.className = "single-content";
-                    //具体活动
-                    var single_title_p = document.createElement("p");
-                    single_title_p.className = "act-title";
-                    single_title_p.innerHTML = value["act_title"];
-                    //活动作者
-                    var act_author = document.createElement("p");
-                    act_author.className = "act-author pull-right";
-                    act_author.innerHTML = value["act_user"]["user_name"];
-                    //具体活动内容
-                    var single_content_p = document.createElement("p");
-                    single_content_p.className = "act-content";
-                    single_content_p.innerHTML = value["act_content"];
-                    act_thumb_url.src = httpsUrl + value["act_thumb_url"] + imageStyle;
-                    act_thumb_url.setAttribute("onerror", "imgError(this);");
-                    act_thumb_a.appendChild(act_thumb_url);
-                    act_thumb_a.appendChild(single_title);
-                    act_thumb_a.appendChild(single_content);
-                    act_container.appendChild(act_thumb_a);
-                    single_title.appendChild(single_title_p);
-                    single_content.appendChild(single_content_p);
-                    single_content.appendChild(fade_out);
-                    single_act.appendChild(act_container);
-                    frag.appendChild(single_act);
-                })
-                $(".row").append(frag).animate();
-            },
-            complete:function(data){
-                if (data.next != null) {
-                    ajax_state = true;
-                }
-            }
-        });
-    }//ajax_activity结束
+});    
 
-    function checkscroll(){
-        if($(window).scrollTop()+500 > ($(".single-act:last").offset().top)){
-            return true; 
-        }
-        else{
-            return false;
-        }
-    }
-
-})
-
-
-//图片错误时加载备份图片
-function imgError(image) {
-    image.onerror = "";
-    image.src = "../../static/img/error.png";
-    return true;
-}
-
-function checkScroll(){
-        if($(window).scrollTop()+400 > ($(".single-act:last").offset().top)){
-            return true; 
-        }
-        else{
-            return false;
-        }
-    }
 
