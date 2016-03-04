@@ -64,6 +64,7 @@
         <li class="dropdown">
         <a href="#" id="base-user-username" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="request-user">{{request.user.user_name}}</span><span class="caret"></span></a>
         <input id="user-id" type="hidden" value={{request.user.id}} />
+        <input id="user-avatar" type="hidden" value={{request.user.user_avatar}} />
           <ul class="dropdown-menu">
              <li><a href="{% url 'personal' request.user.user_name %}act_create/"><span class="icon-big-right glyphicon glyphicon-user" aria-hidden="true"></span>Personal</a></li>
             <li><a href="{% url 'personal' request.user.user_name %}comments/"><span class="icon-big-right glyphicon glyphicon-comment" aria-hidden="true"></span>Comments</a></li>

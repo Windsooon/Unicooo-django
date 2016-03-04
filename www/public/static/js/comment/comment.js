@@ -16,22 +16,36 @@ var comment_click_handler = function(e) {
                 if ($(".form-server-error-div").length) {
                     $(".form-server-error-div").remove();
                 }
-                var comment_avatar_s = $("<img />", {
-                          src: $("#base-user-avatar").val(),
+                if ($("#user-avatar").val() == "/") {
+                    var comment_avatar = $("<div />", {
+                        "class": "comment-avatar",
+                    });
+                    var comment_avatar_empty_div = $("<div />", {
+                        "class": "comment-avatar-empty-div",
+                    });
+                    var comment_avatar_empty_p = $("<p />", {
+                        "class": "comment-avatar-empty-p",
+                        text: $(".request-user").text().charAt(0),
+                    });
+                    
+                    comment_avatar_empty_div.append(comment_avatar_empty_p);
+                    comment_avatar.append(comment_avatar_empty_div);
+                }
+                else {
+                    var comment_avatar_s = $("<img />", {
+                          src: $("#user-avatar").val(),
                           "class": "comment-avatar-s",
                       });
 
                       var comment_avatar = $("<div />", {
                           "class": "comment-avatar",
                       });
-                      
+                      comment_avatar.append(comment_avatar_s);
+                 }
+
                       var comment_avatar_a = $("<a />", {
                           "class": "comment-avatar-a pull-left",
                       });
-                    
-                      comment_avatar.append(comment_avatar_s);
-                      comment_avatar_a.append(comment_avatar);
-
                       //comment user and content
                       var comment_username_a = $("<a />", {
                           href: $("#base-user-username").val(),
@@ -60,6 +74,8 @@ var comment_click_handler = function(e) {
                           "class": "comment-header"
                       });
                        
+                      comment_avatar_a.append(comment_avatar);
+                      //
                       comment_username_a.append(comment_username_p);
                       comment_username.append(comment_username_a);
                       comment_posttime.append(comment_posttime_p);

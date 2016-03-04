@@ -181,6 +181,9 @@ $(document).ready(function(){
                           "class": "post-container-img",
                           src: imageUrl + data["post_thumb_url"],
                       });
+               var post_div_wrapper = $("<div />", {
+                          "class": "post-container-col"
+                      });
                var post_div = $("<div />", {
                           "class": "post-container col-xs-12 col-sm-6 col-md-6 col-lg-4"
                       });
@@ -228,10 +231,11 @@ $(document).ready(function(){
                //
                post_content.append(post_content_p);
                post_a.append(post_image)
-               post_div.append(post_a);
-               post_div.append(post_border);
-               post_div.append(post_content);
-               post_div.append(post_footer);
+               post_div_wrapper.append(post_a);
+               post_div_wrapper.append(post_border);
+               post_div_wrapper.append(post_content);
+               post_div_wrapper.append(post_footer);
+               post_div.append(post_div_wrapper);
                $container.prepend(post_div)
                $container.imagesLoaded(function() {
                    $container.masonry('prepended', post_div);

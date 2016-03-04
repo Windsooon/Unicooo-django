@@ -71,11 +71,28 @@
     padding-left: 10px;
     margin-left:50px;
 }
+
 .comment-avatar-s {
     width: 50px; 
     height: 50px;
     border-radius: 50%;
 }
+
+.comment-avatar-empty-div {
+    width: 50px; 
+    height: 50px;
+    border-radius: 50%;
+    background-color: #c8c7cd;
+    text-align: center;
+    padding-top: 8px;
+}
+
+.comment-avatar-empty-p {
+    font-size: 25px;
+    color: white;
+    margin: 0 auto;
+}
+
 
 .comment-username {
     display: inline;
