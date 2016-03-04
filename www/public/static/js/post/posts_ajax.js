@@ -64,20 +64,36 @@ $(document).ready(function(){
                   $.each(data["post_comment"], function(key, value){
                       //comment avatar
                       var date = value["comment_create_time"].split("T", 1);
-                      var comment_avatar_s = $("<img />", {
-                          src: value["comment_user"]["user_avatar"] ,
-                          "class": "comment-avatar-s",
-                      });
-
                       var comment_avatar = $("<div />", {
                           "class": "comment-avatar",
                       });
+                      // if user avater is empty
+                      if (value["comment_user"]["user_avatar"]) {
+                          var comment_avatar_s = $("<img />", {
+                              src: value["comment_user"]["user_avatar"] ,
+                              "class": "comment-avatar-s",
+                          });
+
+                          comment_avatar.append(comment_avatar_s);
+                      }
+                      else {
+                          var comment_avatar_empty_div = $("<div />", {
+                              "class": "comment-avatar-empty-div",
+                          });
+                          var comment_avatar_empty_p = $("<p />", {
+                              "class": "comment-avatar-empty-p",
+                              text: value["comment_user"]["user_name"].toUpperCase().charAt(0),
+                          });
+
+                          comment_avatar_empty_div.append(comment_avatar_empty_p);
+                          comment_avatar.append(comment_avatar_empty_div);
+                      }
+
                       
                       var comment_avatar_a = $("<a />", {
                           "class": "comment-avatar-a pull-left",
                       });
                     
-                      comment_avatar.append(comment_avatar_s);
                       comment_avatar_a.append(comment_avatar);
 
                       //comment user and content

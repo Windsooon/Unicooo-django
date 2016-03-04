@@ -30,6 +30,10 @@
   <script src="{% static 'js/plugin/masonry.min.js' %}"></script>
   <script src="{% static 'js/comment/comment.js' %}"></script>
   <script>
+      var reply_id = {{ request.user.id }};
+      ajax_comment_list(reply_id, 1);
+  </script>
+  <script>
   $.material.init();
   </script>
 {% endblock %}

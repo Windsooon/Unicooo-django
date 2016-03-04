@@ -43,7 +43,7 @@ class ActList(generics.ListCreateAPIView):
         return queryset
 
 class ActDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsAdminOrReadOnly)
     queryset = Act.objects.all()
     serializer_class = ActSerializer
 
@@ -72,7 +72,7 @@ class PostList(generics.ListCreateAPIView):
 
  
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsAdminOrReadOnly)
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 

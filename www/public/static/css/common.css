@@ -1,3 +1,6 @@
+.opacity8 {
+    opacity: .8;
+}
 .navbar.navbar-inverse {
     background-color: #303f9f;
 }
@@ -139,13 +142,4 @@ input {
   opacity:1;    
 }
 
-.account-wrapper {
-    position: relative;
-}
-
-.account-settings {
-    position: absolute;
-    bottom: 5px;
-    right: 20px;
-}
 

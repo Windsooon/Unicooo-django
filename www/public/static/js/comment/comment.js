@@ -25,7 +25,7 @@ var comment_click_handler = function(e) {
                     });
                     var comment_avatar_empty_p = $("<p />", {
                         "class": "comment-avatar-empty-p",
-                        text: $(".request-user").text().charAt(0),
+                        text: $(".request-user").text().toUpperCase().charAt(0),
                     });
                     
                     comment_avatar_empty_div.append(comment_avatar_empty_p);
@@ -168,13 +168,32 @@ function ajax_comment_list(reply_id, page){
                     var comment_outer_div = $("<div />", {
                         "class": "comment-outer-div",
                         });
-                    var comment_image_div = $("<div />", {
-                        "class": "comment-image-div",
+                    var comment_image_a = $("<a />", {
+                        "class": "comment-image-a pull-left",
                         });
-                    var comment_image = $("<img />", {
-                        src: value["comment_avatar"],
-                        "class": "comment-image",
-                        });
+                    //if user avatar is empty
+                    if (value["comment_avatar"]) {
+                        var comment_image_div = $("<div />", {
+                            "class": "comment-image-div",
+                            });
+                        var comment_image = $("<img />", {
+                            src: value["comment_avatar"],
+                            "class": "comment-image",
+                            });
+                        comment_image_div.append(comment_image);
+                        comment_image_a.append(comment_image_div);
+                    }
+                    else {
+                        var comment_empty_image_div = $("<div />", {
+                            "class": "comment-empty-image-div",
+                            });
+                        var comment_empty_image_p = $("<p />", {
+                            "class": "comment-empty-image-p",
+                            text: value["comment_author"].toUpperCase().charAt(0),
+                            });
+                        comment_empty_image_div.append(comment_empty_image_p);
+                        comment_image_a.append(comment_empty_image_div);
+                    }
                     var comment_author = $("<div />", {
                         "class": "comment-author",
                         });
@@ -196,11 +215,10 @@ function ajax_comment_list(reply_id, page){
                         "class": "comment-time-p",
                         text: date,
                         });
-                    comment_image_div.append(comment_image);
                     comment_author.append(comment_author_p); 
                     comment_content.append(comment_content_p); 
                     comment_time.append(comment_time_p); 
-                    comment_outer_div.append(comment_image_div);
+                    comment_outer_div.append(comment_image_a);
                     comment_outer_div.append(comment_author);
                     comment_outer_div.append(comment_content);
                     comment_outer_div.append(comment_time);
