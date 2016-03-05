@@ -48,16 +48,31 @@ $(document).ready(function(){
     //when post image change
     $("#post-upload-image").on('change', function () {
         if (typeof (FileReader) != "undefined") {
+            var upload_file = $(this)[0].files[0];
+            var acceptedTypes = {
+    　　　　　　'image/png': true,
+    　　　　　　'image/jpeg': true,
+    　　　　　　'image/jpg': true,
+    　　　　　　'image/gif': true,
+    　　　　};
+            if (acceptedTypes[upload_file.type] === true) {
+                console.log("image"); 
+            }
             var image_holder = $(".post-upload-div");
             image_holder.empty();
             var reader = new FileReader();
             reader.onload = function (e) {
+                var img = new Image;
+                img.onload = function() {
+                    formArray[2] = img.width;
+                    formArray[3] = img.height;
+                };
+                img.src = reader.result; //is the data URL because called with readAsDataURL
                 $("<img />", {
                     "src": e.target.result,
                     "class": "unfinished-image",
                     "id": "post-upload-img"
                 }).appendTo(image_holder);
-
             }
             image_holder.show();
             reader.readAsDataURL($(this)[0].files[0]);
@@ -66,16 +81,6 @@ $(document).ready(function(){
             alert("This browser does not support FileReader.");
         }
         var file = this.files[0];
-        var fr = new FileReader;
-        fr.onload = function() { //file is loaded
-            var img = new Image;
-            img.onload = function() {
-                formArray[2] = img.width;
-                formArray[3] = img.height;
-            };
-            img.src = fr.result; //is the data URL because called with readAsDataURL
-        };
-        fr.readAsDataURL(file);
         formData.append("file", file);
         $(".post-form-text").prop("disabled", false);
         $.ajax({
@@ -248,3 +253,5 @@ $(document).ready(function(){
        });
     });
 });
+
+

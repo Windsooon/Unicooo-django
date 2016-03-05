@@ -43,8 +43,8 @@ $(document).ready(function(){
                 minlength: jQuery.validator.format("Please Enter at least {0} characters.")
             },
             email: {
-                required: "Please enter a valid email address",
-                minlength: "Please enter a valid email address",
+                required: "Please enter a valid email address.",
+                minlength: "Please enter a valid email address.",
                 remote: "This email had already been registered."
             },
         },

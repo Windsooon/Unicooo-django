@@ -6,6 +6,18 @@ $(document).ready(function(){
             act_title: {
                 required: true,
                 minlength: 6,
+                remote: {
+                    url: "/act_title/",
+                    type: "post",
+                    data: {
+                        act_title: function() {
+                        return $( "#act_title" ).val();
+                        },
+                        current_user: function() {
+                        return $( ".request-user" ).text();
+                        }
+                    }
+                }
             },
             act_content: {
                 required: true,
@@ -16,9 +28,10 @@ $(document).ready(function(){
             act_title: {
                 required: "Please enter your act title.",
                 minlength: jQuery.validator.format("Please Enter at least {0} characters."),
+                remote: "You already create this activity."
             },
             act_content: {
-                required: "Please enter your act content",
+                required: "Please enter your act content.",
                 minlength: jQuery.validator.format("Please Enter at least {0} characters."),
             },
         },

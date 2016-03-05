@@ -151,6 +151,17 @@ def check_email_exist(request):
         return HttpResponse("true")
 
 @csrf_exempt
+def check_act_title(request):
+    act_title = request.POST.get("act_title")
+    current_user = request.POST.get("current_user")
+    try:
+        Act.objects.get(act_title=act_title, user_id__user_name=current_user)
+        return HttpResponse("false")
+    except:
+        return HttpResponse("true")
+
+
+@csrf_exempt
 def call_back(request):
     key = request.POST.get("key")
     name = request.POST.get("name")
