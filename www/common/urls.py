@@ -10,6 +10,7 @@ urlpatterns = [
                   url(r'^$',views.front_page),
                   url(r'^public-activities/$',views.public_activities),
                   url(r'^token/$',views.get_upload_token),
+                  url(r'^email/$',views.check_email_exist),
                   url(r'^callback/$',views.call_back),
                   url(r'^signup/$', views.sign_up, name="sign_up"),
                   url(r'^login/$', views.login_in, name="login"),

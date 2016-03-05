@@ -14,6 +14,15 @@ $(document).ready(function(){
                 email: true,
                 regex: /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i,   
                 minlength: 7,
+                remote: {
+                    url: "/email/",
+                    type: "post",
+                    data: {
+                        email: function() {
+                        return $( "#email_signup" ).val();
+                        }
+                    }
+                }
             },
             user_name: {
                 required: true,
@@ -36,6 +45,7 @@ $(document).ready(function(){
             email: {
                 required: "Please enter a valid email address",
                 minlength: "Please enter a valid email address",
+                remote: "This email had already been registered."
             },
         },
         submitHandler: function(form) {

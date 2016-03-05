@@ -142,6 +142,15 @@ def get_upload_token(request):
     return JsonResponse({"token": upToken, "key": key})
 
 @csrf_exempt
+def check_email_exist(request):
+    email = request.POST.get("email");
+    try:
+        MyUser.objects.get(email=email)
+        return HttpResponse("false")
+    except:
+        return HttpResponse("true")
+
+@csrf_exempt
 def call_back(request):
     key = request.POST.get("key")
     name = request.POST.get("name")
