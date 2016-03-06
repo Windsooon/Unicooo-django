@@ -142,11 +142,13 @@
         // Check your page position
         if (status == "post") {
             var $inner_container = $(".post-container");
+            var $outer_container = $(".post-list");
         }
         else {
             var $inner_container = $(".act-outer-container");
+            var $outer_container = $(".activity-container");
         }
-        if (checkScroll($inner_container) && ajax_state) {
+        if (checkScroll($outer_container, $inner_container) && ajax_state) {
             page += 1;
             ajax_state = false;
             personalInit(personal, status, page, $container);

@@ -199,8 +199,8 @@ function get_post_list(data, container){
 }
 //end get_post_list
 
-function checkScroll(innerContainer){
-    if($(window).scrollTop()+500 > (innerContainer.last().offset().top)){
+function checkScroll(outerContainer, innerContainer){
+    if($(window).scrollTop()+Math.round(outerContainer.height()/3) > (innerContainer.last().offset().top)){
         return true; 
     }
     else{

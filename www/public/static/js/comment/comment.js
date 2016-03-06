@@ -169,6 +169,7 @@ function ajax_comment_list(reply_id, page){
                         });
                     var comment_image_a = $("<a />", {
                         "class": "comment-image-a pull-left",
+                        href:  "/" + value["comment_author"] + "/act_crate/",
                         });
                     //if user avatar is empty
                     if (value["comment_avatar"]) {
@@ -196,6 +197,10 @@ function ajax_comment_list(reply_id, page){
                     var comment_author = $("<div />", {
                         "class": "comment-author",
                         });
+                    var comment_author_a = $("<a />", {
+                        "class": "comment-author-a",
+                        href:  "/" + value["comment_author"] + "/act_crate/",
+                        });
                     var comment_author_p = $("<p />", {
                         "class": "comment-author-p",
                         text: value["comment_author"]
@@ -214,7 +219,8 @@ function ajax_comment_list(reply_id, page){
                         "class": "comment-time-p",
                         text: date,
                         });
-                    comment_author.append(comment_author_p); 
+                    comment_author.append(comment_author_a); 
+                    comment_author_a.append(comment_author_p); 
                     comment_content.append(comment_content_p); 
                     comment_time.append(comment_time_p); 
                     comment_outer_div.append(comment_image_a);

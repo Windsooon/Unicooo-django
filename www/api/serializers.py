@@ -10,7 +10,11 @@ from activities.choices import ACTTYPE, ACTLICENCE
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = MyUser
-        fields = ("id",  "email", "password", "user_name", "user_avatar", "user_gender", "user_point", "user_details", "user_register_time")
+        fields = ("id",  "email", "password", "user_name", "user_avatar", "user_gender", "user_point", "user_details")
+        extra_kwargs = {
+                "password": {"write_only": True},
+                "email": {"write_only": True}
+        }
         read_only_fields = ("id", "user_avatar", "user_details", "user_gender", "user_point")
 
     def create(self, validated_data):

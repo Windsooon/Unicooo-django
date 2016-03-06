@@ -12,7 +12,13 @@
   <!-- personal info begin -->
   <div class="personal-header">
     <div class="personal-avatar-div">
-      <img class="personal-avatar-image" src="http://7xokch.com1.z0.glb.clouddn.com/uni-testred.png" />
+      {% if request.user.user_avatar %}
+        <img class="personal-avatar-image" src="{{ request.user.user_avatar }}" />
+      {% else %}
+        <div class="personal-img-wrapper">
+          <p class="personal-img-p">{{ request.user.user_name|slice:"1" }}</p>
+        </div>
+      {% endif %}
       <p class="personal-avatar-p">{{ request.user.user_name }}</p>
       <input type="hidden" value={{request.user.id}} />
       <p class="personal-details">{{request.user.user_details}}</p>
@@ -47,7 +53,7 @@
 
     scrollHandler = function () {
         // Check your page position
-        if (checkScroll($(".comment-outer-div")) && ajax_state) {
+        if (checkScroll($(".comment-wrapper"), $(".comment-outer-div")) && ajax_state) {
             page += 1;
             ajax_state = false;
             ajax_comment_list(reply_id, page);
@@ -55,8 +61,8 @@
     };
 
     
-    function checkScroll(innerContainer){
-        if($(window).scrollTop()+500 > (innerContainer.last().offset().top)){
+    function checkScroll(outerContainer, innerContainer){
+        if($(window).scrollTop()+Math.round(outerContainer.height()/3) > (innerContainer.last().offset().top)){
             return true; 
         }
         else{

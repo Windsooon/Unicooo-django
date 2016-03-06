@@ -20,7 +20,7 @@ $(document).ready(function(){
     });
     scrollHandler = function () {
         // Check your page position
-        if (checkScroll($(".act-outer-container")) && ajax_state) {
+        if (checkScroll($(".activity-container"), $(".act-outer-container")) && ajax_state) {
             data.page += 1;
             ajax_state = false;
             get_act_list(data, $container)

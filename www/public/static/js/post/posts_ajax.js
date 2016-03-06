@@ -22,7 +22,7 @@ $(document).ready(function(){
     });
     scrollHandler = function () {
         // Check your page position
-        if (checkScroll($(".post-container:last")) && ajax_state) {
+        if (checkScroll($("#posts-container"), $(".post-container:last")) && ajax_state) {
             data.page += 1;
             ajax_state = false;
             get_post_list(data, $container);
@@ -58,6 +58,7 @@ $(document).ready(function(){
                   $(e.currentTarget).find(".post-raw-details").attr("src",post_thumb_url);
                   $("#input-post-id").val(post_id);
                   $("#input-post-author-id").val(data["user"]);
+                  $(".post-details-a").attr("href", "/" + data["post_user"]["user_name"] + "/act_create")
                   $(".post-details-user").text(data["post_user"]["user_name"]);
                   $(".post-details-posttime").text(post_date);
                   $(".post-details-content-p").text(data["post_content"]);
@@ -92,13 +93,14 @@ $(document).ready(function(){
                       
                       var comment_avatar_a = $("<a />", {
                           "class": "comment-avatar-a pull-left",
+                          href:  "/" + value["comment_user"]["user_name"] + "/act_crate/",
                       });
                     
                       comment_avatar_a.append(comment_avatar);
 
                       //comment user and content
                       var comment_username_a = $("<a />", {
-                          href:  value["comment_user"]["user_name"],
+                          href:  "/" + value["comment_user"]["user_name"] + "/act_crate/",
                           "class": "comment-username-a",
                       });
                         

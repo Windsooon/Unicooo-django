@@ -167,7 +167,10 @@
 }
 
 .comment-username {
-    display: inline;
+}
+
+.comment-username-a {
+    display: block;
 }
 
 .comment-avatar {
@@ -178,6 +181,8 @@
 
 .comment-avatar-a {
     display: inline-block;
+    position:relative;
+    z-index:10;
 }
 
 .comment-form {
