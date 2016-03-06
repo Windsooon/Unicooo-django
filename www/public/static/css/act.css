@@ -158,8 +158,22 @@
     overflow:hidden;
     position: relative;
     width: 100%;
-    min-height: 499px;
+    height: 499px;
 }
+
+@media only screen and (max-width: 568px) { 
+    .act-upload-div {
+        height: 307px;
+    }
+}
+
+@media only screen and (max-width: 320px) { 
+    .act-upload-div {
+        height: 252px;
+    }
+}
+
+
 
 #act-upload-img{
     position: absolute;
@@ -175,7 +189,7 @@
     width: 100%;
 }
 
-@media screen and (min-width: 1200px) { 
+@media only screen and (min-width: 1200px) { 
     .act-details-div {
         height: 18em;
     }

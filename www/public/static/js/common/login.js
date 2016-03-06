@@ -53,7 +53,9 @@ $(document).ready(function(){
                 data:  {csrfmiddlewaretoken: csrf_token, "email": $("#email_login").val(),"password": $("#password_login").val()},
                 beforeSend:function() {},
                 success: function(xhr) {
-                    window.location.replace("/");
+                    var current_url = window.location.href; 
+                    var location = current_url.split("next=", 2);
+                    window.location.replace(location[1]);
                 },
                 error: function(xhr, status, error) {
                     $form_submit_wrap.empty();

@@ -137,9 +137,16 @@ function get_post_list(data, container){
                     single_footer.className = "post-footer clearfix";
                     //post footer content(like and comment count)
                     var single_footer_like = document.createElement("span");
-                    single_footer_like.className = "post-like glyphicon glyphicon-heart pull-right";
+                    single_footer_like.className = "post-like glyphicon glyphicon-heart";
                     var single_footer_comment = document.createElement("span");
-                    single_footer_comment.className = "post-comment glyphicon glyphicon-comment pull-right";
+                    single_footer_comment.className = "post-comment glyphicon glyphicon-comment";
+                    var single_footer_comment_p = document.createElement("p");
+                    single_footer_comment_p.className = "post-comment-p";
+                    if (value["comment_count"] != 0) {
+                        single_footer_comment_p.innerHTML = value["comment_count"];
+                    }
+                    var single_footer_like_p = document.createElement("p");
+                    single_footer_like_p.className = "post-like-p"
                     //content div
                     var single_content = document.createElement("div");
                     single_content.className = "post-content";
@@ -154,6 +161,9 @@ function get_post_list(data, container){
                     post_thumb_a.appendChild(post_thumb_url);
                     single_posttime.appendChild(single_posttime_p);
                     single_title.appendChild(single_title_p);
+                    //footer like and p
+                    single_footer_like.appendChild(single_footer_like_p);
+                    single_footer_comment.appendChild(single_footer_comment_p) ;
                     single_footer.appendChild(single_footer_like);
                     single_footer.appendChild(single_footer_comment);
                     single_content.appendChild(single_content_p);

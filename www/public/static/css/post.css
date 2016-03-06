@@ -100,16 +100,32 @@
 .post-footer {
     margin-top: 10px;
     margin-bottom: 10px;
+    position: relative;
+    height: 20px;
 }
 
 .post-like {
+    position: absolute;
+    right: 10px;
     color: #999;
     width: 50px;
 }
 
+.post-like-p {
+    margin-left: 4px;
+    display: inline;
+}
+
 .post-comment {
+    position: absolute;
+    right: 70px;
     color: #999;
     width: 50px;
+}
+
+.post-comment-p {
+    margin-left: 4px;
+    display: inline;
 }
 
 .post-raw-details {

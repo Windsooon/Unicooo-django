@@ -58,11 +58,14 @@ class PostAllSerializer(serializers.ModelSerializer):
     """Posts api fields"""
     post_user = UserSerializer(source="user", read_only=True)
     post_author = serializers.ReadOnlyField(source='user.user_name')
+    comment_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
-        fields = ("id", "act", "post_author", "post_title", "post_content", "post_thumb_url", "post_thumb_width", "post_thumb_height", "nsfw", "post_create_time", "post_user",) 
+        fields = ("id", "act", "post_author", "post_title", "post_content", "post_thumb_url", "post_thumb_width", "post_thumb_height", "nsfw", "post_create_time", "post_user", "comment_count") 
        
+    def get_comment_count(self, obj):
+        return obj.comment_post.count()
        
 class PostSerializer(serializers.ModelSerializer):
     """Post api fields"""

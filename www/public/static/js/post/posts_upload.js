@@ -90,11 +90,10 @@ $(document).ready(function(){
                         formArray[3] = 400;
                     };
                     $("<img />", {
-                        "src": "https://o3e6g3hdp.qnssl.com/1456910926784337d1f603d27139612f9210a95d30005bfd17-actCoverSmall"
+                        "src": "https://o3e6g3hdp.qnssl.com/audio.jpg",
                         "class": "unfinished-image",
                         "id": "post-upload-img"
                     }).appendTo(image_holder);
-                }
                 image_holder.show();
                 reader.readAsDataURL($(this)[0].files[0]);
 
