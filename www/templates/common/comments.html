@@ -31,7 +31,38 @@
   <script src="{% static 'js/comment/comment.js' %}"></script>
   <script>
       var reply_id = {{ request.user.id }};
-      ajax_comment_list(reply_id, 1);
+      var page = 1;
+      var scrollTimeout;
+      var ajax_state = true;
+      ajax_comment_list(reply_id, page);
+      console.log(ajax_state);
+      $(window).scroll(function () {
+        var scrollTimeout;
+        if (scrollTimeout) {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = null;
+        }
+        scrollTimeout = setTimeout(scrollHandler, 250);
+    });
+
+    scrollHandler = function () {
+        // Check your page position
+        if (checkScroll($(".comment-outer-div")) && ajax_state) {
+            page += 1;
+            ajax_state = false;
+            ajax_comment_list(reply_id, page);
+        }
+    };
+
+    
+    function checkScroll(innerContainer){
+        if($(window).scrollTop()+500 > (innerContainer.last().offset().top)){
+            return true; 
+        }
+        else{
+            return false;
+        }
+    }
   </script>
   <script>
   $.material.init();

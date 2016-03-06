@@ -117,7 +117,6 @@ var comment_click_handler = function(e) {
                       error_text = "Please try again later";
                   }
                   if ($(".form-server-error-div").length) {
-                      console.log("already");    
                     } 
                   else {
                       $form_server_error_div = $("<div />", {"class": "form-server-error-div"});
@@ -238,5 +237,11 @@ function ajax_comment_list(reply_id, page){
                 empty_comment.appendTo($(".comment-wrapper")).hide().fadeIn();
             }
         },
+        complete: function(data) {
+            complete_data = $.parseJSON(data.responseText); 
+            if (complete_data.next) {
+                ajax_state = true;
+            }
+        }
     }); 
 }

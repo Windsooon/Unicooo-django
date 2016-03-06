@@ -15,7 +15,7 @@ $(document).ready(function() {
         submitHandler: function(form) {
             var $form_group_loading = $(".form-group-loading");
             var $form_submit_wrap = $(".submit-btn-wrap");
-            csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+            var csrf_token = $("input[name='csrfmiddlewaretoken']").val();
             $("#settings-form :input").prop("disabled", true);
             $form_submit_wrap.empty()
             var form_outer_loading = $("<div />", {
@@ -70,7 +70,6 @@ $(document).ready(function() {
         success: function(label) {
         },
         highlight: function(element, errorClass) {
-            $(element).parent().next().find("." + errorClass).removeClass("checked");
         }
     }); 
 });

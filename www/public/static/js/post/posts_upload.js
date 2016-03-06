@@ -49,7 +49,6 @@ $(document).ready(function(){
     $("#post-upload-image").on('change', function () {
         if (typeof (FileReader) != "undefined") {
             var upload_file = $(this)[0].files[0];
-            console.log(upload_file.type);
             switch (upload_file.type)
             {
             // if file is image
@@ -83,10 +82,27 @@ $(document).ready(function(){
             case "audio/mpeg":
             case "audio/ogg":
             case "audio/wav":
-              console.log("audio");
-              break;
+                var image_holder = $(".post-upload-div");
+                image_holder.empty();
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                        formArray[2] = 350;
+                        formArray[3] = 400;
+                    };
+                    $("<img />", {
+                        "src": "https://o3e6g3hdp.qnssl.com/1456910926784337d1f603d27139612f9210a95d30005bfd17-actCoverSmall"
+                        "class": "unfinished-image",
+                        "id": "post-upload-img"
+                    }).appendTo(image_holder);
+                }
+                image_holder.show();
+                reader.readAsDataURL($(this)[0].files[0]);
+
+                break;
+            default: 
+                alert("This file has't been supported"); 
+                return;
             //if file is video
-            
             }
         } 
         else {
