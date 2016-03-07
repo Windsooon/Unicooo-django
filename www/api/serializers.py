@@ -30,8 +30,8 @@ class UserSerializer(serializers.ModelSerializer):
 class UserSettingsSerializer(serializers.ModelSerializer):
     class Meta:
         model = MyUser
-        fields = ("user_gender", "user_details")
-        #read_only_fields = ("id", "user_avatar", "user_details", "user_gender", "user_point")
+        fields = ("id", "user_gender", "user_details", "user_point")
+        read_only_fields = ("user_point",)
 
 class ActSerializer(serializers.ModelSerializer):
     """Activity api fields"""
@@ -66,7 +66,7 @@ class PostAllSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ("id", "act", "post_author", "post_title", "post_content", "post_thumb_url", "post_thumb_width", "post_thumb_height", "nsfw", "post_create_time", "post_user", "comment_count") 
+        fields = ("id", "act", "post_author", "post_title", "post_content", "post_thumb_url", "post_thumb_width", "post_thumb_height", "post_mime_types", "nsfw", "post_create_time", "post_user", "comment_count") 
        
     def get_comment_count(self, obj):
         return obj.comment_post.count()

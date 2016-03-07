@@ -97,7 +97,7 @@ LOGIN_URL = '/login/'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'unicooo_postgre_sql',
+        'NAME': 'locat_test',
         'USER': 'windson',
         'PASSWORD': '123456',
         'HOST': 'localhost',

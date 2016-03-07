@@ -1,6 +1,7 @@
 from django.db import models
 from common.models import MyUser
 from activities.models import Act
+from activities.choices import POSTMIME
 
 
 class Post(models.Model):
@@ -11,6 +12,7 @@ class Post(models.Model):
     post_thumb_url = models.CharField(max_length=255)
     post_thumb_width = models.IntegerField()
     post_thumb_height = models.IntegerField()
+    post_mime_types = models.IntegerField(choices=POSTMIME, default=POSTMIME[0][0])
     nsfw = models.IntegerField()
     post_create_time = models.DateTimeField(auto_now=True)
 

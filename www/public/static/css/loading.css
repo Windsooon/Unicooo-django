@@ -17,6 +17,10 @@
     height: 36px;
 }
 
+.loading-center-setting {
+    height: 36px;
+}
+
 .la-ball-clip-rotate,
 .la-ball-clip-rotate > div {
     position: relative;

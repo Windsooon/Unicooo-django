@@ -18,3 +18,9 @@ USERGENDER = (
     (1, "MALE"),
     (2, "FEMALE"),
 )
+
+POSTMIME = (
+    (0, "IMAGE"),
+    (1, "AUDIO"),
+    (2, "VIDEO"),
+)

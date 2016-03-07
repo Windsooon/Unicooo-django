@@ -66,6 +66,7 @@ $(document).ready(function(){
                     img.onload = function() {
                         formArray[2] = img.width;
                         formArray[3] = img.height;
+                        formArray[5] = 0;
                     };
                     img.src = reader.result; //is the data URL because called with readAsDataURL
                     $("<img />", {
@@ -88,6 +89,7 @@ $(document).ready(function(){
                 reader.onload = function (e) {
                         formArray[2] = 350;
                         formArray[3] = 400;
+                        formArray[5] = 1;
                     };
                     $("<img />", {
                         "src": "https://o3e6g3hdp.qnssl.com/audio.jpg",
@@ -209,7 +211,7 @@ $(document).ready(function(){
       $.ajax({
           url: "/api/posts/",
           type: "POST",
-          data: {csrfmiddlewaretoken: csrf_token, "post_thumb_url": formArray[1], "post_thumb_width": formArray[2], "post_thumb_height": formArray[3], "nsfw": 1, "act": formArray[4], "post_content": formArray[6]}, 
+          data: {csrfmiddlewaretoken: csrf_token, "post_thumb_url": formArray[1], "post_thumb_width": formArray[2], "post_thumb_height": formArray[3], "nsfw": 1, "post_mime_types": formArray[5], "act": formArray[4], "post_content": formArray[6]}, 
           datatype: "json",
           beforeSend: function(){
               $(".post-form-text").prop("disabled", true);
@@ -217,15 +219,33 @@ $(document).ready(function(){
           success: function(data) {
               var date = data["post_create_time"].split("T", 1);
               var post_a = $("<a />", {
-                          "class": "post-container-a",
+                          "class": "post-thumb-a",
                           href: "#post_details",
                           "data-toggle": "modal",
                           "data-target": "#post-details",
                       });
-               var post_image = $("<img />", {
+               if (data["post_mime_types"] == 0) {
+                   var post_image = $("<img />", {
                           "class": "post-container-img",
                           src: imageUrl + data["post_thumb_url"],
                       });
+                    post_a.append(post_image)
+               }
+               else if (data["post_mime_types"] == 1) {
+                   var audio_div = $("<div />", {
+                          "class": "audio-div",
+                      });
+                   var audio_div_p = $("<p />", {
+                          "class": "audio-div-p",
+                          text: data["post_content"],
+                      });
+                   var audio_fadeout = $("<div />", {
+                          "class": "act-fadeout",
+                      });
+                   audio_div.append(audio_div_p);
+                   post_a.append(audio_div);
+                   post_a.append(audio_fadeout);
+               }
                var post_div_wrapper = $("<div />", {
                           "class": "post-container-col"
                       });
@@ -275,7 +295,6 @@ $(document).ready(function(){
                post_footer.append(post_comment);
                //
                post_content.append(post_content_p);
-               post_a.append(post_image)
                post_div_wrapper.append(post_a);
                post_div_wrapper.append(post_border);
                post_div_wrapper.append(post_content);
@@ -285,7 +304,7 @@ $(document).ready(function(){
                $container.imagesLoaded(function() {
                    $container.masonry('prepended', post_div);
                });
-               $(".post-container-a:first").attr({"data-post-id": data["id"]});
+               $(".post-thumb-a:first").attr({"data-post-id": data["id"]});
                $("#post-upload").modal("hide")
           }, 
           error: function(data) {

@@ -149,4 +149,112 @@
     margin-bottom: 0px;
 }
 
+.audio-div {
+    height: 150px;
+    background-color: white;
+    text-align: center;
+}
+
+@media only screen and (min-width: 569px) { 
+    .audio-div-p {
+        margin: 0 auto;
+        width: 300px;
+        color: gray;
+        font-size: 50px;
+        font-weight: 500;
+        word-wrap:break-word; 
+        word-break:normal; 
+    }
+
+    .audio-div-p-small {
+        margin: 0 auto;
+        width: 300px;
+        color: gray;
+        font-size: 30px;
+        font-weight: 500;
+        word-wrap:break-word; 
+        word-break:normal; 
+    }
+}
+
+
+@media only screen and (max-width: 568px) { 
+    .audio-div-p {
+        margin: 0 auto;
+        width: 258px;
+        color: gray;
+        font-size: 40px;
+        font-weight: 500;
+        word-wrap:break-word; 
+        word-break:normal; 
+    }
+
+    .audio-div-p-small {
+        margin: 0 auto;
+        width: 258px;
+        color: gray;
+        font-size: 30px;
+        font-weight: 500;
+        word-wrap:break-word; 
+        word-break:normal; 
+    }
+}
+
+@media only screen and (max-width: 320px) { 
+    .audio-div-p {
+        margin: 0 auto;
+        width: 258px;
+        color: gray;
+        font-size: 30px;
+        font-weight: 500;
+        word-wrap:break-word; 
+        word-break:normal; 
+    }
+
+    .audio-div-p-small {
+        margin: 0 auto;
+        width: 258px;
+        color: gray;
+        font-size: 20px;
+        font-weight: 500;
+        word-wrap:break-word; 
+        word-break:normal; 
+    }
+}
+
+.audio-div-audio {
+    width: 100%;
+}
+
+audio {
+    opacity: .8;
+}
+
+.act-fadeout {
+    position: relative; 
+    bottom: 2em;
+    height: 10em;
+    background: -webkit-linear-gradient(
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 1) 100%
+    ); 
+    background-image: -moz-linear-gradient(
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 1) 100%
+    );
+    background-image: -o-linear-gradient(
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 1) 100%
+    );
+    background-image: linear-gradient(
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 1) 100%
+    );
+    background-image: -ms-linear-gradient(
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 1) 100%
+    );
+} 
+
+
 

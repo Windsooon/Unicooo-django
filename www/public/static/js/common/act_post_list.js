@@ -112,20 +112,53 @@ function get_post_list(data, container){
                     single_post_col.className = "post-container-col";
                     //post thumb image
                     var post_thumb_a = document.createElement("a");
-                    //post_thumb_a.className = value["id"];
+                    post_thumb_a.className = "post-thumb-a";
                     post_thumb_a.setAttribute("href", "#post_details");
                     post_thumb_a.setAttribute("data-toggle", "modal");
                     post_thumb_a.setAttribute("data-target", "#post-details");
                     post_thumb_a.setAttribute("data-post-id", value["id"]);
-                    var post_thumb_url = document.createElement("img");
-                    post_thumb_url.src = httpsUrl + value["post_thumb_url"] + imageStyle;
-                    post_thumb_url.setAttribute("onerror", "imgError(this);");
+                    //if post is image
+                    if (value["post_mime_types"] == 0) {
+                        var post_thumb_url = document.createElement("img");
+                        post_thumb_url.src = httpsUrl + value["post_thumb_url"] + imageStyle;
+                        post_thumb_url.setAttribute("onerror", "imgError(this);");
+                        post_thumb_a.appendChild(post_thumb_url);
+                    }
+                    else if  (value["post_mime_types"] == 1) {
+                        var audio_div = document.createElement("div");
+                        audio_div.className = "audio-div";
+                        var fade_out = document.createElement("div");
+                        fade_out.className = "act-fadeout";
+                        // audio content
+                        var audio_div_p = document.createElement("p");
+                        var audio_div_audio = document.createElement("audio");
+                        audio_div_audio.className = "audio-div-audio";
+                        audio_div_audio.src = httpsUrl + value["post_thumb_url"];
+                        audio_div_audio.setAttribute("controls", "controls");
+                        audio_div_audio.setAttribute("preload", "auto");
+                        if (value["post_content"].length <= 10) {
+                            audio_div_p.className = "audio-div-p";
+                        }
+                        else {
+                            audio_div_p.className = "audio-div-p-small";
+                        }
+                        audio_div_p.innerHTML = value["post_content"];
+                        audio_div.appendChild(audio_div_p);
+                        post_thumb_a.appendChild(audio_div);
+                        post_thumb_a.appendChild(fade_out);
+                        post_thumb_a.appendChild(audio_div_audio);
+
+                    }
                     //post border
                     var single_border = document.createElement("div");
                     single_border.className = "post-border";
                     //post title
                     var single_title = document.createElement("div");
                     single_title.className = "post-title";
+                    //post title a
+                    var single_title_a = document.createElement("a");
+                    single_title_a.className = "post-title-a";
+                    single_title_a.setAttribute("href", "/" + value["post_author"] + "/act_create" );
                     //post posttime
                     var single_posttime = document.createElement("div");
                     single_posttime.className = "post-posttime";
@@ -159,9 +192,9 @@ function get_post_list(data, container){
                     var single_content_p = document.createElement("p");
                     single_content_p.className = "post-content-p";
                     single_content_p.innerHTML =  value["post_content"];
-                    post_thumb_a.appendChild(post_thumb_url);
                     single_posttime.appendChild(single_posttime_p);
                     single_title.appendChild(single_title_p);
+                    single_title_a.appendChild(single_title);
                     //footer like and p
                     single_footer_like.appendChild(single_footer_like_p);
                     single_footer_comment.appendChild(single_footer_comment_p) ;
@@ -169,7 +202,7 @@ function get_post_list(data, container){
                     single_footer.appendChild(single_footer_comment);
                     single_content.appendChild(single_content_p);
                     //single_border
-                    single_border.appendChild(single_title);
+                    single_border.appendChild(single_title_a);
                     single_border.appendChild(single_posttime);
                     //single_post
                     single_post_col.appendChild(post_thumb_a);

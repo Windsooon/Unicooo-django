@@ -35,3 +35,17 @@
     display: none;
 }
 
+.setting-upload-cover {
+    margin: 0px;
+}
+
+.settings-img-wrapper {
+        margin: 0 auto;
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        background-color: #c8c7cd;
+        position: relative;
+        padding-top: 20px;
+    }
+

@@ -2,6 +2,7 @@
 {% load staticfiles %}
 {% block extra_head %}
   <link href="{% static 'css/settings.css' %}" rel="stylesheet"/>
+  <link href="{% static 'css/loading.css' %}" rel="stylesheet"/>
 {% endblock %}
 {% block content %}
 <!-- container begin -->
@@ -16,7 +17,7 @@
               </label>
               {% else %}
               <label for="file-input">
-                <div>
+                <div class="settings-img-wrapper">
                   <p class="avatar-settings-p">{{ person.user_name|slice:"1" }}</p>
                 </div> 
               </label>
@@ -40,7 +41,7 @@
           </div>
           <div class="form-group form-group-loading">
             <div class="submit-btn-wrap">
-              <button type="button" class="submit-btn btn btn-primary btn-block" id="setting-btn"><span class="glyphicon glyphicon-ok"></span></button>
+              <button type="sumbit" class="submit-btn btn btn-primary btn-block" id="setting-btn"><span class="glyphicon glyphicon-ok"></span></button>
             </div>
           </div>
         </fieldset>
