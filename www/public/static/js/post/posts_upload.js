@@ -12,7 +12,7 @@ $(document).ready(function(){
         var $post_length = $(".post-form-length");
         //length未必存在
         var currrent_length = $(".post-form-text").val().length + 1;   
-        if (currrent_length <= 60) {
+        if (currrent_length >= 2 && currrent_length <= 60) {
             $post_length.text(61-currrent_length);
             if ($('#add-post-btn').is(":disabled") && post_upload_status) {
                 $('#add-post-btn').prop('disabled', false);
@@ -111,6 +111,19 @@ $(document).ready(function(){
         formData.append("file", file);
         $(".post-form-text").prop("disabled", false);
         $.ajax({
+            xhr: function() {
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener("progress", function(evt) {
+                  if (evt.lengthComputable) {
+                    var percentComplete = evt.loaded / evt.total;
+                    percentComplete = parseInt(percentComplete * 100);
+                    $(".progress-bar").css("width", percentComplete + "%")
+                    if (percentComplete === 100) {
+                    }
+                  }
+                }, false);
+                return xhr;
+            },
             url: "https://up.qbox.me",
             type: "POST",
             data: formData,
@@ -178,7 +191,7 @@ $(document).ready(function(){
                 $(".post-upload-div img").removeClass("unfinished-image");
                 $(".post-upload-div img").addClass("finished-image");
                 var post_length = $(".post-form-text").val().length + 1;
-                if ( 2 <= post_length <= 60 && $('#add-post-btn').is(":disabled")) {
+                if (  post_length >= 2 && post_length <= 60 && $('#add-post-btn').is(":disabled")) {
                     $('#add-post-btn').prop('disabled', false);
             }
 
@@ -233,7 +246,7 @@ $(document).ready(function(){
                           "class": "post-posttime"
                       });
                var post_posttime_p = $("<p />", {
-                          "class": "post-time",
+                          "class": "post-posttime-p",
                           text: date,
                       });
                var post_content = $("<div />", {

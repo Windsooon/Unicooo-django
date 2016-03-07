@@ -151,6 +151,16 @@ def check_email_exist(request):
         return HttpResponse("true")
 
 @csrf_exempt
+def check_username_exist(request):
+    user_name = request.POST.get("user_name");
+    try:
+        MyUser.objects.get(user_name=user_name)
+        return HttpResponse("false")
+    except:
+        return HttpResponse("true")
+
+
+@csrf_exempt
 def check_act_title(request):
     act_title = request.POST.get("act_title")
     current_user = request.POST.get("current_user")

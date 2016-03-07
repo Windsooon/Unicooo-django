@@ -201,7 +201,7 @@ function get_post_list(data, container){
 //end get_post_list
 
 function checkScroll(outerContainer, innerContainer){
-    if($(window).scrollTop()+Math.round(outerContainer.height()/3) > (innerContainer.last().offset().top)){
+    if($(window).scrollTop() > Math.round(outerContainer.height()*2/5)){
         return true; 
     }
     else{

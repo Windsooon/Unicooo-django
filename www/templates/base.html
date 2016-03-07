@@ -69,12 +69,12 @@
              <li><a href="{% url 'personal' request.user.user_name %}act_create/"><span class="icon-big-right glyphicon glyphicon-user" aria-hidden="true"></span>Personal</a></li>
             <li><a href="{% url 'personal' request.user.user_name %}comments/"><span class="icon-big-right glyphicon glyphicon-comment" aria-hidden="true"></span>Comments</a></li>
             <li role="separator" class="divider"></li>
-            <li><a href=""><span class="icon-big-right glyphicon glyphicon-cog" aria-hidden="true"></span>Settings</a></li>
+            <li><a href="{% url 'personal' request.user.user_name %}"><span class="icon-big-right glyphicon glyphicon-cog" aria-hidden="true"></span>Settings</a></li>
           </ul>
         </li>
       {% else %}
         
-        <li><a href="/signup" role="button" aria-haspopup="true" aria-expanded="false">SignUp </a></li>
+        <li><a href="/signup" role="button" aria-haspopup="true" aria-expanded="false">SignUp</a></li>
       {% endif %}
       </ul>
     </div>

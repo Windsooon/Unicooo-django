@@ -14,6 +14,10 @@
     padding-top: 10px;
 }
 
+.comment-content-p {
+    word-wrap:break-word; word-break:normal;
+}
+
 .comment-empty-image-div {
     width: 60px;
     height: 60px;
@@ -75,7 +79,7 @@
 }
 
 .comment-posttime-p {
-    color: gray;
+    color: #bcbcbc;
 }
 
 

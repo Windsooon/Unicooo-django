@@ -86,6 +86,7 @@ var comment_click_handler = function(e) {
                       });
 
                       var comment_content_p = $("<p />", {
+                          "class": "comment-content-p",
                           text:  comment_text,
                       });
 
@@ -140,13 +141,16 @@ var comment_click_handler = function(e) {
         var $comment_length = $(".comment-form-length");
         //length未必存在
         var currrent_length=$(".comment-form-text").val().length + 1;   
-        if (currrent_length <= 140) {
+        if (currrent_length < 2) {
+            $('#add-comment-btn').prop('disabled', true);
+        }
+        else if (currrent_length >=2 && currrent_length <= 140) {
             $comment_length.text(141-currrent_length);
             if ($('#add-comment-btn').is(":disabled")) {
                 $('#add-comment-btn').prop('disabled', false);
             }
         }
-        else {
+        else if (currrent_length >140) {
             $comment_length.text("beyond 140 char");
             $comment_length.css("color","#3f51b5");
             $('#add-comment-btn').prop('disabled', true);

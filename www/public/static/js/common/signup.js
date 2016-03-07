@@ -27,6 +27,15 @@ $(document).ready(function(){
             user_name: {
                 required: true,
                 minlength: 6,
+                remote: {
+                    url: "/checkuser/",
+                    type: "post",
+                    data: {
+                        user_name: function() {
+                        return $( "#username_signup" ).val();
+                        }
+                    }
+                }
             },
             password: {
                 required: true,
@@ -37,6 +46,7 @@ $(document).ready(function(){
             user_name: {
                 required: "Please enter your username.",
                 minlength: jQuery.validator.format("Please Enter at least {0} characters."),
+                remote: "This username had already been registered."
             },
             password: {
                 required: "Please enter your password",

@@ -113,6 +113,7 @@ $(document).ready(function(){
             form_outer_loading.append(form_loading);
             $form_submit_wrap.append(form_outer_loading);
             $.ajax({
+                              
                 url: "/api/acts/",
                 type: "POST",
                 datatype: "json",
@@ -200,6 +201,19 @@ $(document).ready(function(){
         $("#new-act-form :input").prop("disabled", false);
         formData.append("file", file);
         $.ajax({
+            xhr: function() {
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener("progress", function(evt) {
+                  if (evt.lengthComputable) {
+                    var percentComplete = evt.loaded / evt.total;
+                    percentComplete = parseInt(percentComplete * 100);
+                    $(".progress-bar").css("width", percentComplete + "%")
+                    if (percentComplete === 100) {
+                    }
+                  }
+                }, false);
+                return xhr;
+            },  
             url: "https://up.qbox.me",
             type: "POST",
             data: formData,

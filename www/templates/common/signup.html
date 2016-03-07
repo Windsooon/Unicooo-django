@@ -15,7 +15,7 @@
       </div>
     <div>
       <a class="sign-up-a" href="#" class="thumbnail">
-        <img class="sign-up-thumb" src="https://o3e6g3hdp.qnssl.com/inclution.jpg" />
+        <img class="sign-up-thumb" src="https://o3e6g3hdp.qnssl.com/inclution.jpg" alt="welcome to signup unicooo" />
       </a>
     </div>
     <div>
@@ -50,7 +50,7 @@
            </div>
       </form>
       <div class="pull-right">
-          <a href="{%url 'login' %}"><h5 class="opacity8">Already have an account</h5></a>
+          <a href="{%url 'login' %}?next={% firstof request.path '/' %}"><h5 class="opacity8">Already have an account</h5></a>
       </div>
     </div>
   </div>

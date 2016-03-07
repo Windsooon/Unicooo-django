@@ -11,6 +11,7 @@ urlpatterns = [
                   url(r'^public-activities/$',views.public_activities),
                   url(r'^token/$',views.get_upload_token),
                   url(r'^email/$',views.check_email_exist),
+                  url(r'^checkuser/$',views.check_username_exist),
                   url(r'^act_title/$',views.check_act_title),
                   url(r'^callback/$',views.call_back),
                   url(r'^signup/$', views.sign_up, name="sign_up"),

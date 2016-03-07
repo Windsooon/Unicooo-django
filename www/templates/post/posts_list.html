@@ -12,7 +12,7 @@
   <div class="activity-details-thumb clearfix">
     <div class="activity-details-thumb-img col-sm-7 col-md-7 col-lg-7"> 
       <a class="activity-details-thumb-a">
-        <img src="{{ act_thumb }}" />
+          <img src="{{ act_thumb }}" alt="{{ act_details.act_title }}"/>
       </a>
     </div>
     <div class="activity-details-content col-sm-5 col-md-5 col-lg-5">
@@ -26,7 +26,7 @@
     <div class="author-div">
       <a class="author-a" href="{%url 'personal' act_author.user_name %}act_create">
           {% if act_avatar.user_avatar %}
-            <img class="author-img pull-right" src="{{ act_avatar.user_avatar }}"/> 
+          <img class="author-img pull-right" src="{{ act_avatar.user_avatar }}" alt="{{ act_avatar }}"/> 
           {% else %}
             <div class="act-avatar-div" >
               <p class="act-avatar-p">{{ act_author.user_name|slice:"1" }}</p>
@@ -39,7 +39,7 @@
       {% if request.user.is_authenticated %}
         <button type="button" class="btn btn-lg btn-primary join-act-btn" data-toggle="modal" data-target="#post-upload">join the act</button>
       {% else %}
-      <a class="btn btn-lg btn-primary join-act-btn" href="{%url 'login' %}" role="button">Sign up to join</a>
+      <a class="btn btn-lg btn-primary join-act-btn" href="{%url 'login' %}?next={% firstof request.path '/' %}" role="button">Login to join</a>
       {% endif %}
     </div>
   </div>
@@ -57,7 +57,10 @@
           <!-- end modal-header -->
           <div class="modal-body">
             <div class="post-upload-div">
-                <img id="post-upload-img" src="{{ httpsUrl }}post-example.jpg" />
+              <img id="post-upload-img" src="{{ httpsUrl }}post-example.jpg" />
+            </div>
+            <div class="progress">
+              <div class="progress-bar"></div>
             </div>
             <span class="upload-cover btn btn-primary btn-file btn-block">Upload Image
               <input type="file" class="cropit-image-input" id="post-upload-image">
@@ -119,6 +122,11 @@
             <ul class="list-group">
             </ul>
             <div class="comment-form">
+              {% if request.user.is_anonymous %}
+                <div class="comment-request-login pull-right">
+                  <a class="btn btn-primary comment-request-a" href="{%url 'login' %}?next={% firstof request.path '/' %}" role="button">Login to comment</a>
+                </div>
+              {% else %}
               <form method="POST">
                 {% csrf_token %}
                 <div class="form-group">
@@ -128,6 +136,7 @@
                 </div>
                 <button type="button" id="add-comment-btn" class="btn btn-primary pull-right">Submit</button>
               </form>
+              {% endif %}
             </div>
           </div>
         </div>
@@ -142,6 +151,7 @@
   <script src="{% static 'js/plugin/masonry.min.js' %}"></script>
   <script src="{% static 'js/common/act_post_list.js' %}"></script>
   <script src="{% static 'js/post/posts_ajax.js' %}"></script>
+  <script src="{% static 'js/post/get_post.js' %}"></script>
   <script src="{% static 'js/post/posts_upload.js' %}"></script>
   <script src="{% static 'js/comment/comment.js' %}"></script>
   <script>
