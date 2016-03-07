@@ -114,6 +114,7 @@ $(document).ready(function(){
                       });
 
                       var comment_posttime_p = $("<p />", {
+                          "class": "comment-posttime-p",
                           text: date,
                       });
 
@@ -166,12 +167,7 @@ $(document).ready(function(){
     
    
     //图片错误时加载备份图片
-    function imgError(image) {
-        image.onerror = "";
-        image.src = "../../../static/img/error.png";
-        return true;
-    }
-
+    
 })
 
 

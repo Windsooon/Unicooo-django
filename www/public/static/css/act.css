@@ -173,7 +173,17 @@
     }
 }
 
+.cc-icon {
+    margin-left: 10px;
+    color: #BDBDBD;
+}
 
+.cc-icon-p {
+    margin-left: 4px;
+    display: inline;
+    color: #BDBDBD;
+    font-weight: 400px;
+}
 
 #act-upload-img{
     position: absolute;

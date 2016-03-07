@@ -7,9 +7,9 @@ ACTTYPE = (
 ACTLICENCE = (
     (0, "CC BY"),
     (1, "CC BY-SA"),
-    (2, "CC BY-ND"),
-    (3, "CC BY-NC"),
-    (4, "CC BY-NC-SA"),
+    (2, "CC BY-NC"),
+    (3, "CC BY-NC-SA"),
+    (4, "CC BY-ND"),
     (5, "CC BY-NC-ND"),
 )
 

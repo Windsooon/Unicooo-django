@@ -17,7 +17,7 @@
     <div class="act-outer-container col-xs-12 col-sm-6 col-md-4 col-lg-4">
       <div class="act-inner-container">
         <a class="act-thumb-a" href="{% url 'act_details' act.user.user_name act.act_title %}" class="thumbnail">
-        <img class="act-thumb-img" src="{{ httpsUrl }}{{ act.act_thumb_url }}{{ imageStyle }}"  alt="">
+        <img class="act-thumb-img" src="{{ httpsUrl }}{{ act.act_thumb_url }}{{ imageStyle }}" onerror="imgError(this)" alt="">
         <div class="act-title-wrapper">
           <p class="act-title-p">{{ act.act_title }}</p>
         </div>
@@ -41,6 +41,13 @@
 {% block script %}
   <script src="{% static 'js/common/frontpage.js' %}"></script>
   <script src="{% static 'js/plugin/jquery.particleground.min.js' %}"></script>
+  <script>
+  function imgError(image) {
+        image.onerror = "";
+        image.src = "../../../static/img/error.png";
+        return true;
+    }
+  </script>
   <script>
   $('#front-matrix').particleground({
     //dotColor: '#ff0000',

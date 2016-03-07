@@ -19,7 +19,7 @@
         </div>
           <div class="upload-cover">
             <span class="btn btn-primary btn-file btn-block" id="act-cover-span">Upload your Cover Image
-              <input type="file" class="cropit-image-input" id="act-cover-image">
+              <input type="file" class="cropit-image-input" id="act-cover-image" accept="image/*">
             </span>
           </div>
       </div>
@@ -30,10 +30,14 @@
       <div class="form-group">
         <label for="act_type" class="control-label">Act Type</label>
           {{ form.act_type }}
+          <label id="act_type-error" class="error" for="act_type">This activity won't be shown in frontpage.</label>
       </div>
       <div class="form-group">
         <label for="act_licence" class="control-label">Act License</label>
           {{ form.act_licence }}
+          <label id="act_licence-error" class="error" for="act_licence">Free to share, adapt, but sharealike.
+          </label>
+          <a class="cc-icon glyphicon glyphicon-question-sign" href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" aria-hidden="true"></a><p class="cc-icon-p">learn more</p>
       </div>
       <div class="form-group label-floating is-empty">
         <label for="act_title" class="control-label">Act Title</label>

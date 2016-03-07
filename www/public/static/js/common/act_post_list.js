@@ -131,6 +131,7 @@ function get_post_list(data, container){
                     single_posttime.className = "post-posttime";
                     //post posttime text
                     var single_posttime_p = document.createElement("p");
+                    single_posttime_p.className = "post-posttime-p";
                     single_posttime_p.innerHTML = date;
                     //post footer
                     var single_footer = document.createElement("div");

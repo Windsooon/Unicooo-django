@@ -1,4 +1,51 @@
 $(document).ready(function(){
+    $("#id_act_type").on("change", function() {
+        var select_val = $("#id_act_type option:selected").val();
+        if (select_val == 0) {
+            $("#act_type-error").text("Only you can join this activity.")
+        }
+        else if (select_val == 1) {
+            $("#act_type-error").text("This activity won't be shown in frontpage.")
+        }
+        else {
+            $("#act_type-error").text("This activity may be reviewed.")
+        }
+
+    });
+
+    $("#id_act_licence").on("change", function() {
+        var licence_val = $("#id_act_licence option:selected").val();
+        switch (licence_val) {
+            case "0":
+                $("#act_licence-error").text("Free to share and adapt.");
+                $(".cc-icon").attr("href", "https://creativecommons.org/licenses/by/4.0/"); 
+                
+                break;
+            case "1":
+                $("#act_licence-error").text("Free to share, adapt, but sharealike.");
+                $(".cc-icon").attr("href", "https://creativecommons.org/licenses/by-sa/4.0/"); 
+                break;
+            case "2":
+                $("#act_licence-error").text("Free to share and adapt, no commercial.");
+                $(".cc-icon").attr("href", "https://creativecommons.org/licenses/by-nc/4.0/"); 
+                break;
+            case "3":
+                $("#act_licence-error").text("Free to share and adapt, no commercial, but sharealike.");
+                $(".cc-icon").attr("href", "https://creativecommons.org/licenses/by-nc-sa/4.0/"); 
+                break;
+            case "4":
+                $("#act_licence-error").text("Free to share.");
+                $(".cc-icon").attr("href", "https://creativecommons.org/licenses/by-nd/4.0/"); 
+                break;
+            case "5":
+                $("#act_licence-error").text("Free to share, no commerial.");
+                $(".cc-icon").attr("href", "https://creativecommons.org/licenses/by-nc-nd/4.0/"); 
+                break;
+            default:
+                break;
+        }
+
+    });
     $("#new-act-form :input").prop("disabled", true);
     var formArray = new Array();
     var validator = $("#new-act-form").validate({
@@ -6,6 +53,7 @@ $(document).ready(function(){
             act_title: {
                 required: true,
                 minlength: 6,
+                maxlength: 30,
                 remote: {
                     url: "/act_title/",
                     type: "post",
@@ -28,6 +76,7 @@ $(document).ready(function(){
             act_title: {
                 required: "Please enter your act title.",
                 minlength: jQuery.validator.format("Please Enter at least {0} characters."),
+                maxlength: jQuery.validator.format("Beyond 30 characters."),
                 remote: "You already create this activity."
             },
             act_content: {
