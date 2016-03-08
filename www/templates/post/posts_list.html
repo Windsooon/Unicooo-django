@@ -37,9 +37,9 @@
     </div>
     <div class="pull-right">
       {% if request.user.is_authenticated %}
-        <button type="button" class="btn btn-lg btn-primary join-act-btn" data-toggle="modal" data-target="#post-upload">join the act</button>
+        <button type="button" class="btn btn-lg btn-primary join-act-btn" data-toggle="modal" data-target="#post-upload" id="inter-join-act">Join the act</button>
       {% else %}
-      <a class="btn btn-lg btn-primary join-act-btn" href="{%url 'login' %}?next={% firstof request.path '/' %}" role="button">Login to join</a>
+      <a class="btn btn-lg btn-primary join-act-btn" href="{%url 'login' %}?next={% firstof request.path '/' %}" role="button" id="inter-login-join">Login to join</a>
       {% endif %}
     </div>
   </div>
@@ -52,7 +52,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">Modal title</h4>
+            <h4 class="modal-title" id="inter-act-content">Post Content</h4>
           </div>          
           <!-- end modal-header -->
           <div class="modal-body">
@@ -62,7 +62,7 @@
             <div class="progress">
               <div class="progress-bar"></div>
             </div>
-            <span class="upload-cover btn btn-primary btn-file btn-block">Upload Image / Audio
+            <span class="upload-cover btn btn-primary btn-file btn-block"><span id="inter-upload-post">Upload Image / Audio</span>
                 <input type="file" class="cropit-image-input" id="post-upload-image" accept="image/*, audio/*">
             </span>
             <div class="post-form">
@@ -70,7 +70,7 @@
                 {% csrf_token %}
                 <div class="form-group">
                   <label class="sr-only" for="" >Post Content</label>
-                  <input type="text" class="post-form-text form-control" placeholder="Please enter you post content." disabled>
+                  <input type="text" class="post-form-text form-control"  id="inter-upload-holder" placeholder="Please enter you post content." disabled>
                 <h6 class="post-form-length">60</h6>
                 </div>
                 <button type="submit" id="add-post-btn" disabled class="btn btn-primary pull-right">Submit</button>
@@ -95,7 +95,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h4 class="modal-title">Post details</h4>
+            <h4 class="modal-title" id="inter-post-content">Post Content</h4>
             <input type="hidden" id="input-post-id"/>
           </div>
           <div class="modal-body">
@@ -124,14 +124,14 @@
             <div class="comment-form">
               {% if request.user.is_anonymous %}
                 <div class="comment-request-login pull-right">
-                  <a class="btn btn-primary comment-request-a" href="{%url 'login' %}?next={% firstof request.path '/' %}" role="button">Login to comment</a>
+                  <a class="btn btn-primary comment-request-a" href="{%url 'login' %}?next={% firstof request.path '/' %}" role="button" id="inter-login-comment">Login to comment</a>
                 </div>
               {% else %}
               <form method="POST">
                 {% csrf_token %}
                 <div class="form-group">
                   <label class="sr-only" for="" >Comment</label>
-                  <input type="text" class="comment-form-text form-control" id="" placeholder="Please enter you comment">
+                  <input type="text" class="comment-form-text form-control" id="inter-comment-holder" placeholder="Please enter you comment">
                 <h6 class="comment-form-length">140</h6>
                 </div>
                 <button type="button" id="add-comment-btn" class="btn btn-primary pull-right">Submit</button>
@@ -157,5 +157,28 @@
   <script>
   $.material.init();
   </script>
+  <script>
+        jQuery.i18n.properties({ 
+            name: 'base',// 资源文件名称
+            path: '{% static 'international/' %}',// 资源文件所在目录路径
+            mode: 'map',// 模式：变量或 Map 
+            cache: false, 
+            async: true,
+            encoding: 'UTF-8', //文件编码方式
+            callback: function() {// 回调方法
+                $("#inter-join-act").text(jQuery.i18n.prop('post_list_btn'));
+                $("#inter-login-join").text(jQuery.i18n.prop('post_login_btn'));
+                $("#inter-act-content").text(jQuery.i18n.prop('post_content_modal'));
+                $("#inter-post-content").text(jQuery.i18n.prop('post_details_modal'));
+                $("#inter-upload-post").text(jQuery.i18n.prop('post_upload_post'));
+                $("#add-post-btn").text(jQuery.i18n.prop('post_upload_submit'));
+                $("#inter-login-comment").text(jQuery.i18n.prop('post_login_comment'));
+                $("#inter-comment-holder").attr("placeholder", jQuery.i18n.prop('post_comment_holder'));
+                $("#inter-upload-holder").attr("placeholder", jQuery.i18n.prop('post_upload_holder'));
+                $("#add-comment-btn").text(jQuery.i18n.prop('post_add_comment'));
+                $(".comment-posttime-p").text(jQuery.i18n.prop('comment_posttime'));
+            } 
+        });
+    </script>
 {% endblock %}
 

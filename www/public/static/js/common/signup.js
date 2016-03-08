@@ -49,7 +49,7 @@ $(document).ready(function(){
                 remote: "This username had already been registered."
             },
             password: {
-                required: "Please enter your password",
+                required: "Please enter your password.",
                 minlength: jQuery.validator.format("Please Enter at least {0} characters.")
             },
             email: {

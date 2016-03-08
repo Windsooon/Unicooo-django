@@ -39,11 +39,11 @@
         <fieldset>
         {% csrf_token %}
           <div class="form-group">
-            <label for="user_gender" class="control-label">User Gender</label>
+            <label for="user_gender" class="control-label" id="inter-settings-gender">User Gender</label>
               {{ form.user_gender }}
           </div>
           <div class="form-group">
-            <label for="user_details" class="control-label">User Details</label>
+            <label for="user_details" class="control-label" id="inter-settings-details">User Details</label>
               {{ form.user_details }}
           </div>
           <div class="form-group form-group-loading">
@@ -64,6 +64,20 @@
   <script src="{% static 'js/common/settings.js' %}"></script>
   <script>
     $.material.init();
+  </script>
+  <script>
+    jQuery.i18n.properties({ 
+            name: 'base',// 资源文件名称
+            path: '{% static 'international/' %}',// 资源文件所在目录路径
+            mode: 'map',// 模式：变量或 Map 
+            cache: false, 
+            async: true,
+            encoding: 'UTF-8', //文件编码方式
+            callback: function() {// 回调方法
+                $("#inter-settings-gender").text(jQuery.i18n.prop('settings_gender'));
+                $("#inter-settings-details").text(jQuery.i18n.prop('settings_details'));
+            } 
+        });
   </script>
 {% endblock %}
 

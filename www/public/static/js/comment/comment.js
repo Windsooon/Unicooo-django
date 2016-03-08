@@ -65,7 +65,7 @@ var comment_click_handler = function(e) {
 
                       var comment_posttime_p = $("<p />", {
                           "class": "comment-posttime-p",
-                          text: "just now",
+                          text: "Just now",
                       });
 
                       var comment_posttime = $("<div />", {

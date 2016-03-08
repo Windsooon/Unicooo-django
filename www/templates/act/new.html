@@ -21,7 +21,7 @@
           <div class="progress-bar"></div>
         </div>
         <div class="upload-cover">
-          <span class="btn btn-primary btn-file btn-block" id="act-cover-span">Upload your Cover Image
+            <span class="btn btn-primary btn-file btn-block" id="act-cover-span"><span id="inter-upload-cover">Upload your Cover Image</span>
             <input type="file" class="cropit-image-input" id="act-cover-image" accept="image/*">
           </span>
         </div>
@@ -31,23 +31,23 @@
     {% csrf_token %}
     <fieldset>
       <div class="form-group">
-        <label for="act_type" class="control-label">Act Type</label>
+        <label for="act_type" class="control-label" id="inter-act-type">Act Type</label>
           {{ form.act_type }}
           <label id="act_type-error" class="error" for="act_type">This activity won't be shown in frontpage.</label>
       </div>
       <div class="form-group">
-        <label for="act_licence" class="control-label">Act License</label>
+        <label for="act_licence" class="control-label" id="inter-act-license">Act License</label>
           {{ form.act_licence }}
           <label id="act_licence-error" class="error" for="act_licence">Free to share, adapt, but sharealike.
           </label>
           <a class="cc-icon glyphicon glyphicon-question-sign" href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" aria-hidden="true"></a><p class="cc-icon-p">learn more</p>
       </div>
       <div class="form-group label-floating is-empty">
-        <label for="act_title" class="control-label">Act Title</label>
+        <label for="act_title" class="control-label" id="inter-act-title">Act Title</label>
           {{ form.act_title }}
       </div>
       <div class="form-group label-floating is-empty">
-        <label for="act_content" class="control-label">Act Content</label>
+        <label for="act_content" class="control-label" id="inter-act-content" >Act Content</label>
           {{ form.act_content }}
       </div>
       <div class="form-group form-group-loading">
@@ -66,6 +66,24 @@
   <script src="{% static 'js/act/new_act.js' %}"></script>
   <script>
   $.material.init();
+  </script>
+  <script>
+    jQuery.i18n.properties({ 
+            name: 'base',// 资源文件名称
+            path: '{% static 'international/' %}',// 资源文件所在目录路径
+            mode: 'map',// 模式：变量或 Map 
+            cache: false, 
+            async: true,
+            encoding: 'UTF-8', //文件编码方式
+            callback: function() {// 回调方法
+                $("#inter-upload-cover").text(jQuery.i18n.prop('act_upload_cover'));
+                $("#inter-act-type").text(jQuery.i18n.prop('act_type'));
+                $("#inter-act-license").text(jQuery.i18n.prop('act_license'));
+                $("#inter-act-title").text(jQuery.i18n.prop('act_title'));
+                $("#inter-act-content").text(jQuery.i18n.prop('act_content'));
+                $("#inter-settings-details").text(jQuery.i18n.prop('settings_details'));
+            } 
+        });
   </script>
 {% endblock %}
 
