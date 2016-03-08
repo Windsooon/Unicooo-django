@@ -7,9 +7,47 @@ function getPost(post_id, e) {
             },
             success: function(data) {
               if (data) {
-                  var httpsUrl = "https://o3e6g3hdp.qnssl.com/"
-                  var imageStyle = "-postDetails"
-                  var post_thumb_url = httpsUrl + data["post_thumb_url"] + imageStyle;
+                  var httpsUrl = "https://o3e6g3hdp.qnssl.com/";
+                  var avatarStyle = "-avatarSetting";
+                  var imageStyle = "-postDetails";
+                  if (data["post_mime_types"] == 0) {
+                      var post_thumb_url = httpsUrl + data["post_thumb_url"] + imageStyle;
+                  }
+                  else if (data["post_mime_types"] == 1) {
+                     $(".post-image-b").empty();
+                     var audio_div_warpper = $("<div />", {
+                         "class": "audio-div-wrapper",
+                     });
+                     var audio_div= $("<div />", {
+                         "class": "audio-div",
+                     });
+                     var audio_fadeout= $("<div />", {
+                         "class": "act-fadeout",
+                     });
+                     var audio_div_audio= $("<audio />", {
+                         "class": "audio-div-audio",
+                         src: httpsUrl + data["post_thumb_url"],
+                         "controls": "controls",
+                         "preload": "auto"
+                     });
+                     if (data["post_content"].length <= 10) {
+                         var audio_div_p= $("<p />", {
+                             "class": "audio-div-p",
+                             text: data["post_content"]
+                         });
+                      }
+                      else {
+                         var audio_div_p= $("<p />", {
+                             "class": "audio-div-p-small",
+                             text: data["post_content"]
+                         });
+                      }
+                      audio_div.append(audio_div_p);
+                      audio_div_warpper.append(audio_div);
+                      $(".post-image-b").append(audio_div_warpper);
+                      $(".post-image-b").append(audio_fadeout);
+                      $(".post-image-b").append(audio_div_audio);
+                  }
                   var elems = [];
                   var post_date = data["post_create_time"].split("T", 1);
                   $(".list-group").empty();
@@ -29,7 +67,7 @@ function getPost(post_id, e) {
                       // if user avater is empty
                       if (value["comment_user"]["user_avatar"]) {
                           var comment_avatar_s = $("<img />", {
-                              src: value["comment_user"]["user_avatar"] ,
+                              src: httpsUrl + value["comment_user"]["user_avatar"] + avatarStyle ,
                               "class": "comment-avatar-s",
                           });
 

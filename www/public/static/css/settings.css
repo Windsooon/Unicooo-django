@@ -48,4 +48,12 @@
         position: relative;
         padding-top: 20px;
     }
+.settings-img-outer-wrapper {
+    height: 160px;
+}
+
+.progress {
+    margin: 0 auto;
+    width: 50%;
+}
 

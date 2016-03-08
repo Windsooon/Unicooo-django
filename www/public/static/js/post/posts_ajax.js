@@ -36,9 +36,15 @@ $(document).ready(function(){
         ajax_comment_list(reply_id, page)
         getPost(post_id, e);
     });
-    
+
+    $('#post-details').on('hidden.bs.modal', function (e) {
+        $('audio').each(function(){
+            this.pause(); // Stop playing
+            this.currentTime = 0; // Reset time
+        }); 
+    })
+   
     $("#add-comment-btn").on("click", comment_click_handler);
-        //图片错误时加载备份图片
 })
 
 

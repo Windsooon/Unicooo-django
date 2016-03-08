@@ -232,6 +232,9 @@ $(document).ready(function(){
                     post_a.append(post_image)
                }
                else if (data["post_mime_types"] == 1) {
+                   var audio_div_wrapper = $("<div />", {
+                          "class": "audio-div-wrapper",
+                      });
                    var audio_div = $("<div />", {
                           "class": "audio-div",
                       });
@@ -242,9 +245,18 @@ $(document).ready(function(){
                    var audio_fadeout = $("<div />", {
                           "class": "act-fadeout",
                       });
+                   var audio_tag = $("<audio />", {
+                          "class": "audio-div-audio",
+                          src: imageUrl + data["post_thumb_url"],
+
+                          "controls": "controls",
+                          "preload": "auto",
+                      });
                    audio_div.append(audio_div_p);
-                   post_a.append(audio_div);
+                   audio_div_wrapper.append(audio_div);
+                   post_a.append(audio_div_wrapper);
                    post_a.append(audio_fadeout);
+                   post_a.append(audio_tag);
                }
                var post_div_wrapper = $("<div />", {
                           "class": "post-container-col"

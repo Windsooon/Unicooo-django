@@ -30,7 +30,7 @@ class UserSerializer(serializers.ModelSerializer):
 class UserSettingsSerializer(serializers.ModelSerializer):
     class Meta:
         model = MyUser
-        fields = ("id", "user_gender", "user_details", "user_point")
+        fields = ("id", "user_gender", "user_details", "user_point", "user_avatar")
         read_only_fields = ("user_point",)
 
 class ActSerializer(serializers.ModelSerializer):
@@ -78,7 +78,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ("id", "user", "post_title", "post_content", "post_thumb_url", "post_create_time", "post_user", "post_comment") 
+        fields = ("id", "user", "post_title", "post_content", "post_thumb_url", "post_mime_types", "post_create_time", "post_user", "post_comment") 
 
 
 

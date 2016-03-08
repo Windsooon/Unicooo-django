@@ -13,7 +13,7 @@
   <div class="personal-header">
     <div class="personal-avatar-div">
         {% if person.user_avatar %}
-          <img class="personal-avatar-image" src="{{ person.user_avatar }}" />
+          <img class="personal-avatar-image" src="{{ httpsUrl }}{{ person.user_avatar }}{{ imageStyle }}" />
         {% else %}
           <div class="personal-img-wrapper">
             <p class="personal-img-p">{{ personal|slice:"1" }}</p>

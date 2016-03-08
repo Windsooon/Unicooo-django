@@ -1,6 +1,8 @@
 var comment_click_handler = function(e) {
     var comment_text = $(".comment-form-text").val();
     var csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+    var httpsUrl = "https://o3e6g3hdp.qnssl.com/"
+    var avatarStyle = "-avatarSetting"
     if (comment_text.length < 1) {
         return false;
     }
@@ -33,7 +35,7 @@ var comment_click_handler = function(e) {
                 }
                 else {
                     var comment_avatar_s = $("<img />", {
-                          src: $("#user-avatar").val(),
+                          src: httpsUrl + $("#user-avatar").val() + avatarStyle,
                           "class": "comment-avatar-s",
                       });
 
@@ -177,11 +179,14 @@ function ajax_comment_list(reply_id, page){
                         });
                     //if user avatar is empty
                     if (value["comment_avatar"]) {
+
+                        var httpsUrl = "https://o3e6g3hdp.qnssl.com/";
+                        var avatarStyle = "-avatarSetting";
                         var comment_image_div = $("<div />", {
                             "class": "comment-image-div",
                             });
                         var comment_image = $("<img />", {
-                            src: value["comment_avatar"],
+                            src: httpsUrl + value["comment_avatar"] + avatarStyle,
                             "class": "comment-image",
                             });
                         comment_image_div.append(comment_image);

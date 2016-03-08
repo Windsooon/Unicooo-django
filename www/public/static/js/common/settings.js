@@ -1,4 +1,5 @@
 $(document).ready(function() {
+   formArray = new Array();
    var validator = $("#settings-form").validate({
         rules: {
             user_details: {
@@ -28,11 +29,17 @@ $(document).ready(function() {
             form_loading.append(form_inner_loading);
             form_outer_loading.append(form_loading);
             $form_submit_wrap.append(form_outer_loading);
+            if (formArray[1]) {
+                user_avatar = formArray[1];
+            }
+            else {
+                user_avatar = "";
+            }
             $.ajax({
                 url: "/api/users/" + $("#user-id").val() + "/",
                 type: "PUT",
                 datatype: "json",
-                data:  {csrfmiddlewaretoken: csrf_token, "user_gender": $("#id_user_gender option:selected").val(), "user_details": $("#user-details").val() },
+                data:  {"user_gender": $("#id_user_gender option:selected").val(), "user_details": $("#user-details").val(), "user_avatar": user_avatar},
                 beforeSend:function(xhr, settings) {
                     if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
                         xhr.setRequestHeader("X-CSRFToken", csrf_token);
@@ -85,6 +92,73 @@ $(document).ready(function() {
         highlight: function(element, errorClass) {
         }
     }); 
+   
+    $('.settings-img-outer-wrapper').on("click", function(){ 
+        formData = new FormData();
+        $.ajax({
+            url: "/token",
+            type: "GET",
+            datatype: "json",
+            data: {"type": 2},
+            success: function(data) {
+                formData.append("key", data["key"]);
+                formData.append("token", data["token"]);
+                formArray[1] = data["key"];
+            },
+        });
+    });
+
+    $('#avatar-input').on("change", function(){ 
+        if (typeof (FileReader) != "undefined") {
+            var image_holder = $(".settings-img-outer-wrapper");
+            image_holder.empty();
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $("<img />", {
+                    "src": e.target.result,
+                    "class": "unfinished-image",
+                    "id": "avatar-upload-img"
+                }).appendTo(image_holder);
+
+            }
+            image_holder.show();
+            reader.readAsDataURL($(this)[0].files[0]);
+        } 
+        else {
+            console.log("This browser does not support FileReader.");
+        }
+        var file = this.files[0];
+        formData.append("file", file);
+        $.ajax({
+            xhr: function() {
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener("progress", function(evt) {
+                  if (evt.lengthComputable) {
+                    var percentComplete = evt.loaded / evt.total;
+                    percentComplete = parseInt(percentComplete * 100);
+                    $(".progress-bar").css("width", percentComplete + "%")
+                    if (percentComplete === 100) {
+                    }
+                  }
+                }, false);
+                return xhr;
+            },  
+            url: "https://up.qbox.me",
+            type: "POST",
+            data: formData,
+            datatype: "json",
+            cache: false,
+            processData: false, 
+            contentType: false,
+            beforeSend: function() {
+            },
+            success: function(data) {
+                $(".progress").remove();
+                $("#avatar-upload-img").removeClass("unfinished-image");
+                $("#avatar-upload-img").addClass("finished-image");
+            }
+        });
+    });
 });
 
 function csrfSafeMethod(method) {

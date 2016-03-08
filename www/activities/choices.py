@@ -14,7 +14,7 @@ ACTLICENCE = (
 )
 
 USERGENDER = (
-    (0, "UNKNOWN"),
+    (0, "SECRET"),
     (1, "MALE"),
     (2, "FEMALE"),
 )

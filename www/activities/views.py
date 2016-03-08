@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.mixins import LoginRequiredMixin
 import json
-from common.qiniuSettings import httpsUrl, imageStyle
+from common.qiniuSettings import httpsUrl, imageStyle, avatarStyle
 from .forms import ActCreateForm
 from .models import Act
 from post.models import Post
@@ -49,13 +49,8 @@ def act_list(request, act_list):
     if request.method == "GET":
         url = "https://o3e6g3hdp.qnssl.com/"
         style_name = "-actCoverInterS"
-        if act_list in ("public", "group", "personal"):
-            dict_act = {"public": 0, "group": 1, "personal": 2}
-            act_details = Act.objects.filter(act_type=dict_act[act_list])[:12]
-            return render(request, "act/activities_list.html", {"act_list": act_details, "url": url, "style_name": style_name})
-        else:
-            error = "不存在此分类。"
-            return render(request, "error.html", {"error": error})
+        act_details = Act.objects.filter(act_type=2)[:12]
+        return render(request, "act/activities_list.html", {"act_list": act_details, "url": url, "style_name": style_name})
     else:
         error = "不允许使用此方法。"
         return render(request, "error.html", {"error": error})
@@ -74,7 +69,7 @@ def act_details(request, act_author, act_title):
             return render(request, "error.html", {"error": error})
         else:
             act_thumb =  httpsUrl + act_details.act_thumb_url + imageStyle
-            return render(request, "post/posts_list.html", {"act_details": act_details, "act_author": act_author, "act_thumb": act_thumb, "httpsUrl": httpsUrl, "imageStyle": imageStyle})
+            return render(request, "post/posts_list.html", {"act_details": act_details, "act_author": act_author, "act_thumb": act_thumb, "httpsUrl": httpsUrl, "imageStyle": imageStyle, "avatarStyle": avatarStyle})
     else:
         error = "不允许使用此方法。"
         return render(request, "error.html", {"error": error})

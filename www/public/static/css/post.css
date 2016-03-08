@@ -150,9 +150,13 @@
 }
 
 .audio-div {
-    height: 150px;
+    height: 100px;
     background-color: white;
     text-align: center;
+}
+
+.audio-div-wrapper {
+    padding-top: 80px;
 }
 
 @media only screen and (min-width: 569px) { 
@@ -233,7 +237,7 @@ audio {
 .act-fadeout {
     position: relative; 
     bottom: 2em;
-    height: 10em;
+    height: 8em;
     background: -webkit-linear-gradient(
         rgba(255, 255, 255, 0) 0%,
         rgba(255, 255, 255, 1) 100%

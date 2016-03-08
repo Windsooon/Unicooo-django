@@ -1,7 +1,7 @@
 var ajax_state = true;
 $(document).ready(function(){
     var page = 1;
-    var data = {"act_type": 0, "page": page};
+    var data = {"act_type": 2, "page": page};
     var scrollTimeout;
     var $container = $(".row").masonry({
         itemSelector: '.act-outer-container',

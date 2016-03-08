@@ -5,4 +5,5 @@ callBackUrl = "https://unicooo.com/callback/"
 callBackBody = "key=$(key)&name=$(fname)"
 httpsUrl = "https://o3e6g3hdp.qnssl.com/"
 imageStyle = "-actCoverBig"
+avatarStyle = "-avatarSetting"
 

@@ -95,9 +95,11 @@ def login_in(request):
 @login_required 
 def personal_settings(request, personal):
     if request.method == "GET":
+        if request.user.user_name != personal:
+            return render(request, "error.html", {"error": "Permission denied"})
         person = MyUser.objects.get(user_name=personal)
         form = UserChangeForm(request.POST or None, instance=person)
-        return render(request, "common/settings.html", {"person": person, "form": form})
+        return render(request, "common/settings.html", {"person": person, "httpsUrl": httpsUrl, "imageStyle": "-avatarSetting", "form": form})
     else:
         return render(request, "404.html")
 
@@ -108,16 +110,16 @@ def personal_list(request, personal, status):
         except: 
             return render(request, "404.html")
         else:
-            return render(request, "common/personal.html", {"person": person, "personal": personal, "status": status})
+            return render(request, "common/personal.html", {"person": person, "personal": personal, "httpsUrl": httpsUrl, "imageStyle": "-avatarSetting", "status": status})
     else:
         return render(request, "404.html")
 
 def personal_comments(request, personal):
     if request.method == "GET":
         if request.user.user_name == personal:
-            return render(request, "common/comments.html")
+            return render(request, "common/comments.html", {"httpsUrl": httpsUrl, "imageStyle": "-avatarSetting"})
         else: 
-            return render(request, "error.html", {"error": "Not allow"})
+            return render(request, "error.html", {"error": "Permission denied"})
     else:
         return render(request, "404.html")
 

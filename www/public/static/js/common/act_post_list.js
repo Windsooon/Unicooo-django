@@ -127,6 +127,8 @@ function get_post_list(data, container){
                     else if  (value["post_mime_types"] == 1) {
                         var audio_div = document.createElement("div");
                         audio_div.className = "audio-div";
+                        var audio_div_wrapper = document.createElement("div");
+                        audio_div_wrapper.className = "audio-div-wrapper";
                         var fade_out = document.createElement("div");
                         fade_out.className = "act-fadeout";
                         // audio content
@@ -144,7 +146,8 @@ function get_post_list(data, container){
                         }
                         audio_div_p.innerHTML = value["post_content"];
                         audio_div.appendChild(audio_div_p);
-                        post_thumb_a.appendChild(audio_div);
+                        audio_div_wrapper.appendChild(audio_div)
+                        post_thumb_a.appendChild(audio_div_wrapper);
                         post_thumb_a.appendChild(fade_out);
                         post_thumb_a.appendChild(audio_div_audio);
 

@@ -25,8 +25,8 @@
     </div>
     <div class="author-div">
       <a class="author-a" href="{%url 'personal' act_author.user_name %}act_create">
-          {% if act_avatar.user_avatar %}
-          <img class="author-img pull-right" src="{{ act_avatar.user_avatar }}" alt="{{ act_avatar }}"/> 
+          {% if act_author.user_avatar %}
+          <img class="author-img pull-right" src="{{ httpsUrl }}{{ act_author.user_avatar }}{{ avatarSetting }}" alt="{{ act_author }}"/> 
           {% else %}
             <div class="act-avatar-div" >
               <p class="act-avatar-p">{{ act_author.user_name|slice:"1" }}</p>
@@ -70,7 +70,7 @@
                 {% csrf_token %}
                 <div class="form-group">
                   <label class="sr-only" for="" >Post Content</label>
-                  <input type="text" class="post-form-text form-control" placeholder="Please enter you post content" disabled>
+                  <input type="text" class="post-form-text form-control" placeholder="Please enter you post content." disabled>
                 <h6 class="post-form-length">60</h6>
                 </div>
                 <button type="submit" id="add-post-btn" disabled class="btn btn-primary pull-right">Submit</button>

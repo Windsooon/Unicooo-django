@@ -12,18 +12,25 @@
       <div data-toggle="tooltip" data-placement="top" title="Click to change" class="avatar-label" class="col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6">
           <span class="avatar-settings" >
               {% if person.user_avatar %}
-              <label for="file-input">
-                <img src="{{ person.user_avatar }}"/>
+              <label for="avatar-input">
+                <div class="settings-img-outer-wrapper">
+                    <img src="{{ httpsUrl }}{{ person.user_avatar }}{{ imageStyle }}"/>
+                </div>
               </label>
               {% else %}
-              <label for="file-input">
-                <div class="settings-img-wrapper">
-                  <p class="avatar-settings-p">{{ person.user_name|slice:"1" }}</p>
-                </div> 
+              <label for="avatar-input">
+                <div class="settings-img-outer-wrapper">
+                  <div class="settings-img-wrapper">
+                    <p class="avatar-settings-p">{{ person.user_name|slice:"1" }}</p>
+                  </div> 
+                </div>
               </label>
               {% endif %}
-              <input id="file-input" type="file">
+              <input id="avatar-input" type="file" accept="image/*">
           </span>
+              <div class="progress">
+                <div class="progress-bar"></div>
+              </div>
           <span class="span-uni"><h3>{{ person.user_name }}</h3></span>
         <hr>
       </div>
