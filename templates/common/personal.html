@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block extra_head %}
+  <link href="{% static 'css/act.css' %}" rel="stylesheet"/>
+  <link href="{% static 'css/post.css' %}" rel="stylesheet"/>
+  <link href="{% static 'css/personal.css' %}" rel="stylesheet"/>
+  <link href="{% static 'css/comments.css' %}" rel="stylesheet"/>
+{% endblock %}
+{% block content %}
+<!-- container begin -->
+<div class="personal-top">
+  <!-- personal info begin -->
+  <div class="personal-header">
+    <div class="personal-avatar-div">
+        {% if person.user_avatar %}
+          <img class="personal-avatar-image" src="{{ httpsUrl }}{{ person.user_avatar }}{{ imageStyle }}" />
+        {% else %}
+          <div class="personal-img-wrapper">
+            <p class="personal-img-p">{{ personal|slice:"1" }}</p>
+          </div>
+        {% endif %}
+      <p class="personal-avatar-p">{{personal}}</p>
+      <input type="hidden" value={{request.user.id}} />
+      <p class="personal-details">{{request.user.user_details}}</p>
+    </div>
+    <hr>
+  <div class="personal-btn-group btn-group-div">
+    <div class="btn-group btn-group-justified" role="group" aria-label="...">
+      <div class="btn-group" role="group">
+          <a class="btn btn-default blue" href="{% url 'status' personal 'act_create' %}" id="act-create-btn" role="button"><span class="icon-right glyphicon glyphicon-pencil" aria-hidden="true"></span>Act</a>
+      </div>
+      <div class="btn-group" role="group">
+        <a class="btn btn-default blue" href="{% url 'status' personal 'act_join' %}" id="act-join-btn" role="button"><span class="icon-right glyphicon glyphicon-paperclip" aria-hidden="true"></span>Act</a>
+      </div>
+      <div class="btn-group" role="group">
+        <a class="btn btn-default blue" href="{% url 'status' personal 'post' %}" id="post-create-btn" role="button"><span class="icon-right glyphicon glyphicon-bookmark" aria-hidden="true"></span>Post</a>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+<div class="activity-container container">
+  {% if status == "post" %}
+  <div class="post-list">
+  </div>
+  {% else %}
+  <div class="row">
+  </div>
+  {% endif %}
+
+  <div id="post-details" class="modal fade" tabindex="-1" style="display: none">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4 class="modal-title">Post details</h4>
+            <input type="hidden" id="input-post-id"/>
+          </div>
+          <!-- end modal-header -->
+          <div class="modal-body">
+            <div class="post-image-b">
+              <img class="post-raw-details" />
+            </div>
+            <div class="post-border">
+              <div class="post-title">
+                <p class="post-details-user"></p>
+                <input type="hidden" id="input-post-author-id"/>
+              </div>
+              <div class="post-posttime">  
+                <p class="post-details-posttime"></p>
+              </div>
+            </div>
+            <div class="post-content">
+              <p class="post-details-content-p"></p>
+            </div>
+          </div>
+          <!-- end modal-body -->
+          <div class="modal-footer">
+            <!-- Key content display all comment -->
+            <ul class="list-group">
+            </ul>
+            <div class="comment-form">
+              <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label class="sr-only" for="" >Comment</label>
+                  <input type="text" class="comment-form-text form-control" id="" placeholder="Please enter you comment">
+                <h6 class="comment-form-length">140</h6>
+                </div>
+                <button type="button" id="add-comment-btn" class="btn btn-primary pull-right">Submit</button>
+              </form>
+            </div>
+          </div>
+          <!-- end modal-footer -->
+        </div>
+        <!-- end modal-content -->
+      </div>
+      <!-- end modal-dialog -->
+    </div>
+    <!-- end post-details -->
+  </div>
+  <!-- end row -->
+</div>
+<!-- end container -->
+{% endblock %}
+{% block script %}
+  <script> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
+  <script src="{% static 'js/plugin/imageLoaded.min.js' %}"></script>
+  <script src="{% static 'js/plugin/masonry.min.js' %}"></script>
+  <script src="{% static 'js/post/get_post.js' %}"></script>
+  <script src="{% static 'js/common/act_post_list.js' %}"></script>
+  <script src="{% static 'js/comment/comment.js' %}"></script>
+  <script src="{% static 'js/common/personal.js' %}"></script>
+  <script>
+    var personal = "{{ personal }}"
+    var status = "{{ status }}"
+    var page = 1;
+    var ajax_state = true;
+    if (status == "post") {
+        var $container = $('.post-list').masonry({
+            columnWidth: 20,
+            itemSelector: '.post-container',
+            transitionDuration: '0.3s',
+            hiddenStyle: { opacity: 0 },
+            visibleStyle: { opacity: 1 }
+        });
+        var $inner_container = $(".post-container");
+    }
+    else {
+        var $container = $('.row');
+        var $inner_container = $(".act-outer-container");
+    }
+    personalInit(personal, status, page, $container);
+    $(window).scroll(function () {
+        var scrollTimeout;
+        if (scrollTimeout) {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = null;
+        }
+        scrollTimeout = setTimeout(scrollHandler, 250);
+    });
+
+    scrollHandler = function () {
+        // Check your page position
+        if (status == "post") {
+            var $inner_container = $(".post-container");
+            var $outer_container = $(".post-list");
+        }
+        else {
+            var $inner_container = $(".act-outer-container");
+            var $outer_container = $(".activity-container");
+        }
+        if (checkScroll($outer_container, $inner_container) && ajax_state) {
+            page += 1;
+            ajax_state = false;
+            personalInit(personal, status, page, $container);
+        }
+    };
+
+  </script>
+  <script>
+    $.material.init();
+  </script>
+{% endblock %}
+
+
+

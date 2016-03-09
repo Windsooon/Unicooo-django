@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block extra_head %}
+  <link href="{% static 'css/act.css' %}" rel="stylesheet"/>
+  <link href="{% static 'css/post.css' %}" rel="stylesheet"/>
+  <link href="{% static 'css/personal.css' %}" rel="stylesheet"/>
+  <link href="{% static 'css/comments.css' %}" rel="stylesheet"/>
+{% endblock %}
+{% block content %}
+<!-- container begin -->
+<div class="personal-top">
+  <!-- personal info begin -->
+  <div class="personal-header">
+    <div class="personal-avatar-div">
+      {% if request.user.user_avatar %}
+        <img class="personal-avatar-image" src="{{ httpsUrl }}{{ request.user.user_avatar }}{{ imageStyle }}" />
+      {% else %}
+        <div class="personal-img-wrapper">
+          <p class="personal-img-p">{{ request.user.user_name|slice:"1" }}</p>
+        </div>
+      {% endif %}
+      <p class="personal-avatar-p">{{ request.user.user_name }}</p>
+      <input type="hidden" value={{request.user.id}} />
+      <p class="personal-details">{{request.user.user_details}}</p>
+    </div>
+  </div>
+</div>
+<div class="comment-top container">
+  <div class="comment-wrapper well col-lg-8 col-lg-offset-2">
+  </div>
+</div>
+{% endblock %}
+{% block script %}
+  <script> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
+  <script src="{% static 'js/plugin/imageLoaded.min.js' %}"></script>
+  <script src="{% static 'js/plugin/masonry.min.js' %}"></script>
+  <script src="{% static 'js/comment/comment.js' %}"></script>
+  <script>
+      var reply_id = {{ request.user.id }};
+      var page = 1;
+      var scrollTimeout;
+      var ajax_state = true;
+      ajax_comment_list(reply_id, page);
+      console.log(ajax_state);
+      $(window).scroll(function () {
+        var scrollTimeout;
+        if (scrollTimeout) {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = null;
+        }
+        scrollTimeout = setTimeout(scrollHandler, 250);
+    });
+
+    scrollHandler = function () {
+        // Check your page position
+        if (checkScroll($(".comment-wrapper"), $(".comment-outer-div")) && ajax_state) {
+            page += 1;
+            ajax_state = false;
+            ajax_comment_list(reply_id, page);
+        }
+    };
+
+    
+    function checkScroll(outerContainer, innerContainer){
+        if($(window).scrollTop() > Math.round(outerContainer.height()*2/5)) {
+            return true; 
+        }
+        else{
+            return false;
+        }
+    }
+  </script>
+  <script>
+  $.material.init();
+  </script>
+{% endblock %}
+
+
+
+

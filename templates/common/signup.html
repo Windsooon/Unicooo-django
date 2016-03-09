@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block extra_head %}
+  <link href="{% static 'css/loading.css' %}" rel="stylesheet"/>
+{% endblock %}
+{% block content %}
+<!-- container begin -->
+<div class="uniform container">
+  <!-- signup_form begin -->
+  <div class="well signup-form col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6">
+    <div>
+      <div class="col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6">
+        <span class="span-uni"><h3 id="inter-sign-happy">Happy to see you!</h3></span>
+        <hr>
+      </div>
+    <div>
+      <a class="sign-up-a" href="#" class="thumbnail">
+        <img class="sign-up-thumb" src="https://o3e6g3hdp.qnssl.com/unicooo_cover.png?imageView2/1/w/532/h/170/interlace/1/format/jpg/q/100" alt="welcome to signup unicooo" />
+      </a>
+    </div>
+    <div>
+      <form action="" method="POST" id="signup_form">
+        {% csrf_token %}
+        <fieldset>
+          <div class="form-group label-floating is-empty">
+            <div class="input-group">
+              <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+              <label for="email_signup" class="control-label" id="inter-sign-email">Email Address</label>
+                {{ form.email }}
+            </div>
+          </div>
+            <div class="form-group label-floating is-empty">
+              <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                <label for="username_signup" class="control-label" id="inter-sign-username">Username</label>
+                  {{ form.user_name }}
+              </div>
+            </div>
+            <div class="form-group label-floating is-empty">
+              <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-star"></span></span>
+                <label for="password_signup" class="control-label" id="inter-sign-password">Password</label>
+                  {{ form.password }}
+              </div>
+            </div>
+            <div class="form-group form-group-loading">
+              <div class="submit-btn-wrap">
+                <button type="submit" class="submit-btn btn btn-primary btn-block"><span class="glyphicon glyphicon-ok"></span></button>
+              </div>
+           </div>
+      </form>
+      <div class="pull-right">
+          <a href="{%url 'login' %}?next={% firstof request.path '/' %}"><h5 class="opacity8" id="inter-sign-already">Already have an account</h5></a>
+      </div>
+    </div>
+  </div>
+  <!-- signup_form end -->
+</div>
+</div>
+{% endblock %}
+{% block script %}
+  <script src="{% static 'js/plugin/jquery.validate.min.js' %}"></script>
+  <script src="{% static 'js/common/signup.js' %}"></script>
+  <script>
+  $.material.init();
+  </script>
+  <script>
+        jQuery.i18n.properties({ 
+            name: 'base',// 资源文件名称
+            path: '{% static 'international/' %}',// 资源文件所在目录路径
+            mode: 'map',// 模式：变量或 Map 
+            cache: false, 
+            async: true,
+            encoding: 'UTF-8', //文件编码方式
+            callback: function() {// 回调方法
+                $("#inter-sign-email").text(jQuery.i18n.prop('signup_email'));
+                $("#inter-sign-username").text(jQuery.i18n.prop('signup_username'));
+                $("#inter-sign-password").text(jQuery.i18n.prop('signup_password'));
+                $("#inter-sign-happy").text(jQuery.i18n.prop('signup_happy'));
+                $("#inter-sign-already").text(jQuery.i18n.prop('signup_already'));
+                $("#email_signup-error").text(jQuery.i18n.prop('signup_email_error'));
+            } 
+        });
+    </script> 
+{% endblock %}
+
+

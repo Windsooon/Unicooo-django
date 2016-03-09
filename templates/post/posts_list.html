@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load humanize %}
+{% block extra_head %}
+  <link href="{% static 'css/act.css' %}" rel="stylesheet"/>
+  <link href="{% static 'css/post.css' %}" rel="stylesheet"/>
+  <link href="{% static 'css/comments.css' %}" rel="stylesheet"/>
+  <link href="{% static 'css/loading.css' %}" rel="stylesheet"/>
+{% endblock %}
+{% block content %}
+<div class="activity-container container">
+  <div class="activity-details-thumb clearfix">
+    <div class="activity-details-thumb-img col-sm-7 col-md-7 col-lg-7"> 
+      <a class="activity-details-thumb-a">
+          <img src="{{ act_thumb }}" alt="{{ act_details.act_title }}"/>
+      </a>
+    </div>
+    <div class="activity-details-content col-sm-5 col-md-5 col-lg-5">
+      <p class="act-details-title text-center">{{ act_details.act_title }}</p>
+      <div class="activity-license">
+        <p>{{ act_license }}</p>
+      </div>
+      <div class="act-details-div">
+        <p class="act-details-content">{{ act_details.act_content }}</p>
+        <div class="fadeout"></div>
+      </div>
+      <input type="hidden" value="{{ act_details.id }}" />
+    </div>
+    <div class="author-div">
+      <a class="author-a" href="{%url 'personal' act_author.user_name %}act_create">
+          {% if act_author.user_avatar %}
+          <img class="author-img pull-right" src="{{ httpsUrl }}{{ act_author.user_avatar }}{{ avatarSetting }}" alt="{{ act_author }}"/> 
+          {% else %}
+            <div class="act-avatar-div" >
+              <p class="act-avatar-p">{{ act_author.user_name|slice:"1" }}</p>
+            </div>
+          {% endif %}
+          <p class="author-p">{{ act_author.user_name }}</p>
+      </a>
+    </div>
+    <div class="pull-right">
+      {% if request.user.is_authenticated %}
+        {% if act_details.act_type == 0 %}
+          {% if request.user.user_name != act_details.user.user_name %}
+            <button type="button" class="btn btn-lg btn-primary" id="inter-personal-act">Personal Activity</button>
+          {% else %}
+            <button type="button" class="btn btn-lg btn-primary join-act-btn" data-toggle="modal" data-target="#post-upload" id="inter-join-act">Join the act</button>
+          {% endif %}
+        {% else %}
+            <button type="button" class="btn btn-lg btn-primary join-act-btn" data-toggle="modal" data-target="#post-upload" id="inter-join-act">Join the act</button>
+        {% endif %}
+      {% else %}
+      <a class="btn btn-lg btn-primary join-act-btn" href="{%url 'login' %}?next={% firstof request.path '/' %}" role="button" id="inter-login-join">Login to join</a>
+      {% endif %}
+    </div>
+  </div>
+  <div id="posts-container">
+  </div>
+  
+  <!-- Display post upload image using modal -->
+  <div id="post-upload" class="modal fade" tabindex="-1" style="display: none">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="inter-act-content">Post Content</h4>
+          </div>          
+          <!-- end modal-header -->
+          <div class="modal-body">
+            <div class="post-upload-div">
+              <img id="post-upload-img" src="{{ httpsUrl }}post-example.jpg" />
+            </div>
+            <div class="progress">
+              <div class="progress-bar"></div>
+            </div>
+            <span class="upload-cover btn btn-primary btn-file btn-block"><span id="inter-upload-post">Upload Image / Audio</span>
+                <input type="file" class="cropit-image-input" id="post-upload-image" accept="image/*, audio/*">
+            </span>
+            <div class="post-form">
+              <form method="POST" id="post-content">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label class="sr-only" for="" >Post Content</label>
+                  <input type="text" class="post-form-text form-control"  id="inter-upload-holder" placeholder="Please enter you post content." disabled>
+                <h6 class="post-form-length">60</h6>
+                </div>
+                <button type="submit" id="add-post-btn" disabled class="btn btn-primary pull-right">Submit</button>
+              </form>
+            </div>
+          </div>
+          <!-- end modal-body -->
+          <div class="modal-footer">
+          </div>
+        </div>
+        <!-- end modal-content -->
+      </div>
+      <!-- end modal-dialog -->
+    </div>
+    <!-- end post-upload -->
+  </div>
+</div>
+
+  <!-- Display post details using modal -->
+  <div id="post-details" class="modal fade" tabindex="-1" style="display: none">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4 class="modal-title" id="inter-post-content">Post Content</h4>
+            <input type="hidden" id="input-post-id"/>
+          </div>
+          <div class="modal-body">
+            <div class="post-image-b">
+              <img class="post-raw-details" />
+            </div>
+            <div class="post-border">
+              <div class="post-title">
+                <a class="post-details-a">
+                  <p class="post-details-user"></p>
+                </a>
+                <input type="hidden" id="input-post-author-id"/>
+              </div>
+              <div class="post-posttime">  
+                <p class="post-details-posttime"></p>
+              </div>
+            </div>
+            <div class="post-content">
+              <p class="post-details-content-p"></p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <!-- Key content display all comment -->
+            <ul class="list-group">
+            </ul>
+            <div class="comment-form">
+              {% if request.user.is_anonymous %}
+                <div class="comment-request-login pull-right">
+                  <a class="btn btn-primary comment-request-a" href="{%url 'login' %}?next={% firstof request.path '/' %}" role="button" id="inter-login-comment">Login to comment</a>
+                </div>
+              {% else %}
+              <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label class="sr-only" for="" >Comment</label>
+                  <input type="text" class="comment-form-text form-control" id="inter-comment-holder" placeholder="Please enter you comment">
+                <h6 class="comment-form-length">140</h6>
+                </div>
+                <button type="button" id="add-comment-btn" class="btn btn-primary pull-right">Submit</button>
+              </form>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+
+</div>
+
+{% endblock %}
+{% block script %}
+  <script src="{% static 'js/plugin/imageLoaded.min.js' %}"></script>
+  <script src="{% static 'js/plugin/masonry.min.js' %}"></script>
+  <script src="{% static 'js/common/act_post_list.js' %}"></script>
+  <script src="{% static 'js/post/posts_ajax.js' %}"></script>
+  <script src="{% static 'js/post/get_post.js' %}"></script>
+  <script src="{% static 'js/post/posts_upload.js' %}"></script>
+  <script src="{% static 'js/comment/comment.js' %}"></script>
+  <script>
+  $.material.init();
+  </script>
+  <script>
+        jQuery.i18n.properties({ 
+            name: 'base',// 资源文件名称
+            path: '{% static 'international/' %}',// 资源文件所在目录路径
+            mode: 'map',// 模式：变量或 Map 
+            cache: false, 
+            async: true,
+            encoding: 'UTF-8', //文件编码方式
+            callback: function() {// 回调方法
+                $("#inter-join-act").text(jQuery.i18n.prop('post_list_btn'));
+                $("#inter-login-join").text(jQuery.i18n.prop('post_login_btn'));
+                $("#inter-personal-act").text(jQuery.i18n.prop('post_personal_btn'));
+                $("#inter-act-content").text(jQuery.i18n.prop('post_content_modal'));
+                $("#inter-post-content").text(jQuery.i18n.prop('post_details_modal'));
+                $("#inter-upload-post").text(jQuery.i18n.prop('post_upload_post'));
+                $("#add-post-btn").text(jQuery.i18n.prop('post_upload_submit'));
+                $("#inter-login-comment").text(jQuery.i18n.prop('post_login_comment'));
+                $("#inter-comment-holder").attr("placeholder", jQuery.i18n.prop('post_comment_holder'));
+                $("#inter-upload-holder").attr("placeholder", jQuery.i18n.prop('post_upload_holder'));
+                $("#add-comment-btn").text(jQuery.i18n.prop('post_add_comment'));
+                $(".comment-posttime-p").text(jQuery.i18n.prop('comment_posttime'));
+            } 
+        });
+    </script>
+{% endblock %}
+

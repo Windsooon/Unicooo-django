@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block extra_head %}
+  <link href="{% static 'css/act.css' %}" rel="stylesheet"/>
+{% endblock %}
+{% block content %}
+<div class="activities_list_image">
+    <img src="{{url}}activities_list_example.jpeg" />
+</div>
+<div class="activity-container container">
+  <div class="row">
+  </div>
+</div>
+<!-- end container -->
+{% endblock %}
+{% block script %}
+  <script src="{% static 'js/plugin/imageLoaded.min.js' %}"></script>
+  <script src="{% static 'js/plugin/masonry.min.js' %}"></script>
+  <script src="{% static 'js/common/act_post_list.js' %}"></script>
+  <script src="{% static 'js/act/activities_ajax.js' %}"></script>
+  <script>
+  $.material.init();
+  </script>
+{% endblock %}
+
+

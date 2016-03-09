@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block extra_head %}
+  <link href="{% static 'css/act.css' %}" rel="stylesheet"/>
+  <link href="{% static 'css/post.css' %}" rel="stylesheet"/>
+{% endblock %}
+{% block content %}
+<div class="activity-container container">
+  <div class="activity-details-thumb clearfix">
+    <div class="activity-details-thumb-img col-sm-7 col-md-7 col-lg-7"> 
+        <a><img src="{{ act_details.act_thumb_url }}" / width="664px"></a>
+    </div>
+    <div class="activity-details-content col-sm-5 col-md-5 col-lg-5">
+      <p class="act-details-title text-center">{{ act_details.act_title }}</p>
+      <p class="act-details-content">{{ act_details.act_content }}</p>
+    </div>
+    <div class="pull-right">
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#post-details">join the act</button>
+    </div>
+  </div>
+  <div id="posts-container">
+  </div>
+  <!-- Display upload post using modal -->
+  <div id="post-upload" class="modal fade" tabindex="-1" style="display: none">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4 class="modal-title">Join the Act</h4>
+            <span class="btn btn-primary btn-file btn-block">Choose Image
+              <input type="file" class="cropit-image-input">
+            </span>
+            <img style="width:100%" src="http://7xokch.com1.z0.glb.clouddn.com/uni_image-guide.png" />
+          </div>
+          <div class="modal-body">
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+  </div>
+  
+  <!-- Display post details using modal -->
+  <div id="post-details" class="modal fade" tabindex="-1" style="display: none">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4 class="modal-title">post details</h4>
+            <span class="btn btn-primary btn-file btn-block">Choose Image
+              <input type="file" class="cropit-image-input">
+            </span>
+            <img style="width:100%" src="http://7xokch.com1.z0.glb.clouddn.com/uni_image-guide.png" />
+          </div>
+          <div class="modal-body">
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+
+{% endblock %}
+{% block script %}
+  <script src="{% static 'js/plugin/imageLoaded.min.js' %}"></script>
+  <script src="{% static 'js/plugin/jquery.masonry.min.js' %}"></script>
+  <script src="{% static 'js/post/posts_ajax.js' %}"></script>
+  <script>
+  $.material.init();
+  </script>
+{% endblock %}
