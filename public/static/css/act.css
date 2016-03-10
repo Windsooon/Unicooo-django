@@ -398,6 +398,12 @@
     bottom: 0;
 }
 
+#inter-personal-act {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
 .activities_list_image img {
     width: 100%;
 }

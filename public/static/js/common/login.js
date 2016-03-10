@@ -69,7 +69,10 @@ $(document).ready(function(){
                           "class": "form-server-error"
                       });
                     $form_submit_wrap.before(form_server_error);
-                    if (xhr.status >= 400 && xhr.status < 500) {
+                    if (xhr.status == 588) {
+                        error_text = "Email or password incorrect.";
+                    } 
+                    else if (xhr.status >= 400 && xhr.status < 500) {
                         error_text = "Please check again your input.";
                     }
                     else {

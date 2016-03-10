@@ -142,20 +142,22 @@ var comment_click_handler = function(e) {
     $(".comment-form-text").keyup(function(){  
         var $comment_length = $(".comment-form-length");
         //length未必存在
-        var currrent_length=$(".comment-form-text").val().length + 1;   
-        if (currrent_length < 2) {
-            $('#add-comment-btn').prop('disabled', true);
-        }
-        else if (currrent_length >=2 && currrent_length <= 140) {
-            $comment_length.text(141-currrent_length);
-            if ($('#add-comment-btn').is(":disabled")) {
-                $('#add-comment-btn').prop('disabled', false);
+        if ($(".comment-form-text").val().length) {
+            var currrent_length=$(".comment-form-text").val().length;  
+            if (currrent_length >= 1 && currrent_length <= 140) {
+                $comment_length.text(140-currrent_length);
+                if ($('#add-comment-btn').is(":disabled")) {
+                    $('#add-comment-btn').prop('disabled', false);
+                }
+            }
+            else if (currrent_length >140) {
+                $comment_length.text("beyond 140 char");
+                $comment_length.css("color","#3f51b5");
+                $('#add-comment-btn').prop('disabled', true);
             }
         }
-        else if (currrent_length >140) {
-            $comment_length.text("beyond 140 char");
-            $comment_length.css("color","#3f51b5");
-            $('#add-comment-btn').prop('disabled', true);
+        else {
+            $comment_length.text(140);
         }
     }); 
 
@@ -260,3 +262,4 @@ function ajax_comment_list(reply_id, page){
         }
     }); 
 }
+

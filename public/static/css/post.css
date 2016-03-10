@@ -25,7 +25,6 @@
     width: 100%;
 }
 
-
 #posts-container {
     margin: 0 auto;
     min-height: 300px;
@@ -125,6 +124,15 @@
     right: 70px;
     color: #999;
     width: 50px;
+}
+
+#post-delete {
+    display: none;
+}
+
+
+.post-delete-p {
+    color: red;
 }
 
 .post-comment-p {

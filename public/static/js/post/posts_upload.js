@@ -11,17 +11,22 @@ $(document).ready(function(){
     $(".post-form-text").keyup(function(){  
         var $post_length = $(".post-form-length");
         //length未必存在
-        var currrent_length = $(".post-form-text").val().length + 1;   
-        if (currrent_length >= 2 && currrent_length <= 60) {
-            $post_length.text(61-currrent_length);
-            if ($('#add-post-btn').is(":disabled") && post_upload_status) {
-                $('#add-post-btn').prop('disabled', false);
+        if ($(".post-form-text").val().length) {
+            var currrent_length = $(".post-form-text").val().length;   
+            if (currrent_length >= 1 && currrent_length <= 60) {
+                $post_length.text(60-currrent_length);
+                if ($('#add-post-btn').is(":disabled") && post_upload_status) {
+                    $('#add-post-btn').prop('disabled', false);
+                }
+            }
+            else {
+                $post_length.text("beyond 60 char");
+                $post_length.css("color","#3f51b5");
+                $('#add-post-btn').prop('disabled', true);
             }
         }
         else {
-            $post_length.text("beyond 60 char");
-            $post_length.css("color","#3f51b5");
-            $('#add-post-btn').prop('disabled', true);
+            $post_length.text(60);
         }
     }); 
     
@@ -49,7 +54,6 @@ $(document).ready(function(){
     $("#post-upload-image").on('change', function () {
         if (typeof (FileReader) != "undefined") {
             var upload_file = $(this)[0].files[0];
-            console.log(upload_file.type);
             switch (upload_file.type)
             {
             // if file is image
@@ -269,7 +273,8 @@ $(document).ready(function(){
                           "class": "post-container-col"
                       });
                var post_div = $("<div />", {
-                          "class": "post-container col-xs-12 col-sm-6 col-md-6 col-lg-4"
+                          "class": "post-container col-xs-12 col-sm-6 col-md-6 col-lg-4",
+                          id: "post-" + data["id"]
                       });
                var post_border = $("<div />", {
                           "class": "post-border"

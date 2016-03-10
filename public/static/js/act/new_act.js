@@ -88,6 +88,8 @@ $(document).ready(function(){
             var act_type = $("#id_act_type").val();
             var act_licence = $("#id_act_licence").val();
             var act_title = $("#act_title").val();
+            act_title = act_title.replace(/\s+/g, '-');
+            console.log(act_title);
             var act_content = $("#act_content").val();
             var user_name = $(".request-user").text();
             var csrf_token = $("#new-act-form input").eq(0).val();
@@ -95,7 +97,7 @@ $(document).ready(function(){
             var act_title_int = act_title.charCodeAt(0) + act_title.charCodeAt(act_title.length-1)
             var act_content_int = act_content.charCodeAt(0) + act_content.charCodeAt(act_content.length-1)
             var user_name_int = user_name.charCodeAt(0) + user_name.charCodeAt(user_name.length-1)
-            var hashids = new Hashids("just unicooo test", 6, "ABCDEFGHIJKLMNPQRSTUVWXYZ1234567890");
+            var hashids = new Hashids("just for unicooo", 6, "ABCDEFGHIJKLMNPQRSTUVWXYZ1234567890");
             var act_ident = hashids.encode(act_title_int, act_content_int, user_name_int);
             var $form_group_loading = $(".form-group-loading");
             var $form_submit_wrap = $(".submit-btn-wrap");

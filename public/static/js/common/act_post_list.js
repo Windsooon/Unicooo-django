@@ -107,6 +107,7 @@ function get_post_list(data, container){
                     var date = value["post_create_time"].split("T", 1);
                     var single_post = document.createElement("div");
                     single_post.className = "post-container col-xs-12 col-sm-6 col-md-6 col-lg-4";
+                    single_post.setAttribute("id", "post-" + value["id"]);
                     //post container col
                     var single_post_col = document.createElement("div");
                     single_post_col.className = "post-container-col";
@@ -117,6 +118,8 @@ function get_post_list(data, container){
                     post_thumb_a.setAttribute("data-toggle", "modal");
                     post_thumb_a.setAttribute("data-target", "#post-details");
                     post_thumb_a.setAttribute("data-post-id", value["id"]);
+                    //delete buttton
+                    
                     //if post is image
                     if (value["post_mime_types"] == 0) {
                         var post_thumb_url = document.createElement("img");
@@ -235,14 +238,4 @@ function get_post_list(data, container){
     });
 }
 //end get_post_list
-
-function checkScroll(outerContainer, innerContainer){
-    if($(window).scrollTop() > Math.round(outerContainer.height()*2/5)){
-        return true; 
-    }
-    else{
-        return false;
-    }
-}
-
 
