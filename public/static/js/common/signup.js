@@ -74,11 +74,13 @@ $(document).ready(function(){
             form_loading.append(form_inner_loading);
             form_outer_loading.append(form_loading);
             $form_submit_wrap.append(form_outer_loading);
+            var user_name = $("#username_signup").val();
+            user_name = user_name.replace(/\s+/g, '-');
             $.ajax({
                 url: "/api/users/",
                 type: "POST",
                 datatype: "json",
-                data:  {"email": $("#email_signup").val(), "user_name": $("#username_signup").val(), "password": $("#password_signup").val()},
+                data:  {"email": $("#email_signup").val(), "user_name": user_name, "password": $("#password_signup").val()},
                 beforeSend:function() {},
                 success: function(xhr) {
                     console.log("success");

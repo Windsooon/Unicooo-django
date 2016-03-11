@@ -17,8 +17,8 @@ urlpatterns = [
                   url(r'^signup/$', views.sign_up, name="sign_up"),
                   url(r'^login/$', views.login_in, name="login"),
                   url(r'^contect/$', views.contect, name="contect"),
-                  url(r'^(?P<personal>\w+)/$', views.personal_settings, name="personal"),
-                  url(r'^(?P<personal>\w+)/comments/$', views.personal_comments, name="comments"),
-                  url(r'^(?P<personal>\w+)/(?P<status>\w+)/$', views.personal_list, name="status"),
+                  url(r'^(?P<personal>.+)/$', views.personal_settings, name="personal"),
+                  url(r'^(?P<personal>.+)/comments/$', views.personal_comments, name="comments"),
+                  url(r'^(?P<personal>.+)/(?P<status>\w+)/$', views.personal_list, name="status"),
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

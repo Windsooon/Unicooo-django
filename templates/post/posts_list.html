@@ -67,15 +67,17 @@
           </div>          
           <!-- end modal-header -->
           <div class="modal-body">
-            <div class="post-upload-div">
-              <img id="post-upload-img" src="{{ httpsUrl }}post-example.jpg" />
+            <div class="post-upload-wrapper">
+              <div class="post-upload-div">
+                <img id="post-upload-img" src="{{ httpsUrl }}post-example.jpg" />
+              </div>
+              <div class="progress">
+                <div class="progress-bar"></div>
+              </div>
+              <span class="upload-cover btn btn-primary btn-file btn-block"><span id="inter-upload-post">Upload Image / Audio</span>
+                  <input type="file" class="cropit-image-input" id="post-upload-image" accept="image/*, audio/*">
+              </span>
             </div>
-            <div class="progress">
-              <div class="progress-bar"></div>
-            </div>
-            <span class="upload-cover btn btn-primary btn-file btn-block"><span id="inter-upload-post">Upload Image / Audio</span>
-                <input type="file" class="cropit-image-input" id="post-upload-image" accept="image/*, audio/*">
-            </span>
             <div class="post-form">
               <form method="POST" id="post-content">
                 {% csrf_token %}
@@ -100,6 +102,28 @@
   </div>
 </div>
 
+<!--delete post -->  
+<div class="modal fade" id="post-delete-modal" tabindex="-1" role="dialog" aria-labelledby="DeletePost" data-focus-on="input:first">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Warning</h4>
+      </div>
+      <div class="modal-body">
+        <form method="POST">
+          {% csrf_token %}
+        </form>
+        <p class="post-ready-delete-p">Do you really want to delete this post?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" id="really-delete-btn">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
   <!-- Display post details using modal -->
   <div id="post-details" class="modal fade" tabindex="-1" style="display: none">
       <div class="modal-dialog">
@@ -111,7 +135,6 @@
           </div>
           <div class="modal-body">
             <div class="post-image-b">
-              <img class="post-raw-details" />
             </div>
             <div class="post-border">
               <div class="post-title">
@@ -128,6 +151,12 @@
               <p class="post-details-content-p"></p>
             </div>
           </div>
+          <div id="post-delete">
+            <button class="btn btn-default" data-toggle="modal" href="#post-delete-modal" data-focus-on="input:first">
+              <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+              <span class="post-delete-p">Delete this post</span>
+            </button>
+          </div> 
           <div class="modal-footer">
             <!-- Key content display all comment -->
             <ul class="list-group">

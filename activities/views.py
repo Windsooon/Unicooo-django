@@ -53,7 +53,7 @@ def act_list(request, act_list):
         act_details = Act.objects.filter(act_type=2)[:12]
         return render(request, "act/activities_list.html", {"act_list": act_details, "url": url, "style_name": style_name})
     else:
-        error = "不允许使用此方法。"
+        error = "Method not allowed."
         return render(request, "error.html", {"error": error})
 
 
@@ -66,14 +66,14 @@ def act_details(request, act_author, act_title):
             act_author = MyUser.objects.get(user_name=act_author)
             act_details = Act.objects.get(act_title=act_title, user_id=act_author.id)
         except:
-            error = "不存在此活动。"
+            error = "Activity Not exist."
             return render(request, "error.html", {"error": error})
         else:
             act_license = ACTLICENCE[act_details.act_licence]
             act_thumb =  httpsUrl + act_details.act_thumb_url + imageStyle
             return render(request, "post/posts_list.html", {"act_details": act_details, "act_author": act_author, "act_thumb": act_thumb, "httpsUrl": httpsUrl, "imageStyle": imageStyle, "avatarStyle": avatarStyle, "act_license": act_license[1]})
     else:
-        error = "不允许使用此方法。"
+        error = "Method not allowed."
         return render(request, "error.html", {"error": error})
 
 

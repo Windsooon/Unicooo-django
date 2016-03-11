@@ -11,7 +11,7 @@ from common.models import MyUser
 from post.models import Post
 from comment.models import Comment
 from .serializers import ActSerializer, PostAllSerializer, PostSerializer, UserSerializer, UserSettingsSerializer, CommentSerializer
-from .permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly, IsAuthenticatedOrCreate, IsSelfOrReadOnly
+from .permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly, IsAuthenticatedOrCreate
 
 
 class ActList(generics.ListCreateAPIView):
@@ -29,7 +29,7 @@ class ActList(generics.ListCreateAPIView):
         act_author = self.request.query_params.get('act_author', None)
         act_post = self.request.query_params.get('act_post', None)
         if act_type is not None:
-            queryset = queryset.filter(act_type=act_type)
+            queryset = queryset.all().exclude(act_type=act_type)
         if act_author is not None:
             queryset = queryset.filter(user__user_name=act_author)
         if act_post is not None:
@@ -72,7 +72,7 @@ class PostList(generics.ListCreateAPIView):
 
  
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsAdminOrReadOnly)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly)
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
@@ -135,7 +135,7 @@ class UserList(generics.ListCreateAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsSelfOrReadOnly)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
     queryset = MyUser.objects.all()
     serializer_class = UserSettingsSerializer
 

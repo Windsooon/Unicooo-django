@@ -47,7 +47,7 @@ def public_activities(request):
     render(request, "public_activities.html")
 
 def front_page(request):
-    act_list = Act.objects.filter(act_type=2).order_by("-act_create_time")[:9]
+    act_list = Act.objects.all().exclude(act_type=1).order_by("-act_create_time")[:9]
     imageStyle = "-actCoverSmall"
     return render(request, "common/frontpage.html", {"act_list": act_list, "httpsUrl": httpsUrl, "imageStyle": imageStyle})
 
@@ -56,21 +56,21 @@ def sign_up(request):
     if request.method == "GET":
         form = UserCreateForm()
         return render(request, "common/signup.html",{"form": form})
-    elif request.method == "POST":
-        form = UserCreateForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data["user_name"]
-            email = form.cleaned_data["email"]
-            password = form.cleaned_data["password"]
-            user = get_user_model().objects.create_user(username=username, email=email, password=password)
-            user.save()
-            user = authenticate(email=email, password=password)
-            if user is not None:
-                if user.is_active:
-                    django_login(request, user)
-            return redirect("/")
-        else:
-            return render(request, "error.html", {"error": "Form is not valid."})
+    #elif request.method == "POST":
+    #    form = UserCreateForm(request.POST)
+    #    if form.is_valid():
+    #        username = form.cleaned_data["user_name"]
+    #        email = form.cleaned_data["email"]
+    #        password = form.cleaned_data["password"]
+    #        user = get_user_model().objects.create_user(username=username, email=email, password=password)
+    #        user.save()
+    #        user = authenticate(email=email, password=password)
+    #        if user is not None:
+    #            if user.is_active:
+    #                django_login(request, user)
+    #        return redirect("/")
+    #    else:
+    #        return render(request, "error.html", {"error": "Form is not valid."})
     else:
         return render(request, "error.html", {"error": "Method not accepted."})
     
@@ -88,7 +88,7 @@ def login_in(request):
                 django_login(request, user)
                 return render(request, "error.html", {"error": "Method not accepted."})
         else:
-            pass
+            return HttpResponse("Email or password incorrect.", status=588)
     else:
         return render(request, "error.html", {"error": "Method not accepted."})
 
