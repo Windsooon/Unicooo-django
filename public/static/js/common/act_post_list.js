@@ -2,7 +2,7 @@ function get_act_list(data, container){
     $.ajax({
         url: "/api/acts/",
         type: "GET",
-        datatype: "json",
+        datatype: "url",
         data: data,
         beforeSend:function(){
         },
@@ -106,7 +106,7 @@ function get_post_list(data, container){
                 $.each(data.results, function(key, value){
                     var date = value["post_create_time"].split("T", 1);
                     var single_post = document.createElement("div");
-                    single_post.className = "post-container col-xs-12 col-sm-6 col-md-6 col-lg-4";
+                    single_post.className = "post-container col-xs-12 col-sm-6 col-md-4 col-lg-4";
                     single_post.setAttribute("id", "post-" + value["id"]);
                     //post container col
                     var single_post_col = document.createElement("div");
