@@ -11,7 +11,7 @@ from common.models import MyUser
 from post.models import Post
 from comment.models import Comment
 from .serializers import ActSerializer, PostAllSerializer, PostSerializer, UserSerializer, UserSettingsSerializer, CommentSerializer
-from .permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly, IsAuthenticatedOrCreate
+from .permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly, IsAuthenticatedOrCreate, IsActCreatorOrReadOnly
 
 
 class ActList(generics.ListCreateAPIView):
@@ -38,7 +38,6 @@ class ActList(generics.ListCreateAPIView):
             for post in post_object:
                 id_set.add(post.act.id)
             query = reduce(operator.or_, (Q(id = item) for item in id_set))
-            print(query)
             queryset = Act.objects.filter(query).order_by('-act_create_time')
         return queryset
 
@@ -52,10 +51,20 @@ class ActDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class PostList(generics.ListCreateAPIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     queryset = Post.objects.all()
     serializer_class = PostAllSerializer
-
+    
+    def create(self, request, *args, **kwargs):
+        act_id = request.data.get('act')
+        act = Act.objects.get(pk=act_id)
+        if act.act_type == 0:
+            if request.user != act.user:
+                return Response(status=403)
+            else:
+                return super().create(request, args, kwargs)
+        return super().create(request, args, kwargs)
+    
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
