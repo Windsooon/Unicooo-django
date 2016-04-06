@@ -12,6 +12,7 @@ from post.models import Post
 from comment.models import Comment
 from .serializers import ActSerializer, PostAllSerializer, PostSerializer, UserSerializer, UserSettingsSerializer, CommentSerializer
 from .permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly, IsAuthenticatedOrCreate, IsActCreatorOrReadOnly
+import pika
 
 
 class ActList(generics.ListCreateAPIView):
@@ -105,6 +106,22 @@ class CommentList(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+    def create(self, request, *args, **kwargs):
+        #use pika and rabbitmq to notifity user
+        connection = pika.BlockingConnection(pika.ConnectionParameters(
+                host='127.0.0.1'))
+        channel = connection.channel()
+        channel.queue_declare(queue='task_queue', durable=True)
+        message = 'Hello, world'
+        channel.basic_publish(exchange='',
+                              routing_key='task_queue',
+                              body=message,
+                              properties=pika.BasicProperties(
+                                 delivery_mode = 2, # make message persistent
+                              ))
+        connection.close()        
+        return super().create(request, args, kwargs)
 
     def get_queryset(self):
         queryset = Comment.objects.all().order_by("-comment_create_time")
