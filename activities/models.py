@@ -8,7 +8,7 @@ class Act(models.Model):
     act_title = models.CharField(max_length=30)
     act_content = models.CharField(max_length=1000)
     act_thumb_url = models.CharField(max_length=400)
-    act_ident = models.CharField(max_length=50)
+    act_ident = models.IntegerField(default=1000)
     act_type = models.IntegerField(choices=ACTTYPE, default=ACTTYPE[1][0])
     act_licence = models.IntegerField(choices=ACTLICENCE, default=ACTLICENCE[1][0])
     act_star = models.IntegerField(default=0)
@@ -21,4 +21,5 @@ class Act(models.Model):
         index_together = [
             ["user", "act_title"],
         ]
+        
 
