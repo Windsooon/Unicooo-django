@@ -88,10 +88,10 @@
         <input id="user-id" type="hidden" value={{request.user.id}} />
         <input id="user-avatar" type="hidden" value={{request.user.user_avatar}} />
           <ul class="dropdown-menu">
-              <li><a href="{% url 'personal' request.user.user_name %}act_create/"><span class="icon-big-right glyphicon glyphicon-user" aria-hidden="true"></span><span id="inter-personal">Personal</span></a></li>
-              <li><a href="{% url 'personal' request.user.user_name %}comments/"><span class="icon-big-right glyphicon glyphicon-comment" aria-hidden="true"></span><span id="inter-comments">Comments</span></a></li>
+              <li class="base-personal"><a href="{% url 'personal' request.user.user_name %}act_create/"><span class="icon-big-right glyphicon glyphicon-user" aria-hidden="true"></span><span id="inter-personal">Personal</span></a></li>
+              <li class="base-comments"><a href="{% url 'personal' request.user.user_name %}comments/"><span class="icon-big-right glyphicon glyphicon-comment" aria-hidden="true"></span><span id="inter-comments">Comments</span></a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="{% url 'personal' request.user.user_name %}"><span class="icon-big-right glyphicon glyphicon-cog" aria-hidden="true"></span><span id="inter-settings">Settings</span></a></li>
+            <li class="base-settings"><a href="{% url 'personal' request.user.user_name %}"><span class="icon-big-right glyphicon glyphicon-cog" aria-hidden="true"></span><span id="inter-settings">Settings</span></a></li>
           </ul>
         </li>
       {% else %}
@@ -104,6 +104,11 @@
   </div>
   <!--  end container-fluid -->
 </nav>
+{% if user.is_authenticated %}
+    <script type="text/javascript">
+         poll();
+     </script>
+{% endif %}
 {% endblock %}
 {% block content %}
 {% endblock %}

@@ -67,6 +67,12 @@ a:hover {
     height: 170px;
 }
 
+.base-circle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    color: red;
+}
 /* bootstrap input focut */
 textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus {   
     border-color: #48D1CC;

@@ -15,6 +15,7 @@ from common.qiniuSettings import httpsUrl, imageStyle
 from qiniu import Auth
 from .qiniuSettings import *
 import time
+import pika
 import hashlib
 
 
@@ -114,6 +115,7 @@ def personal_list(request, personal, status):
     else:
         return render(request, "404.html")
 
+@login_required 
 def personal_comments(request, personal):
     if request.method == "GET":
         if request.user.user_name == personal:
@@ -131,6 +133,25 @@ def contect(request):
     """Contect Us"""
     return render(request, "common/contect.html")
 
+@login_required
+def get_notifications(request):
+    connection = pika.BlockingConnection(pika.ConnectionParameters(
+        host='127.0.0.1'))
+    channel = connection.channel()
+
+    channel.queue_declare(queue='task_queue', durable=True)
+
+    def callback(ch, method, properties, body):
+        print(" [x] Received %r" % (body,))
+        ch.basic_ack(delivery_tag = method.delivery_tag)
+        return HttpResponse("hey")
+
+    channel.basic_qos(prefetch_count=1)
+    channel.basic_consume(callback,
+                      queue='task_queue')
+
+    channel.start_consuming()
+    
 @login_required 
 def get_upload_token(request):
     upload_type = request.GET.get("type")
@@ -160,7 +181,6 @@ def check_username_exist(request):
         return HttpResponse("false")
     except:
         return HttpResponse("true")
-
 
 @csrf_exempt
 def check_act_title(request):

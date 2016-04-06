@@ -1,3 +1,30 @@
+function poll() {
+	var poll_interval=0;
+
+	$.ajax({
+		url: "/sub",
+		type: 'GET',
+		dataType: 'json',
+		success: function(data) {
+            append_circle();
+			poll_interval=0;
+		},
+		error: function () {
+			poll_interval=1000;
+		},
+		complete: function () {
+			setTimeout(poll, poll_interval);
+		},
+	});
+}
+
+function append_circle() {
+    var circle = $("<span />", {
+        "class": "base-circle",
+    })
+    $(".base-comments").append(circle);
+}
+
 function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));

@@ -94,11 +94,11 @@ $(document).ready(function(){
             var user_name = $(".request-user").text();
             var csrf_token = $("#new-act-form input").eq(0).val();
             var act_url = "/act/" + user_name + "/" + act_title
-            var act_title_int = act_title.charCodeAt(0) + act_title.charCodeAt(act_title.length-1)
-            var act_content_int = act_content.charCodeAt(0) + act_content.charCodeAt(act_content.length-1)
-            var user_name_int = user_name.charCodeAt(0) + user_name.charCodeAt(user_name.length-1)
-            var hashids = new Hashids("just for unicooo", 6, "ABCDEFGHIJKLMNPQRSTUVWXYZ1234567890");
-            var act_ident = hashids.encode(act_title_int, act_content_int, user_name_int);
+            //var act_title_int = act_title.charCodeAt(0) + act_title.charCodeAt(act_title.length-1)
+            //var act_content_int = act_content.charCodeAt(0) + act_content.charCodeAt(act_content.length-1)
+            //var user_name_int = user_name.charCodeAt(0) + user_name.charCodeAt(user_name.length-1)
+            //var hashids = new Hashids("just for unicooo", 6, "ABCDEFGHIJKLMNPQRSTUVWXYZ1234567890");
+            //var act_ident = hashids.encode(act_title_int, act_content_int, user_name_int);
             var $form_group_loading = $(".form-group-loading");
             var $form_submit_wrap = $(".submit-btn-wrap");
             csrf_token = $("input[name='csrfmiddlewaretoken']").val();
@@ -119,7 +119,7 @@ $(document).ready(function(){
                 url: "/api/acts/",
                 type: "POST",
                 datatype: "json",
-                data:  {csrfmiddlewaretoken: csrf_token, "act_title": act_title, "act_content": act_content, "act_thumb_url": formArray[1], "act_type": act_type, "act_ident": act_ident, "act_licence": act_licence, "act_url": act_url},
+                data:  {csrfmiddlewaretoken: csrf_token, "act_title": act_title, "act_content": act_content, "act_thumb_url": formArray[1], "act_type": act_type, "act_ident": 22, "act_licence": act_licence, "act_url": act_url},
                 beforeSend:function() {},
                 success: function(data) {
                     window.location.replace("/act/" + data["act_author"] + "/" + data["act_title"]);
