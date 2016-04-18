@@ -73,12 +73,13 @@
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse navbar-responsive-collapse" id="uni-nav">
-      <!-- <form class="navbar-form navbar-left" role="search">
+      <form class="navbar-form navbar-left" role="search">
         <div class="form-group is-empty">
-          <span class="icon-right glyphicon glyphicon-search" aria-hidden="true"></span><input type="text" class="form-control col-md-8" placeholder="Not Ready yet">
+          <input type="text" class="form-control col-md-8 act-search-text" placeholder="Act Id">
           <span class="material-input"></span>
+          <a class="glyphicon glyphicon-search act-search" href=""></a>
         </div>
-      </form> -->
+      </form>
       <ul class="nav navbar-nav navbar-right">
           <li><a href="{% url 'act_type' 'public' %}"><span class="icon-right glyphicon glyphicon-globe" aria-hidden="true"></span><span id="inter-activies">Activies</span></a></li>
         <li><a href="{% url 'act_type' 'new' %}"><span class="icon-right glyphicon glyphicon-pencil" aria-hidden="true"></span><span id="inter-add">Add</span></a></li>
@@ -115,13 +116,13 @@
 {% block footer %}
   <section class="front-footer col-lg-8 col-lg-offset-2">
     <hr>
-    <div class="col-lg-4">
+    <div class="col-md-4 col-lg-4">
         <a href="{%url 'contect' %}"><p class="footer-text text-center" id="inter-contect">CONTECT US</p></a>
     </div>
-    <div class="col-lg-4">
+    <div class="col-md-4 col-lg-4">
         <a href=""><p class="footer-text text-center" id="inter-thank">THANK YOU</p></a>
     </div>
-    <div class="col-lg-4">
+    <div class="col-md-4 col-lg-4">
       <p class="footer-text text-center">Copyright © 2016 Unicooo Inc. All rights reserved.</p>
     </div>
     <hr>

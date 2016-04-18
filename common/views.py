@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render, redirect
-from django.contrib.auth import get_user_model
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.db import connection
@@ -12,10 +11,10 @@ from activities.models import Act
 from comment.models import Comment
 from common.models import MyUser
 from common.qiniuSettings import httpsUrl, imageStyle
+from django.core.cache import cache
 from qiniu import Auth
 from .qiniuSettings import *
 import time
-import pika
 import hashlib
 
 
@@ -57,21 +56,6 @@ def sign_up(request):
     if request.method == "GET":
         form = UserCreateForm()
         return render(request, "common/signup.html",{"form": form})
-    #elif request.method == "POST":
-    #    form = UserCreateForm(request.POST)
-    #    if form.is_valid():
-    #        username = form.cleaned_data["user_name"]
-    #        email = form.cleaned_data["email"]
-    #        password = form.cleaned_data["password"]
-    #        user = get_user_model().objects.create_user(username=username, email=email, password=password)
-    #        user.save()
-    #        user = authenticate(email=email, password=password)
-    #        if user is not None:
-    #            if user.is_active:
-    #                django_login(request, user)
-    #        return redirect("/")
-    #    else:
-    #        return render(request, "error.html", {"error": "Form is not valid."})
     else:
         return render(request, "error.html", {"error": "Method not accepted."})
     
@@ -135,23 +119,18 @@ def contect(request):
 
 @login_required
 def get_notifications(request):
-    connection = pika.BlockingConnection(pika.ConnectionParameters(
-        host='127.0.0.1'))
-    channel = connection.channel()
+    if cache.get(str(request.user.id) + "_comments") == "True":
+        return HttpResponse("True")
+    else:
+        return HttpResponse(status=204)   
 
-    channel.queue_declare(queue='task_queue', durable=True)
+@login_required
+def move_notifications(request):
+    if cache.get(str(request.user.id) + "_comments") == "True":
+        cache.set(str(request.user.id) + "_comments", "False")
+    return HttpResponse(status=204)
 
-    def callback(ch, method, properties, body):
-        print(" [x] Received %r" % (body,))
-        ch.basic_ack(delivery_tag = method.delivery_tag)
-        return HttpResponse("hey")
 
-    channel.basic_qos(prefetch_count=1)
-    channel.basic_consume(callback,
-                      queue='task_queue')
-
-    channel.start_consuming()
-    
 @login_required 
 def get_upload_token(request):
     upload_type = request.GET.get("type")

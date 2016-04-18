@@ -1,18 +1,23 @@
+import operator
+
+from django.core.cache import cache
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as django_login
 from django.db.models import Max
-from rest_framework import generics, status, permissions
-import operator
 from django.db.models import Q
 from functools import reduce
-from rest_framework.response import Response
 from activities.models import Act
 from common.models import MyUser
 from post.models import Post
 from comment.models import Comment
+from django.views.decorators.csrf import csrf_exempt
+#django rest framework
+from rest_framework import generics, status, permissions
+from rest_framework.response import Response
 from .serializers import ActSerializer, PostAllSerializer, PostSerializer, UserSerializer, UserSettingsSerializer, CommentSerializer
 from .permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly, IsAuthenticatedOrCreate, IsActCreatorOrReadOnly
-import pika
+#django rest framework jwt
+from rest_framework_jwt.settings import api_settings
 
 
 class ActList(generics.ListCreateAPIView):
@@ -29,6 +34,9 @@ class ActList(generics.ListCreateAPIView):
         act_type = self.request.query_params.get('act_type', None)
         act_author = self.request.query_params.get('act_author', None)
         act_post = self.request.query_params.get('act_post', None)
+        act_id = self.request.query_params.get('act_id', None)
+        if act_id is not None:
+            queryset = queryset.filter(id=act_id)
         if act_type is not None:
             queryset = queryset.all().exclude(act_type=act_type)
         if act_author is not None:
@@ -108,19 +116,8 @@ class CommentList(generics.ListCreateAPIView):
         serializer.save(user=self.request.user)
 
     def create(self, request, *args, **kwargs):
-        #use pika and rabbitmq to notifity user
-        connection = pika.BlockingConnection(pika.ConnectionParameters(
-                host='127.0.0.1'))
-        channel = connection.channel()
-        channel.queue_declare(queue='task_queue', durable=True)
-        message = 'Hello, world'
-        channel.basic_publish(exchange='',
-                              routing_key='task_queue',
-                              body=message,
-                              properties=pika.BasicProperties(
-                                 delivery_mode = 2, # make message persistent
-                              ))
-        connection.close()        
+        reply_id = request.data.get("reply_id")
+        cache.set(str(reply_id) + "_comments", "True")
         return super().create(request, args, kwargs)
 
     def get_queryset(self):
@@ -146,18 +143,29 @@ class UserList(generics.ListCreateAPIView):
     queryset = MyUser.objects.all()
     serializer_class = UserSerializer
     permission_classes = (IsAuthenticatedOrCreate,)
+    jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+    jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 
+    @csrf_exempt
     def create(self, request, *args, **kwargs):
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        user_name = request.POST.get("user_name")
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-        new_user = authenticate(email=request.POST.get('email'),
-            password=request.POST.get('password'),
-            )
+        new_user = authenticate(email=email, password=password)
         if new_user is not None:
             if new_user.is_active:
+                #login after signup
                 django_login(request, new_user)
+        #if this is the first time user sign up and want to get token
+        if "1wUnicooo" in request.META["HTTP_USER_AGENT"]:
+            #payload = jwt_payload_handler(new_user)
+            #token = jwt_enacode_handler(payload)
+            #return Response(token, status=status.HTTP_201_CREATED, headers=headers)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
