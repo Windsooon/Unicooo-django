@@ -1,4 +1,5 @@
 var ajax_state = false;
+//use to set multi model and make it index properly
 $(document).on('show.bs.modal', '.modal', function () {
     var zIndex = 1040 + (10 * $('.modal:visible').length);
     $(this).css('z-index', zIndex);

@@ -1,28 +1,70 @@
+$(document).ready(function() {
+    //click get comments
+    $(".base-comments").on("click", function() {
+        if ($(".base-circle").length > 0) {
+            $(".base-circle").remove();
+            $.ajax({
+                url: "/sub_no",
+                type: "GET",
+            });
+        }    
+    });
+    // serach acd by act_id
+    $(".act-search").on("click", function() {
+        act_id = parseInt($(".act-search-text").val(), 10);
+        if (act_id < 10000) {
+            act_id = 0
+        }
+        else {
+            act_id = act_id - 10000;
+        }
+        $.ajax({
+            url: "/api/acts/",
+            dataType: "json",
+            data: {"act_id": act_id},
+            type: "GET",
+            success: function(data) {
+                if (data.results.length > 0) {
+                    $.each(data.results, function(key, value){
+                        window.location.replace("/act/"+value["act_author"]+"/"+value["act_title"]);
+                    })
+                }
+            },
+            error: function() {
+            }
+        });
+    });
+});
+
 function poll() {
 	var poll_interval=0;
-
 	$.ajax({
-		url: "/sub",
-		type: 'GET',
-		dataType: 'json',
-		success: function(data) {
-            append_circle();
-			poll_interval=0;
+		url: "/sub/",
+		type: "GET",
+		dataType: "json",
+        statusCode: {
+            200: function(response) {
+                append_circle(); 
+            }
+        },
+		success: function(data, xhr) {
 		},
 		error: function () {
-			poll_interval=1000;
 		},
 		complete: function () {
+			poll_interval=90000;
 			setTimeout(poll, poll_interval);
 		},
 	});
 }
 
 function append_circle() {
-    var circle = $("<span />", {
-        "class": "base-circle",
-    })
-    $(".base-comments").append(circle);
+    if ($(".base-circle").length < 1) {
+        var circle = $("<span />", {
+            "class": "base-circle",
+        })
+        $(".base-comments").append(circle);
+    }
 }
 
 function csrfSafeMethod(method) {

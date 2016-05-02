@@ -70,8 +70,6 @@ class PostList(generics.ListCreateAPIView):
         if act.act_type == 0:
             if request.user != act.user:
                 return Response(status=403)
-            else:
-                return super().create(request, args, kwargs)
         return super().create(request, args, kwargs)
     
     def perform_create(self, serializer):

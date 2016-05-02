@@ -23,6 +23,12 @@ def sign_up(request):
             User = get_user_model()
             user = User.objects.create_user(username=username, email=email, password=password)
             user.save()
+            user_id = user.id
+            if request.POST.get("first", None):
+                try:
+                    token =  Token.objects.get(user_id=user_id).key
+                except DoesNotExist:
+                    return HttpResponse(status=405)
             return redirect('common/frontpage')
         else:
             return render(request, '404.html')

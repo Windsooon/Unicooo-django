@@ -67,6 +67,9 @@
     word-wrap:break-word; word-break:normal; 
 }
 
+.post-details-a {
+}
+
 .post-details-content-p {
     max-height: 200px;
     padding: 15px;
@@ -85,6 +88,7 @@
     margin-left: 15px;
     padding-left: 15px;
     border-left: 5px solid #2b6e90;
+    position: relative;
 }
 
 .post-user {
@@ -112,6 +116,22 @@
     right: 10px;
     color: #999;
     width: 50px;
+}
+
+.post-like-details {
+    position: absolute;
+    right: 20px;
+    top: 8px;
+}
+
+.post-like-details:hover{
+    cursor: pointer;
+}
+
+
+.post-like-details .glyphicon {
+    font-size: 2rem;
+    color: #FF6666;
 }
 
 .post-like-p {

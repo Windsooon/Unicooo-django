@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+import time
+import hashlib
+
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -10,12 +13,16 @@ from .models import CustomAuth
 from activities.models import Act
 from comment.models import Comment
 from common.models import MyUser
-from common.qiniuSettings import httpsUrl, imageStyle
+
+#redis
 from django.core.cache import cache
+from django_redis import get_redis_connection
+
+#qiniu
 from qiniu import Auth
 from .qiniuSettings import *
-import time
-import hashlib
+from common.qiniuSettings import httpsUrl, imageStyle
+
 
 
 def dictfetchall(cursor):
@@ -130,7 +137,6 @@ def move_notifications(request):
         cache.set(str(request.user.id) + "_comments", "False")
     return HttpResponse(status=204)
 
-
 @login_required 
 def get_upload_token(request):
     upload_type = request.GET.get("type")
@@ -142,6 +148,12 @@ def get_upload_token(request):
     sha1.update(pre_key.encode("utf-8"))
     key = str(serverTime) + sha1.hexdigest() 
     return JsonResponse({"token": upToken, "key": key})
+
+@login_required 
+def update_posts_like(request, postId):
+    post_like = get_redis_connection("default")
+    post_like.incr("post" + ":" + str(postId))
+    return HttpResponse(status=201)
 
 @csrf_exempt
 def check_email_exist(request):

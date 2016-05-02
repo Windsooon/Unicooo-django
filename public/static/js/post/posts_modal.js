@@ -1,5 +1,6 @@
 $(document).ready(function(){
-$("#post-details").on("show.bs.modal", function(e) {
+    var $container = $('#posts-container').masonry();
+    $("#post-details").on("show.bs.modal", function(e) {
         var post_id = $(e.relatedTarget).data('post-id');
         var reply_id = $("#user-id").val();
         var page = 1;
@@ -31,6 +32,29 @@ $("#post-details").on("show.bs.modal", function(e) {
             this.currentTime = 0; // Reset time
         }); 
     })
+
+    //like button animation
+    $('.post-like-details-a').on('click', function(e) {
+        var post_id = $('#input-post-id').val();
+        var csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+        if ($('.post-like-details-a').hasClass('glyphicon-heart-empty')) {
+            $('.post-like-details-a').removeClass('glyphicon-heart-empty'); 
+            $.ajax({
+                    url: "/likes/" + post_id + "/",
+                    method: "POST",
+                    datatype: "json",
+                    data: {"like": 1},
+                    beforeSend:function(xhr, settings) {
+                        if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
+                            xhr.setRequestHeader("X-CSRFToken", csrf_token);
+                        } 
+                    },
+                    success: function() {
+                        $('.post-like-details-a').addClass('glyphicon-heart'); 
+                    },
+            });
+        }
+    });
    
 });
 

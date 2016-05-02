@@ -51,7 +51,6 @@ $(document).ready(function(){
     $("#post-upload-image").on('change', function () {
         if (typeof (FileReader) != "undefined") {
             var upload_file = $(this)[0].files[0];
-            console.log(upload_file.type);
             switch (upload_file.type)
             {
             // if file is image
@@ -109,34 +108,6 @@ $(document).ready(function(){
                 reader.readAsDataURL($(this)[0].files[0]);
 
                 break;
-            //if file is video
-            case "video/avi":
-            case "video/msvideo":
-            case "video/x-msvideo":
-            case "video/x-dv":
-            case "video/mpeg":
-            case "video/quicktime":
-            case "video/mpeg":
-            case "video/quicktime":
-            case "video/ogg":
-            case "video/mp4":
-                var image_holder = $(".post-upload-div");
-                image_holder.empty();
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                        formArray[2] = 350;
-                        formArray[3] = 400;
-                        formArray[5] = 1;
-                    };
-                    $("<img />", {
-                        "src": "https://o3e6g3hdp.qnssl.com/video.jpg",
-                        "class": "unfinished-image",
-                        "id": "post-upload-img"
-                    }).appendTo(image_holder);
-                image_holder.show();
-                reader.readAsDataURL($(this)[0].files[0]);
-
-                break;
             default: 
                 //alert("This file has't been supported"); 
                 return;
@@ -162,7 +133,7 @@ $(document).ready(function(){
                 }, false);
                 return xhr;
             },
-            url: "https://up.qbox.me/mkblk/1024",
+            url: "https://up.qbox.me/",
             type: "POST",
             data: formData,
             datatype: "json",

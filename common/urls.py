@@ -12,6 +12,7 @@ urlpatterns = [
                   url(r'^sub/$',views.get_notifications),
                   url(r'^sub_no/$',views.move_notifications),
                   url(r'^token/$',views.get_upload_token),
+                  url(r'^likes/(?P<postId>\d+)/$',views.update_posts_like),
                   url(r'^email/$',views.check_email_exist),
                   url(r'^checkuser/$',views.check_username_exist),
                   url(r'^act_title/$',views.check_act_title),
