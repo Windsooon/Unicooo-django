@@ -31,6 +31,7 @@ class MyUser(AbstractBaseUser):
     user_details = models.CharField(max_length=80)
     user_register_time = models.DateTimeField(auto_now=True)
     user_validated = models.IntegerField(default=0)
+    user_points = models.IntegerField(default=50)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 

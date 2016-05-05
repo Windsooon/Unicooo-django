@@ -5,13 +5,14 @@ import hashlib
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.db import connection
+from django.db import connection, transaction
 from django.contrib.auth import authenticate, login as django_login
 from django.contrib.auth.decorators import login_required
 from .form import UserCreateForm, UserLoginForm, UserChangeForm
 from .models import CustomAuth
 from activities.models import Act
 from comment.models import Comment
+from post.models import Post
 from common.models import MyUser
 
 #redis
@@ -151,8 +152,24 @@ def get_upload_token(request):
 
 @login_required 
 def update_posts_like(request, postId):
-    post_like = get_redis_connection("default")
-    post_like.incr("post" + ":" + str(postId))
+    if request.user.user_points < 1:
+        return HttpResponse("Sorry, you are run out of points.You could get points with great posts.", status=500)
+    post_like_users = get_redis_connection("default")
+    try:
+        post_like_users = get_redis_connection("default")
+        #post_like_users.zadd(("post"+":"+str(postId)), time.time(), "user"+":"+str(request.user.id))
+        post_like_users.zadd("followers:1000", 1401267618, 1234)
+    except:
+        return HttpResponse("Something wrong with Redis server.", status=500)
+    else:
+        try: 
+            request.user.user_points -= 1
+            request.user.save()
+            post_author = Post.objects.get(id=postId).user
+            post_author.user_points += 1
+            post_author.save()
+        except:
+            return HttpResponse("Something wrong with cauculate points.", status=500)
     return HttpResponse(status=201)
 
 @csrf_exempt

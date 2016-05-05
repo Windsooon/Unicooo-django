@@ -96,7 +96,6 @@ function get_post_list(data, container){
            var post_inner_loading = $("<div />");
            post_loading.append(post_inner_loading);
            post_outer_loading.append(post_loading);
-           //$("#posts-container").after(post_outer_loading);
         },
         success: function(data) {
             if (data.results.length > 0) {
@@ -187,6 +186,9 @@ function get_post_list(data, container){
                     }
                     var single_footer_like_p = document.createElement("p");
                     single_footer_like_p.className = "post-like-p"
+                    if (value["likes"] != 0) {
+                        single_footer_like_p.innerHTML = value["likes"];
+                    }
                     //content div
                     var single_content = document.createElement("div");
                     single_content.className = "post-content";
