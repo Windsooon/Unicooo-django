@@ -1,24 +1,31 @@
 import operator
+import time
+import iso8601
 
-from django.core.cache import cache
+from datetime import datetime
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as django_login
-from django.db.models import Max
-from django.db.models import Q
+from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Max, Q
 from functools import reduce
 from activities.models import Act
 from common.models import MyUser
 from post.models import Post
 from comment.models import Comment
-from django.views.decorators.csrf import csrf_exempt
+
 #django rest framework
 from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 from .serializers import ActSerializer, PostAllSerializer, PostSerializer, UserSerializer, UserSettingsSerializer, CommentSerializer
 from .permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly, IsAuthenticatedOrCreate, IsActCreatorOrReadOnly
+
 #django rest framework jwt
 from rest_framework_jwt.settings import api_settings
 
+#django redis
+from django.core.cache import cache
+from django_redis import get_redis_connection
 
 class ActList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly)
@@ -61,9 +68,24 @@ class ActDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class PostList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-    queryset = Post.objects.all()
     serializer_class = PostAllSerializer
-    
+
+    #sord post by likes number
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            serializer_data = sorted(serializer.data, 
+                    key=lambda d: (d["likes"]+1)/((time.time()-datetime.timestamp(iso8601.parse_date(d["post_create_time"])))/3600)**1.5, reverse=True)
+            #serializer_data = sorted(serializer.data, key=lambda dict: dict["likes"]/(datetime.timestamp(dict["post_create_time"])), reverse=True)
+            return self.get_paginated_response(serializer_data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        serializer_data = sorted(serializer.data, key=operator.itemgetter('likes'), reverse=True)
+        return Response(serializer_data)
+
     def create(self, request, *args, **kwargs):
         act_id = request.data.get('act')
         act = Act.objects.get(pk=act_id)
@@ -85,12 +107,22 @@ class PostList(generics.ListCreateAPIView):
             queryset = queryset.filter(user__user_name=post_author)
         return queryset
 
-
  
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly)
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        post_likes_users = get_redis_connection("default")
+        if post_likes_users.zscore("post_"+str(serializer.data["id"]), "user"+":"+str(request.user.id)):
+            seriaDict = {"like_status": 1}
+        else: 
+            seriaDict = {"like_status": 0}
+        seriaDict.update(serializer.data)
+        return Response(seriaDict)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -136,7 +168,6 @@ class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
-
 class UserList(generics.ListCreateAPIView):
     queryset = MyUser.objects.all()
     serializer_class = UserSerializer
@@ -157,6 +188,7 @@ class UserList(generics.ListCreateAPIView):
         if new_user is not None:
             if new_user.is_active:
                 #login after signup
+                cache.set("user_points_" + str(new_user.id), 50, timeout=None)
                 django_login(request, new_user)
         #if this is the first time user sign up and want to get token
         if "1wUnicooo" in request.META["HTTP_USER_AGENT"]:
@@ -165,6 +197,7 @@ class UserList(generics.ListCreateAPIView):
             #return Response(token, status=status.HTTP_201_CREATED, headers=headers)
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)

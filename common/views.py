@@ -57,6 +57,7 @@ def public_activities(request):
 def front_page(request):
     act_list = Act.objects.all().exclude(act_type=1).order_by("-act_create_time")[:9]
     imageStyle = "-actCoverSmall"
+    user_points = cache.get("user_points_" + str(request.user.id))
     return render(request, "common/frontpage.html", {"act_list": act_list, "httpsUrl": httpsUrl, "imageStyle": imageStyle})
 
 @anonymous_required
@@ -152,24 +153,34 @@ def get_upload_token(request):
 
 @login_required 
 def update_posts_like(request, postId):
-    if request.user.user_points < 1:
-        return HttpResponse("Sorry, you are run out of points.You could get points with great posts.", status=500)
-    post_like_users = get_redis_connection("default")
+    error_messages = {
+            1: "Sorry, you are run out of points.You could get points with great posts.",
+            2: "You already liked this post before.",
+            3: "Something wrong with Redis server.",
+            4: "Something wrong with cauculate points."
+            }
+    post_author_id = request.POST.get("post_author_id", "")
+    post_likes_users = get_redis_connection("default")
+
+    user_points = cache.get("user_points_" + str(request.user.id))
+    # if user doesn't have enough point
+    if user_points < 1:
+        return HttpResponse(error_messages[1], status=500)
+    # if user already like the post  
+    if post_likes_users.zscore("post_"+str(postId), "user"+":"+str(request.user.id)):
+        return HttpResponse(error_messages[2], status=500)
+    # add like to post
     try:
-        post_like_users = get_redis_connection("default")
-        #post_like_users.zadd(("post"+":"+str(postId)), time.time(), "user"+":"+str(request.user.id))
-        post_like_users.zadd("followers:1000", 1401267618, 1234)
+        post_likes_users.zadd(("post_"+str(postId)), time.time(), "user"+":"+str(request.user.id))
+        print("post_likes")
     except:
-        return HttpResponse("Something wrong with Redis server.", status=500)
+        return HttpResponse(error_messages[3], status=500)
     else:
         try: 
-            request.user.user_points -= 1
-            request.user.save()
-            post_author = Post.objects.get(id=postId).user
-            post_author.user_points += 1
-            post_author.save()
+            cache.decr("user_points_" + str(request.user.id))
+            cache.incr("user_points_" + str(post_author_id))
         except:
-            return HttpResponse("Something wrong with cauculate points.", status=500)
+            return HttpResponse(error_messages[4], status=500)
     return HttpResponse(status=201)
 
 @csrf_exempt
