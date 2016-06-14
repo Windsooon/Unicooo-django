@@ -9,7 +9,8 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
 
-        return obj.id == request.user.id
+        return obj.user == request.user
+
 
 class IsActCreatorOrReadOnly(permissions.BasePermission):
     """
@@ -28,6 +29,7 @@ class IsAdminOrReadOnly(permissions.BasePermission):
             return True
 
         return request.user.is_staff
+
 
 class IsAuthenticatedOrCreate(permissions.IsAuthenticated):
     def has_permission(self, request, view):

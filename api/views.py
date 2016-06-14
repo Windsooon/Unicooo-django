@@ -3,32 +3,32 @@ import time
 import iso8601
 
 from datetime import datetime
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login as django_login
-from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
-from django.db.models import Max, Q
+from django.db.models import Q
 from functools import reduce
 from activities.models import Act
 from common.models import MyUser
 from post.models import Post
 from comment.models import Comment
 
-#django rest framework
+# django rest framework
 from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 from .serializers import ActSerializer, PostAllSerializer, PostSerializer, UserSerializer, UserSettingsSerializer, CommentSerializer
-from .permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly, IsAuthenticatedOrCreate, IsActCreatorOrReadOnly
+from .permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly, IsAuthenticatedOrCreate
 
-#django rest framework jwt
+# django rest framework jwt
 from rest_framework_jwt.settings import api_settings
 
-#django redis
+# django redis
 from django.core.cache import cache
 from django_redis import get_redis_connection
 
+
 class ActList(generics.ListCreateAPIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
     queryset = Act.objects.all().order_by('-act_create_time')
     serializer_class = ActSerializer
 
@@ -45,7 +45,7 @@ class ActList(generics.ListCreateAPIView):
         if act_id is not None:
             queryset = queryset.filter(id=act_id)
         if act_type is not None:
-            queryset = queryset.all().exclude(act_type=act_type)
+            queryset = queryset.all().filter(act_type=act_type)
         if act_author is not None:
             queryset = queryset.filter(user__user_name=act_author)
         if act_post is not None:
@@ -53,12 +53,13 @@ class ActList(generics.ListCreateAPIView):
             id_set = set()
             for post in post_object:
                 id_set.add(post.act.id)
-            query = reduce(operator.or_, (Q(id = item) for item in id_set))
+            query = reduce(operator.or_, (Q(id=item) for item in id_set))
             queryset = Act.objects.filter(query).order_by('-act_create_time')
         return queryset
 
+
 class ActDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsAdminOrReadOnly)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsAdminOrReadOnly)
     queryset = Act.objects.all()
     serializer_class = ActSerializer
 
@@ -70,16 +71,16 @@ class PostList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     serializer_class = PostAllSerializer
 
-    #sord post by likes number
+    # sord post by likes number
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
 
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
-            serializer_data = sorted(serializer.data, 
-                    key=lambda d: (d["likes"]+1)/((time.time()-datetime.timestamp(iso8601.parse_date(d["post_create_time"])))/3600)**1.5, reverse=True)
-            #serializer_data = sorted(serializer.data, key=lambda dict: dict["likes"]/(datetime.timestamp(dict["post_create_time"])), reverse=True)
+            serializer_data = sorted(serializer.data,
+                key=lambda d: (d["likes"]+1)/((time.time()-datetime.timestamp(iso8601.parse_date(d["post_create_time"])))/3600)**1.5, reverse=True)
+            # serializer_data = sorted(serializer.data, key=lambda dict: dict["likes"]/(datetime.timestamp(dict["post_create_time"])), reverse=True)
             return self.get_paginated_response(serializer_data)
 
         serializer = self.get_serializer(queryset, many=True)
@@ -93,7 +94,7 @@ class PostList(generics.ListCreateAPIView):
             if request.user != act.user:
                 return Response(status=403)
         return super().create(request, args, kwargs)
-    
+
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
@@ -107,9 +108,9 @@ class PostList(generics.ListCreateAPIView):
             queryset = queryset.filter(user__user_name=post_author)
         return queryset
 
- 
+
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
@@ -119,7 +120,7 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
         post_likes_users = get_redis_connection("default")
         if post_likes_users.zscore("post_"+str(serializer.data["id"]), "user"+":"+str(request.user.id)):
             seriaDict = {"like_status": 1}
-        else: 
+        else:
             seriaDict = {"like_status": 0}
         seriaDict.update(serializer.data)
         return Response(seriaDict)
@@ -130,7 +131,6 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         queryset = Post.objects.all()
         act_id = self.request.query_params.get('act_id', None)
-       
         if act_id is not None:
             queryset = queryset.filter(act=act_id)
 
@@ -152,10 +152,14 @@ class CommentList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         queryset = Comment.objects.all().order_by("-comment_create_time")
+        post_id = self.request.query_params.get('post_id', None)
         reply_id = self.request.query_params.get('reply_id', None)
-       
+
         if reply_id is not None:
             queryset = queryset.filter(reply_id=reply_id)
+
+        if post_id is not None:
+            queryset = queryset.filter(post_id=post_id)
 
         return queryset
 
@@ -187,14 +191,14 @@ class UserList(generics.ListCreateAPIView):
         new_user = authenticate(email=email, password=password)
         if new_user is not None:
             if new_user.is_active:
-                #login after signup
+                # login after signup
                 cache.set("user_points_" + str(new_user.id), 50, timeout=None)
                 django_login(request, new_user)
-        #if this is the first time user sign up and want to get token
+        # if this is the first time user sign up and want to get token
         if "1wUnicooo" in request.META["HTTP_USER_AGENT"]:
-            #payload = jwt_payload_handler(new_user)
-            #token = jwt_enacode_handler(payload)
-            #return Response(token, status=status.HTTP_201_CREATED, headers=headers)
+            # payload = jwt_payload_handler(new_user)
+            # token = jwt_enacode_handler(payload)
+            # return Response(token, status=status.HTTP_201_CREATED, headers=headers)
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 

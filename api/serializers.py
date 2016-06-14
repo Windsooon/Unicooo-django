@@ -56,11 +56,11 @@ class CommentSerializer(serializers.ModelSerializer):
     comment_user = UserSerializer(source="user", read_only=True)
     user = serializers.ReadOnlyField(source='user.id')
     comment_author = serializers.ReadOnlyField(source='user.user_name')
-    comment_avatar = serializers.ReadOnlyField(source='user.user_avatar')
+    #comment_avatar = serializers.ReadOnlyField(source='user.user_avatar')
 
     class Meta:
         model = Comment
-        fields = ("id", "user", "comment_author", "comment_avatar", "post", "reply_id", "comment_content", "comment_create_time","comment_user")
+        fields = ("id", "user", "comment_author", "post", "reply_id", "comment_content", "comment_create_time","comment_user")
         
 
 class PostAllSerializer(serializers.ModelSerializer):
