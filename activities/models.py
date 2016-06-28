@@ -16,10 +16,3 @@ class Act(models.Model):
     act_url = models.CharField(max_length=255)
     act_delete = models.IntegerField(default=0)
     act_create_time = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        index_together = [
-            ["user", "act_title"],
-        ]
-        
-

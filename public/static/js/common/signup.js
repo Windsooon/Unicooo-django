@@ -61,7 +61,6 @@ $(document).ready(function(){
         submitHandler: function(form) {
             var $form_group_loading = $(".form-group-loading");
             var $form_submit_wrap = $(".submit-btn-wrap");
-            //csrf_token = $("input[name='csrfmiddlewaretoken']").val();
             $("#signup_form :input").prop("disabled", true);
             $form_submit_wrap.empty()
             var form_outer_loading = $("<div />", {
@@ -83,8 +82,7 @@ $(document).ready(function(){
                 data:  {"email": $("#email_signup").val(), "user_name": user_name, "password": $("#password_signup").val()},
                 beforeSend:function() {},
                 success: function(xhr) {
-                    console.log("success");
-                    window.location.replace("/");
+                    //window.location.replace("/");
                 },
                 error: function(xhr, status, error) {
                     $form_submit_wrap.empty();

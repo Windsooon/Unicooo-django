@@ -2,28 +2,23 @@
 import time
 import hashlib
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.db import connection, transaction
 from django.contrib.auth import authenticate, login as django_login
 from django.contrib.auth.decorators import login_required
 from .form import UserCreateForm, UserLoginForm, UserChangeForm
-from .models import CustomAuth
 from activities.models import Act
-from comment.models import Comment
-from post.models import Post
 from common.models import MyUser
 
-#redis
+# redis
 from django.core.cache import cache
 from django_redis import get_redis_connection
 
-#qiniu
+# qiniu
 from qiniu import Auth
 from .qiniuSettings import *
-from common.qiniuSettings import httpsUrl, imageStyle
-
+from common.qiniuSettings import httpsUrl
 
 
 def dictfetchall(cursor):
@@ -35,8 +30,9 @@ def dictfetchall(cursor):
     ]
 
 
-def anonymous_required(view_function, redirect_to = None):
-    return AnonymousRequired(view_function, redirect_to) 
+def anonymous_required(view_function, redirect_to=None):
+    return AnonymousRequired(view_function, redirect_to)
+
 
 class AnonymousRequired(object):
     def __init__(self, view_function, redirect_to):
@@ -50,24 +46,32 @@ class AnonymousRequired(object):
         if request.user is not None and request.user.is_authenticated():
             return HttpResponseRedirect(self.redirect_to)
         return self.view_function(request, *args, **kwargs)
-    
+
+
 def public_activities(request):
     render(request, "public_activities.html")
 
+
 def front_page(request):
-    act_list = Act.objects.all().exclude(act_type=1).order_by("-act_create_time")[:9]
+    act_list = Act.objects.filter(act_type=2).order_by("-act_create_time")[:9]
     imageStyle = "-actCoverSmall"
-    user_points = cache.get("user_points_" + str(request.user.id))
-    return render(request, "common/frontpage.html", {"act_list": act_list, "httpsUrl": httpsUrl, "imageStyle": imageStyle})
+    # user_points = cache.get("user_points_" + str(request.user.id))
+    return render(
+            request, "common/frontpage.html",
+            {"act_list": act_list,
+             "httpsUrl": httpsUrl,
+             "imageStyle": imageStyle})
+
 
 @anonymous_required
 def sign_up(request):
     if request.method == "GET":
         form = UserCreateForm()
-        return render(request, "common/signup.html",{"form": form})
+        return render(request, "common/signup.html", {"form": form})
     else:
         return render(request, "error.html", {"error": "Method not accepted."})
-    
+
+
 @anonymous_required
 def login_in(request):
     if request.method == "GET":
@@ -86,7 +90,8 @@ def login_in(request):
     else:
         return render(request, "error.html", {"error": "Method not accepted."})
 
-@login_required 
+
+@login_required
 def personal_settings(request, personal):
     if request.method == "GET":
         if request.user.user_name != personal:
@@ -97,41 +102,47 @@ def personal_settings(request, personal):
     else:
         return render(request, "404.html")
 
+
 def personal_list(request, personal, status):
     if request.method == "GET":
         try:
             person = MyUser.objects.get(user_name=personal)
-        except: 
+        except:
             return render(request, "404.html")
         else:
             return render(request, "common/personal.html", {"person": person, "personal": personal, "httpsUrl": httpsUrl, "imageStyle": "-avatarSetting", "status": status})
     else:
         return render(request, "404.html")
 
-@login_required 
+
+@login_required
 def personal_comments(request, personal):
     if request.method == "GET":
         if request.user.user_name == personal:
             return render(request, "common/comments.html", {"httpsUrl": httpsUrl, "imageStyle": "-avatarSetting"})
-        else: 
+        else:
             return render(request, "error.html", {"error": "Permission denied"})
     else:
         return render(request, "404.html")
+
 
 def accounts(request, accounts):
     """User settings"""
     return render(request, "common/accounts.html")
 
+
 def contect(request):
     """Contect Us"""
     return render(request, "common/contect.html")
+
 
 @login_required
 def get_notifications(request):
     if cache.get(str(request.user.id) + "_comments") == "True":
         return HttpResponse("True")
     else:
-        return HttpResponse(status=204)   
+        return HttpResponse(status=204)
+
 
 @login_required
 def move_notifications(request):
@@ -139,7 +150,8 @@ def move_notifications(request):
         cache.set(str(request.user.id) + "_comments", "False")
     return HttpResponse(status=204)
 
-@login_required 
+
+@login_required
 def get_upload_token(request):
     upload_type = request.GET.get("type")
     auth = Auth(accessKey, secretKey)
@@ -148,10 +160,11 @@ def get_upload_token(request):
     serverTime = round(time.time())
     pre_key = str(request.user.id) + upload_type + secretKey[-6:]
     sha1.update(pre_key.encode("utf-8"))
-    key = str(serverTime) + sha1.hexdigest() 
+    key = str(serverTime) + sha1.hexdigest()
     return JsonResponse({"token": upToken, "key": key})
 
-@login_required 
+
+@login_required
 def update_posts_like(request, postId):
     error_messages = {
             1: "Sorry, you are run out of points.You could get points with great posts.",
@@ -166,7 +179,7 @@ def update_posts_like(request, postId):
     # if user doesn't have enough point
     if user_points < 1:
         return HttpResponse(error_messages[1], status=500)
-    # if user already like the post  
+    # if user already like the post
     if post_likes_users.zscore("post_"+str(postId), "user"+":"+str(request.user.id)):
         return HttpResponse(error_messages[2], status=500)
     # add like to post
@@ -176,30 +189,33 @@ def update_posts_like(request, postId):
     except:
         return HttpResponse(error_messages[3], status=500)
     else:
-        try: 
+        try:
             cache.decr("user_points_" + str(request.user.id))
             cache.incr("user_points_" + str(post_author_id))
         except:
             return HttpResponse(error_messages[4], status=500)
     return HttpResponse(status=201)
 
+
 @csrf_exempt
 def check_email_exist(request):
-    email = request.POST.get("email");
+    email = request.POST.get("email")
     try:
         MyUser.objects.get(email=email)
         return HttpResponse("false")
     except:
         return HttpResponse("true")
 
+
 @csrf_exempt
 def check_username_exist(request):
-    user_name = request.POST.get("user_name");
+    user_name = request.POST.get("user_name")
     try:
         MyUser.objects.get(user_name=user_name)
         return HttpResponse("false")
     except:
         return HttpResponse("true")
+
 
 @csrf_exempt
 def check_act_title(request):
@@ -217,5 +233,3 @@ def call_back(request):
     key = request.POST.get("key")
     name = request.POST.get("name")
     return JsonResponse({"key": key, "name": name})
-
-

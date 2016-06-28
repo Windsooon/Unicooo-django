@@ -9,6 +9,15 @@ $(document).ready(function() {
             });
         }    
     });
+    //press enter still search the act
+    $('.act-search-text').keypress(function (e) {
+        var key = e.which;
+        if(key == 13)  // the enter key code
+        {
+            $(".act-search").click();
+            return false;  
+        }
+    });   
     // serach acd by act_id
     $(".act-search").on("click", function() {
         act_id = parseInt($(".act-search-text").val(), 10);

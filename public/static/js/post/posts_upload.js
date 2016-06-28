@@ -35,7 +35,7 @@ $(document).ready(function(){
         formData = new FormData();
         formArrar = new Array();
         $.ajax({
-            url: "/token",
+            url: "/token/",
             type: "GET",
             datatype: "json",
             data: {"type": 1},

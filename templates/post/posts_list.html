@@ -58,15 +58,6 @@
     </div>
   </div>
   <div id="posts-container">
-        <div style="background-color: blue;" class="col-sm-4 col-md-4">
-            <span >hsdfsdf</span>
-        </div>
-        <div style="background-color: red;" class="col-sm-4 col-md-4">
-            <span >hsdfsdf</span>
-        </div>
-        <div style="background-color: yellow;" class="col-sm-4 col-md-4">
-            <span >hsdfsdf</span>
-        </div>
   </div>
   
   <!-- Display post upload image using modal -->
@@ -139,7 +130,7 @@
 
   <!-- Display post details using modal -->
   <div id="post-details" class="modal fade" tabindex="-1" style="display: none">
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -159,6 +150,11 @@
               <div class="post-posttime">  
                 <p class="post-details-posttime"></p>
               </div>
+              {% if request.user.is_authenticated %}
+                <div class="post-like-details">  
+                  <span class="post-like-details-a" aria-hidden="true"></span>
+                </div>
+              {% endif %}
             </div>
             <div class="post-content">
               <p class="post-details-content-p"></p>

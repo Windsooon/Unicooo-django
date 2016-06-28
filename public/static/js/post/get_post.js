@@ -11,8 +11,17 @@ function getPost(post_id, e) {
                   var avatarStyle = "-avatarSetting";
                   var imageStyle = "-postDetails";
                   var post_image_b = $(".post-image-b");
+                  //if user had like this post
+                  if (data["like_status"] == 1) {
+                      $(".post-like-details-a").removeClass("glyphicon glyphicon-heart-empty");
+                      $(".post-like-details-a").addClass("glyphicon glyphicon-heart");
+                  }
+                  else if (data["like_status"] == 0) {
+                      $(".post-like-details-a").removeClass("glyphicon glyphicon-heart");
+                      $(".post-like-details-a").addClass("glyphicon glyphicon-heart-empty");
+                  }
                   if ($("#user-id").val() == data["post_user"]["id"]) {
-                     $("#post-delete").css("display", "block");
+                      $("#post-delete").css("display", "block");
                   }
                   if (data["post_mime_types"] == 0) {
                       post_image_b.empty(); 

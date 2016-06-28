@@ -1,5 +1,14 @@
 $(document).ready(function(){
     var $container = $('#posts-container').masonry();
+
+    $('#post-upload').on("shown.bs.model", function(e){
+        $("body").addClass("modal-open");
+    });
+    
+    $('#post-upload').on("hidden.bs.model", function(e){
+        $("body").removeClass("modal-open")
+    });
+
     $("#post-details").on("show.bs.modal", function(e) {
         var post_id = $(e.relatedTarget).data('post-id');
         var reply_id = $("#user-id").val();
@@ -7,7 +16,7 @@ $(document).ready(function(){
         var csrf_token = $("input[name='csrfmiddlewaretoken']").val();
         ajax_comment_list(reply_id, page)
         getPost(post_id, e);
-        $("#really-delete-btn").on("click", function() {
+        $("#really-delete-btn").one("click", function() {
             $.ajax({
                 url: "/api/posts/" + post_id + "/",
                 method: "DELETE",
@@ -34,19 +43,20 @@ $(document).ready(function(){
     })
 
     //like button animation
-    $('.post-like-details-a').on('click', function(e) {
+    $(".post-like-details-a").on("click", function(e) {
         var like_status = true;
-        var post_id = $('#input-post-id').val();
+        var post_id = $("#input-post-id").val();
+        var post_author_id = $("#input-post-author-id").val();
         var csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-        if ($('.post-like-details-a').hasClass('glyphicon-heart-empty') && like_status == true) {
+        if ($(".post-like-details-a").hasClass("glyphicon-heart-empty") && like_status == true) {
             like_status = false;
-            $('.post-like-details-a').removeClass('glyphicon-heart-empty'); 
-            $('.post-like-details-a').addClass('glyphicon-heart'); 
+            $(".post-like-details-a").removeClass("glyphicon-heart-empty"); 
+            $(".post-like-details-a").addClass("glyphicon-heart"); 
             $.ajax({
                     url: "/likes/" + post_id + "/",
                     method: "POST",
                     datatype: "json",
-                    data: {"like": 1},
+                    data: {"post_author_id": post_author_id},
                     beforeSend:function(xhr, settings) {
                         if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
                             xhr.setRequestHeader("X-CSRFToken", csrf_token);
@@ -58,7 +68,7 @@ $(document).ready(function(){
                             {
                                 $('.post-like-details-a').removeClass('glyphicon-heart'); 
                                 $('.post-like-details-a').addClass('glyphicon-heart-empty'); 
-                                alert("Something run with our server, We will figure it out soon");
+                                alert("It seems a little problem with our server, Sorry for that, we will fix it soon.");
                             }, 3000);
                     },
                     success: function() {
