@@ -34,4 +34,3 @@ DATABASES = {
         'CHARSET': 'UTF-8',
     }
 }
-

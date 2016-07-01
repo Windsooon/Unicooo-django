@@ -82,7 +82,7 @@ $(document).ready(function(){
                 data:  {"email": $("#email_signup").val(), "user_name": user_name, "password": $("#password_signup").val()},
                 beforeSend:function() {},
                 success: function(xhr) {
-                    //window.location.replace("/");
+                    window.location.replace("/");
                 },
                 error: function(xhr, status, error) {
                     $form_submit_wrap.empty();

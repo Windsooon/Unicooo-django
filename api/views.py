@@ -3,7 +3,6 @@ import time
 import iso8601
 
 from datetime import datetime
-from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login as django_login
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
@@ -16,8 +15,10 @@ from comment.models import Comment
 # django rest framework
 from rest_framework import generics, status, permissions
 from rest_framework.response import Response
-from .serializers import ActSerializer, PostAllSerializer, PostSerializer, UserSerializer, UserSettingsSerializer, CommentSerializer
-from .permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly, IsAuthenticatedOrCreate
+from .serializers import ActSerializer, PostAllSerializer, PostSerializer, \
+        UserSerializer, UserSettingsSerializer, CommentSerializer
+from .permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly, \
+        IsAuthenticatedOrCreate
 
 # django rest framework jwt
 from rest_framework_jwt.settings import api_settings
@@ -28,7 +29,9 @@ from django_redis import get_redis_connection
 
 
 class ActList(generics.ListCreateAPIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
+    permission_classes = (
+            permissions.IsAuthenticatedOrReadOnly,
+            IsOwnerOrReadOnly)
     queryset = Act.objects.all().order_by('-act_create_time')
     serializer_class = ActSerializer
 
@@ -59,7 +62,9 @@ class ActList(generics.ListCreateAPIView):
 
 
 class ActDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsAdminOrReadOnly)
+    permission_classes = (
+            permissions.IsAuthenticatedOrReadOnly,
+            IsAdminOrReadOnly)
     queryset = Act.objects.all()
     serializer_class = ActSerializer
 
@@ -78,13 +83,17 @@ class PostList(generics.ListCreateAPIView):
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
-            serializer_data = sorted(serializer.data,
-                key=lambda d: (d["likes"]+1)/((time.time()-datetime.timestamp(iso8601.parse_date(d["post_create_time"])))/3600)**1.5, reverse=True)
-            # serializer_data = sorted(serializer.data, key=lambda dict: dict["likes"]/(datetime.timestamp(dict["post_create_time"])), reverse=True)
+            serializer_data = sorted(
+                serializer.data,
+                key=lambda d: (d["likes"]+1)/((time.time()-datetime.timestamp(
+                    iso8601.parse_date(d["post_create_time"])))/3600)**1.5,
+                reverse=True)
             return self.get_paginated_response(serializer_data)
 
         serializer = self.get_serializer(queryset, many=True)
-        serializer_data = sorted(serializer.data, key=operator.itemgetter('likes'), reverse=True)
+        serializer_data = sorted(
+                serializer.data, key=operator.itemgetter('likes'),
+                reverse=True)
         return Response(serializer_data)
 
     def create(self, request, *args, **kwargs):
@@ -110,7 +119,9 @@ class PostList(generics.ListCreateAPIView):
 
 
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
+    permission_classes = (
+            permissions.IsAuthenticatedOrReadOnly,
+            IsOwnerOrReadOnly)
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
@@ -118,7 +129,9 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         post_likes_users = get_redis_connection("default")
-        if post_likes_users.zscore("post_"+str(serializer.data["id"]), "user"+":"+str(request.user.id)):
+        if post_likes_users.zscore(
+                "post_"+str(serializer.data["id"]),
+                "user"+":"+str(request.user.id)):
             seriaDict = {"like_status": 1}
         else:
             seriaDict = {"like_status": 0}
@@ -165,47 +178,51 @@ class CommentList(generics.ListCreateAPIView):
 
 
 class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsAdminOrReadOnly)
+    permission_classes = (
+            permissions.IsAuthenticatedOrReadOnly,
+            IsAdminOrReadOnly)
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+
 class UserList(generics.ListCreateAPIView):
     queryset = MyUser.objects.all()
     serializer_class = UserSerializer
     permission_classes = (IsAuthenticatedOrCreate,)
-    jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
-    jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 
     @csrf_exempt
     def create(self, request, *args, **kwargs):
         email = request.POST.get("email")
         password = request.POST.get("password")
-        user_name = request.POST.get("user_name")
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         new_user = authenticate(email=email, password=password)
+        jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+        jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
         if new_user is not None:
             if new_user.is_active:
-                # login after signup
                 cache.set("user_points_" + str(new_user.id), 50, timeout=None)
                 django_login(request, new_user)
-        # if this is the first time user sign up and want to get token
-        if "1wUnicooo" in request.META["HTTP_USER_AGENT"]:
-            # payload = jwt_payload_handler(new_user)
-            # token = jwt_enacode_handler(payload)
-            # return Response(token, status=status.HTTP_201_CREATED, headers=headers)
-            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+                payload = jwt_payload_handler(new_user)
+                token = jwt_encode_handler(payload)
+                return Response(
+                        status=status.HTTP_201_CREATED,
+                        headers=headers
+                )
+        return Response(
+                serializer.data,
+                status=status.HTTP_201_CREATED,
+                headers=headers)
 
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
+    permission_classes = (
+            permissions.IsAuthenticatedOrReadOnly,
+            IsOwnerOrReadOnly)
     queryset = MyUser.objects.all()
     serializer_class = UserSettingsSerializer
-
-
