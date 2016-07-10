@@ -1,12 +1,11 @@
 $(document).ready(function(){
     var $container = $('#posts-container').masonry();
-
-    $('#post-upload').on("shown.bs.model", function(e){
-        $("body").addClass("modal-open");
+    $("#post-upload").on("show.bs.modal", function(e) {
+        // $("body").addClass("modal-open");
     });
     
-    $('#post-upload').on("hidden.bs.model", function(e){
-        $("body").removeClass("modal-open")
+    $("#post-upload").on("hidden.bs.modal", function(e) {
+        // $("body").removeClass("modal-open")
     });
 
     $("#post-details").on("show.bs.modal", function(e) {

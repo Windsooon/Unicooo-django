@@ -18,7 +18,7 @@ from rest_framework.response import Response
 from .serializers import ActSerializer, PostAllSerializer, PostSerializer, \
         UserSerializer, UserSettingsSerializer, CommentSerializer
 from .permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly, \
-        IsAuthenticatedOrCreate
+        IsAuthenticatedOrCreate, IsOwnerOrPostReadOnly
 
 # django rest framework jwt
 from rest_framework_jwt.settings import api_settings
@@ -121,7 +121,7 @@ class PostList(generics.ListCreateAPIView):
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (
             permissions.IsAuthenticatedOrReadOnly,
-            IsOwnerOrReadOnly)
+            IsOwnerOrPostReadOnly)
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
@@ -211,6 +211,7 @@ class UserList(generics.ListCreateAPIView):
                 payload = jwt_payload_handler(new_user)
                 token = jwt_encode_handler(payload)
                 return Response(
+                        token,
                         status=status.HTTP_201_CREATED,
                         headers=headers
                 )

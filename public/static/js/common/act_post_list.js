@@ -22,7 +22,7 @@ function get_act_list(data, container){
                     //act thumb image
                     var $act_thumb_a = $("<a />", {
                             "class": "act-thumb-a",
-                            href: "/act/" + value["act_user"]["user_name"] + "/" + value["act_title"],
+                            href: "/act/" + value["act_user"]["user_name"] + "/" + value["act_title"] + "/",
                             "data-toggle": "modal",
                             });
                     var $act_thumb_img = $("<img />", {

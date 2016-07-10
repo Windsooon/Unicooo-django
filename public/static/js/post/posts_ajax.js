@@ -16,7 +16,7 @@ $(document).ready(function(){
     var act_id = $activity_input.eq(0).val();
     var data = {"act_id": act_id, "page": page};
     var $container = $('#posts-container').masonry({
-        columnWidth: 20,
+        columnWidth: 1,
         itemSelector: '.post-container',
         transitionDuration: '0.3s',
         hiddenStyle: { opacity: 0 },
@@ -38,7 +38,6 @@ $(document).ready(function(){
             get_post_list(data, $container);
         }
     };
-
     $("#add-comment-btn").on("click", comment_click_handler);
 })
 

@@ -17,7 +17,7 @@ from django_redis import get_redis_connection
 
 # qiniu
 from qiniu import Auth
-from .qiniuSettings import *
+from .qiniuSettings import accessKey, secretKey, bucket
 from common.qiniuSettings import httpsUrl
 
 
@@ -84,7 +84,12 @@ def login_in(request):
         if user is not None:
             if user.is_active:
                 django_login(request, user)
-                return render(request, "error.html", {"error": "Method not accepted."})
+                return render(
+                        request, "error.html",
+                        {
+                            "error": "Method not accepted."
+                        }
+                    )
         else:
             return HttpResponse("Email or password incorrect.", status=588)
     else:
@@ -95,10 +100,23 @@ def login_in(request):
 def personal_settings(request, personal):
     if request.method == "GET":
         if request.user.user_name != personal:
-            return render(request, "error.html", {"error": "Permission denied"})
+            return render(
+                    request, "error.html",
+                    {
+                        "error": "Permission denied"
+                    }
+                )
         person = MyUser.objects.get(user_name=personal)
         form = UserChangeForm(request.POST or None, instance=person)
-        return render(request, "common/settings.html", {"person": person, "httpsUrl": httpsUrl, "imageStyle": "-avatarSetting", "form": form})
+        return render(
+                request, "common/settings.html",
+                {
+                    "person": person,
+                    "httpsUrl": httpsUrl,
+                    "imageStyle": "-avatarSetting",
+                    "form": form
+                }
+            )
     else:
         return render(request, "404.html")
 
@@ -110,7 +128,14 @@ def personal_list(request, personal, status):
         except:
             return render(request, "404.html")
         else:
-            return render(request, "common/personal.html", {"person": person, "personal": personal, "httpsUrl": httpsUrl, "imageStyle": "-avatarSetting", "status": status})
+            return render(
+                    request, "common/personal.html",
+                    {
+                        "person": person, "personal": personal,
+                        "httpsUrl": httpsUrl, "imageStyle": "-avatarSetting",
+                        "status": status
+                    }
+                )
     else:
         return render(request, "404.html")
 
@@ -119,9 +144,20 @@ def personal_list(request, personal, status):
 def personal_comments(request, personal):
     if request.method == "GET":
         if request.user.user_name == personal:
-            return render(request, "common/comments.html", {"httpsUrl": httpsUrl, "imageStyle": "-avatarSetting"})
+            return render(
+                    request, "common/comments.html",
+                    {
+                        "httpsUrl": httpsUrl,
+                        "imageStyle": "-avatarSetting"
+                    }
+                )
         else:
-            return render(request, "error.html", {"error": "Permission denied"})
+            return render(
+                    request, "error.html",
+                    {
+                        "error": "Permission denied"
+                    }
+                )
     else:
         return render(request, "404.html")
 
@@ -167,7 +203,8 @@ def get_upload_token(request):
 @login_required
 def update_posts_like(request, postId):
     error_messages = {
-            1: "Sorry, you are run out of points.You could get points with great posts.",
+            1: "Sorry, you are run out of points.\
+               You could get points with great posts.",
             2: "You already liked this post before.",
             3: "Something wrong with Redis server.",
             4: "Something wrong with cauculate points."
@@ -180,11 +217,18 @@ def update_posts_like(request, postId):
     if user_points < 1:
         return HttpResponse(error_messages[1], status=500)
     # if user already like the post
-    if post_likes_users.zscore("post_"+str(postId), "user"+":"+str(request.user.id)):
+    if post_likes_users.zscore(
+            "post_"+str(postId),
+            "user"+":"+str(request.user.id)
+            ):
         return HttpResponse(error_messages[2], status=500)
     # add like to post
     try:
-        post_likes_users.zadd(("post_"+str(postId)), time.time(), "user"+":"+str(request.user.id))
+        post_likes_users.zadd(
+                ("post_"+str(postId)),
+                time.time(),
+                "user"+":"+str(request.user.id)
+                )
         print("post_likes")
     except:
         return HttpResponse(error_messages[3], status=500)

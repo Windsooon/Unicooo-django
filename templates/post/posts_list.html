@@ -11,17 +11,17 @@
 <div class="activity-container container">
   <div class="row">
     <div class="activity-details-thumb clearfix">
+      <div class="activity-license">
+        <p>{{ act_license }}</p>
+        <p>ID {{ act_details.id|add:"10000"  }}</p>
+      </div>
       <div class="activity-details-thumb-img col-sm-7 col-md-7 col-lg-7"> 
         <a class="activity-details-thumb-a">
             <img src="{{ act_thumb }}" alt="{{ act_details.act_title }}"/>
         </a>
       </div>
       <div class="activity-details-content col-sm-5 col-md-5 col-lg-5">
-        <p class="act-details-title text-center">{{ act_details.act_title }}</p>
-        <div class="activity-license">
-          <p>{{ act_license }}</p>
-          <p>ID {{ act_details.id|add:"10000"  }}</p>
-        </div>
+        <p class="act-details-title text-center">{{ act_details.act_title|title }}</p>
         <div class="act-details-div">
           <p class="act-details-content">{{ act_details.act_content }}</p>
           <div class="fadeout"></div>
@@ -40,7 +40,7 @@
             <p class="author-p">{{ act_author.user_name }}</p>
         </a>
       </div>
-      <div>
+      <div class="check-auth">
         {% if request.user.is_authenticated %}
           {% if act_details.act_type == 0 %}
             {% if request.user.user_name != act_details.user.user_name %}
@@ -57,7 +57,9 @@
       </div>
     </div>
   </div>
+  <div class="row">
   <div id="posts-container">
+  </div>
   </div>
   
   <!-- Display post upload image using modal -->

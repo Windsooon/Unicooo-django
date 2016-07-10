@@ -11,6 +11,16 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         return obj == request.user
 
 
+class IsOwnerOrPostReadOnly(permissions.BasePermission):
+    """
+    Custom permission to only allow owners of an object to edit it.
+    """
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return obj.user == request.user
+
+
 class IsActCreatorOrReadOnly(permissions.BasePermission):
     """
     Custom permission to only allow owners of an object to edit it.
@@ -34,4 +44,5 @@ class IsAuthenticatedOrCreate(permissions.IsAuthenticated):
     def has_permission(self, request, view):
         if request.method == 'POST':
             return True
-        return super(IsAuthenticatedOrCreate, self).has_permission(request, view)
+        return super(IsAuthenticatedOrCreate, self).\
+            has_permission(request, view)

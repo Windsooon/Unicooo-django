@@ -25,10 +25,17 @@ class MyUserManager(BaseUserManager):
 
 
 class MyUser(AbstractBaseUser):
-    email = models.EmailField(verbose_name='Email Address', max_length=255, unique=True)
+    email = models.EmailField(
+            verbose_name='Email Address',
+            max_length=255,
+            unique=True
+            )
     user_name = models.CharField(max_length=30, unique=True)
     user_avatar = models.CharField(max_length=255, blank=True)
-    user_gender = models.IntegerField(choices=USERGENDER, default=USERGENDER[0][0])
+    user_gender = models.IntegerField(
+            choices=USERGENDER,
+            default=USERGENDER[0][0]
+            )
     user_details = models.CharField(max_length=80)
     user_register_time = models.DateTimeField(auto_now=True)
     user_validated = models.IntegerField(default=0)

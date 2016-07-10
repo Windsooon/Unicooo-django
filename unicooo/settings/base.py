@@ -13,7 +13,8 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+BASE_DIR = os.path.dirname(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'b+v!u5c5_dkjq7$epme3cnx=9q9pbr5)x-bv#wjod&pznno)w%'
@@ -32,6 +33,7 @@ INSTALLED_APPS = (
     'activities',
     'comment',
     'post',
+    'test',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -97,7 +99,8 @@ USE_TZ = True
 
 AUTH_USER_MODEL = 'common.MyUser'
 
-AUTHENTICATION_BACKENDS = ('common.models.CustomAuth', 'django.contrib.auth.backends.ModelBackend')
+AUTHENTICATION_BACKENDS = (
+    'common.models.CustomAuth', 'django.contrib.auth.backends.ModelBackend')
 
 
 # Static files (CSS, JavaScript, Images)

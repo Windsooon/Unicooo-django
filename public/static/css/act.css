@@ -135,7 +135,8 @@
     position: absolute;
     left: 20px;
     top: 5px;
-    color: gray;
+    z-index: 999;
+    color: white;
 }
 
 @media only screen and (max-width: 568px) { 
@@ -280,26 +281,6 @@
 
 }
 
-@media only screen and (max-width: 320px) {
- 
-  #intro h1 {
-    font-size: 50px;
-  }
-  
-  .front-btn {
-    font-size: 10px;
-  }
-
-  .act-details-div {
-    height: 20em;
-  }
-
-  .act-details-content {
-    height: 6em;
-  }
-
-}
-
 .act-details-div {
     border-top: 2px solid #2b6e90;
     max-height: 300px;
@@ -379,6 +360,7 @@
     text-overflow: ellipsis;
     font-family: SimHei;
     font-size: 20px;
+    font-weight: 500;
     color: #545454;
 }
 
@@ -428,28 +410,47 @@
 @media only screen and (min-width: 569px) {
     .act-details-title {
        padding: 12px;
-       font-size:32px; 
+       font-size:32px;
+       font-weight: 600;
     }
 }
 
 @media only screen and (max-width: 568px) {
     .act-details-title {
        padding: 12px;
-       font-size:18px; 
+       font-size:24px; 
+       font-weight: 600;
     }
 }
 
 @media only screen and (max-width: 320px) {
     .act-details-title {
        padding: 12px;
-       font-size:18px; 
+       font-size:20px; 
+       font-weight: 600;
+    }
+ 
+    #intro h1 {
+        font-size: 50px;
+    }
+  
+    .front-btn {
+        font-size: 12px;
+    }
+
+    .act-details-div {
+        height: 20em;
+    }
+
+    .act-details-content {
+        height: 6em;
     }
 }
 
 .act-details-content {
    padding-top: 30px;
    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAABCAYAAADn9T9+AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABxJREFUeNpifPbs2X8GBGCE0nAxSUlJsBhAgAEAoWUE/8iu67gAAAAASUVORK5CYII=') transparent  repeat-x top left;
-   font-size:16px; 
+   font-size:20px; 
    word-wrap:break-word; word-break:normal;
 
 }

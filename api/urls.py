@@ -1,8 +1,9 @@
-from django.conf.urls import *
+# from django.conf.urls import *
+from django.conf.urls import url, include
 from rest_framework.urlpatterns import format_suffix_patterns
 from api import views
-from rest_framework.authtoken import views as token_views
 from rest_framework_jwt.views import obtain_jwt_token
+
 
 urlpatterns = [
                   url(r"^acts/$", views.ActList.as_view()),
@@ -12,9 +13,9 @@ urlpatterns = [
                   url(r"^users/$", views.UserList.as_view()),
                   url(r"^users/(?P<pk>[0-9]+)/$", views.UserDetail.as_view()),
                   url(r"^comments/$", views.CommentList.as_view()),
-                  url(r"^comments/(?P<pk>[0-9]+)/$", views.CommentDetail.as_view()),
+                  url(r"^comments/(?P<pk>[0-9]+)/$",
+                      views.CommentDetail.as_view()),
                   url(r'^api-token-auth/', obtain_jwt_token),
-                  #url(r'^api-token-auth/', token_views.obtain_auth_token),
               ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
@@ -23,4 +24,3 @@ urlpatterns += [
     url(r"^api-auth/", include("rest_framework.urls",
                                namespace="rest_framework")),
 ]
-
