@@ -2,7 +2,6 @@ $(document).ready(function(){
     var $container = $('#posts-container').masonry();
     var formData = new FormData();
     var formArray = new Array();
-    var imageUrl = "https://o3e6g3hdp.qnssl.com/";
     var imageStyle = "-actCoverBig";
     var post_upload_status = false;
     $post_cover_span = $(".upload-cover");
@@ -15,14 +14,14 @@ $(document).ready(function(){
             var currrent_length = $(".post-form-text").val().length;   
             if (currrent_length >= 1 && currrent_length <= 60) {
                 $post_length.text(60-currrent_length);
-                if ($('#add-post-btn').is(":disabled") && post_upload_status) {
-                    $('#add-post-btn').prop('disabled', false);
+                if ($('.add-post-btn').is(":disabled") && post_upload_status) {
+                    $('.add-post-btn').prop('disabled', false);
                 }
             }
             else {
                 $post_length.text("beyond 60 char");
                 $post_length.css("color","#3f51b5");
-                $('#add-post-btn').prop('disabled', true);
+                $('.add-post-btn').prop('disabled', true);
             }
         }
         else {
@@ -30,8 +29,8 @@ $(document).ready(function(){
         }
     }); 
     
-    //click "join the act" button
-    $('#post-upload-image').on("click", function(){ 
+    //click "UPLOAD IMAGE" button
+    $(document).on('click', '.post-upload-image', function(){
         formData = new FormData();
         formArrar = new Array();
         $.ajax({
@@ -48,7 +47,7 @@ $(document).ready(function(){
     });
     
     //when post image change
-    $("#post-upload-image").on('change', function () {
+    $(document).on('change', '.post-upload-image', function(){
         if (typeof (FileReader) != "undefined") {
             var upload_file = $(this)[0].files[0];
             switch (upload_file.type)
@@ -70,11 +69,11 @@ $(document).ready(function(){
                         formArray[3] = img.height;
                         formArray[5] = 0;
                     };
-                    img.src = reader.result; //is the data URL because called with readAsDataURL
+                    img.src = reader.result;
                     $("<img />", {
                         "src": e.target.result,
                         "class": "unfinished-image",
-                        "id": "post-upload-img"
+                        "class": "post-upload-img"
                     }).appendTo(image_holder);
                 }
                 image_holder.show();
@@ -102,7 +101,7 @@ $(document).ready(function(){
                     $("<img />", {
                         "src": "https://o3e6g3hdp.qnssl.com/audio.jpg",
                         "class": "unfinished-image",
-                        "id": "post-upload-img"
+                        "class": "post-upload-img"
                     }).appendTo(image_holder);
                 image_holder.show();
                 reader.readAsDataURL($(this)[0].files[0]);
@@ -141,16 +140,7 @@ $(document).ready(function(){
             processData: false, 
             contentType: false,
             beforeSend:function(){
-               $post_cover_span.empty(); 
-               var post_outer_loading = $("<div />", {
-                      });
-               var post_loading = $("<div />", {
-                          "class": "la-ball-clip-rotate la-sm",
-                      });
-               var post_inner_loading = $("<div />");
-               post_loading.append(post_inner_loading);
-               post_outer_loading.append(post_loading);
-               $post_cover_span.append(post_outer_loading);
+                loadingBefore($(".upload-cover"));
             },
             error: function(xhr, status, error) {
                 if (xhr.status >= 400 && xhr.status < 500) {
@@ -169,41 +159,36 @@ $(document).ready(function(){
                 upload_failed.appendTo($post_cover_span).hide().fadeIn(500);
             },
             success: function(data) {
-               $(".post-upload-div img").attr("id", "post-upload-img");
-               var upload_key = $("<input>").attr({
-                           value: formArray[1],
-                           name: "upload_key",
-                           type: "hidden",
-                           id: "upload_key",
-                       });    
-               var upload_image_width = $("<input>").attr({
-                           value: formArray[2],
-                           name: "image_width",
-                           type: "hidden",
-                           id: "image_width",
-                       }); 
-               var upload_image_height = $("<input>").attr({
-                           value: formArray[3],
-                           name: "image_height",
-                           type: "hidden",
-                           id: "image_height",
-                       }); 
-               $post_cover_span.empty(); 
-               var upload_success = $("<span />", {
-                          text: "Success",
-                      });
-               upload_success.appendTo($post_cover_span).hide().fadeIn(500);
-               $("#act_title").after(upload_key);
+                $(".post-upload-div img").attr("class", "post-upload-img");
+                var upload_key = $("<input>").attr({
+                            value: formArray[1],
+                            name: "upload_key",
+                            type: "hidden",
+                            id: "upload_key",
+                        });    
+                var upload_image_width = $("<input>").attr({
+                            value: formArray[2],
+                            name: "image_width",
+                            type: "hidden",
+                            id: "image_width",
+                        }); 
+                var upload_image_height = $("<input>").attr({
+                            value: formArray[3],
+                            name: "image_height",
+                            type: "hidden",
+                            id: "image_height",
+                        }); 
+                loadingAfter($(".upload-cover"), 1);
+                $("#act_title").after(upload_key);
             },
             complete: function() {
                 post_upload_status = true;
                 $(".post-upload-div img").removeClass("unfinished-image");
                 $(".post-upload-div img").addClass("finished-image");
                 var post_length = $(".post-form-text").val().length + 1;
-                if (  post_length >= 2 && post_length <= 60 && $('#add-post-btn').is(":disabled")) {
-                    $('#add-post-btn').prop('disabled', false);
-            }
-
+                if (  post_length >= 2 && post_length <= 60 && $('.add-post-btn').is(":disabled")) {
+                    $('.add-post-btn').prop('disabled', false);
+                }
             },
         });
     });
@@ -218,7 +203,10 @@ $(document).ready(function(){
       $.ajax({
           url: "/api/posts/",
           type: "POST",
-          data: {csrfmiddlewaretoken: csrf_token, "post_thumb_url": formArray[1], "post_thumb_width": formArray[2], "post_thumb_height": formArray[3], "nsfw": 1, "post_mime_types": formArray[5], "act": formArray[4], "post_content": formArray[6]}, 
+          data: {
+              csrfmiddlewaretoken: csrf_token,
+              "post_thumb_url": formArray[1],
+              "post_thumb_width": formArray[2], "post_thumb_height": formArray[3], "nsfw": 1, "post_mime_types": formArray[5], "act": formArray[4], "post_content": formArray[6]}, 
           datatype: "json",
           beforeSend: function(){
               $(".post-form-text").prop("disabled", true);
@@ -234,7 +222,7 @@ $(document).ready(function(){
                if (data["post_mime_types"] == 0) {
                    var post_image = $("<img />", {
                           "class": "post-container-img",
-                          src: imageUrl + data["post_thumb_url"],
+                          src: httpsUrl + data["post_thumb_url"],
                       });
                     post_a.append(post_image)
                }
@@ -254,7 +242,7 @@ $(document).ready(function(){
                       });
                    var audio_tag = $("<audio />", {
                           "class": "audio-div-audio",
-                          src: imageUrl + data["post_thumb_url"],
+                          src: httpsUrl + data["post_thumb_url"],
 
                           "controls": "controls",
                           "preload": "auto",
@@ -325,7 +313,7 @@ $(document).ready(function(){
                    $container.masonry('prepended', post_div);
                });
                $(".post-thumb-a:first").attr({"data-post-id": data["id"]});
-               $("#post-upload").modal("hide")
+               $("#post-upload").modal("hide");
           }, 
           error: function(data) {
           },

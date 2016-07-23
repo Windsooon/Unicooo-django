@@ -10,7 +10,7 @@
     border-bottom-left-radius: 6px;
 }
 
-#post-upload-img {
+.post-upload-img {
     width: 100%;
     display: block;
     margin-left: auto;
@@ -127,7 +127,6 @@
 .post-like-details:hover{
     cursor: pointer;
 }
-
 
 .post-like-details .glyphicon {
     font-size: 2rem;
@@ -287,6 +286,3 @@ audio {
         rgba(255, 255, 255, 1) 100%
     );
 } 
-
-
-

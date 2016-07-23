@@ -1,3 +1,5 @@
+var httpsUrl = "https://o3e6g3hdp.qnssl.com/";
+
 $(document).ready(function() {
     //click get comments
     $(".base-comments").on("click", function() {
@@ -95,6 +97,22 @@ function sameOrigin(url) {
         !(/^(\/\/|http:|https:).*/.test(url));
 }
 
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
 function checkScroll(outerContainer, innerContainer){
     if($(window).scrollTop() > Math.round(outerContainer.height()*2/5)){
         return true; 
@@ -110,6 +128,31 @@ function imgError(image) {
     return true;
 }
 
+function loadingBefore(outer_div) {
+    outer_div.empty();
+    var outer_loading = $("<div />");
+    var normal_loading = $("<div />", {
+               "class": "la-ball-clip-rotate la-sm",
+           });
+    var inner_loading = $("<div />");
+    normal_loading.append(inner_loading);
+    outer_loading.append(normal_loading);
+    outer_div.append(outer_loading);
+}
 
-
-
+function loadingAfter(outer_div, text_code) {
+    switch(text_code){
+        case 1:
+          text = "SUCCESS";
+          break;
+        case 2:
+          text = "PLEASE TRY AGAIN LATER";
+          break;
+        default:
+    }
+    outer_div.empty(); 
+    var upload_text = $("<span />", {
+               text: text,
+           });
+    upload_text.appendTo(outer_div).hide().fadeIn(500);
+}

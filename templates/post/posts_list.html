@@ -74,13 +74,13 @@
           <div class="modal-body">
             <div class="post-upload-wrapper">
               <div class="post-upload-div">
-                <img id="post-upload-img" src="{{ httpsUrl }}post-example.jpg" />
+                <img class="post-upload-img" src="{{ httpsUrl }}post-example.jpg" />
               </div>
               <div class="progress">
                 <div class="progress-bar"></div>
               </div>
-              <span class="upload-cover btn btn-primary btn-file btn-block"><span id="inter-upload-post">Upload Image / Audio</span>
-                  <input type="file" class="cropit-image-input" id="post-upload-image" accept="image/*, audio/* ">
+              <span class="upload-cover btn btn-primary btn-file btn-block"><span class="inter-upload-post">Upload Image / Audio</span>
+                  <input type="file" class="post-upload-image" accept="image/*, audio/* ">
               </span>
             </div>
             <div class="post-form">
@@ -88,11 +88,11 @@
                 {% csrf_token %}
                 <div class="form-group">
                   <label class="sr-only" for="" >Post Content</label>
-                  <input type="text" class="post-form-text form-control"  id="inter-upload-holder" placeholder="Please enter you post content." disabled>
+                  <input type="text" class="post-form-text form-control"  class="inter-upload-holder" placeholder="Please enter you post content." disabled>
                 <h6 class="post-form-length">60</h6>
                 </div>
-                <button type="submit" id="add-post-btn" disabled class="btn btn-primary pull-right">Submit</button>
-                <button type="submit" id="add-upload_more-btn" disabled class="btn btn-primary pull-right">More</button>
+                <button type="submit" disabled class="add-post-btn btn btn-primary pull-right">Submit</button>
+                <button type="submit" disabled class="add-upload-more-btn btn btn-primary pull-right">More</button>
               </form>
             </div>
           </div>

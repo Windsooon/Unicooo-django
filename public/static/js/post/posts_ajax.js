@@ -40,7 +40,3 @@ $(document).ready(function(){
     };
     $("#add-comment-btn").on("click", comment_click_handler);
 })
-
-
-
-
