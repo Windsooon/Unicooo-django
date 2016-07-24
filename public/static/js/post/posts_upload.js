@@ -3,25 +3,24 @@ $(document).ready(function(){
     var formData = new FormData();
     var formArray = new Array();
     var imageStyle = "-actCoverBig";
-    var post_upload_status = false;
     $post_cover_span = $(".upload-cover");
 
     //显示剩余输入字数
-    $(".post-form-text").keyup(function(){  
+    $(document).on("keyup", ".post-form-text", function(){
         var $post_length = $(".post-form-length");
         //length未必存在
         if ($(".post-form-text").val().length) {
             var currrent_length = $(".post-form-text").val().length;   
             if (currrent_length >= 1 && currrent_length <= 60) {
                 $post_length.text(60-currrent_length);
-                if ($('.add-post-btn').is(":disabled") && post_upload_status) {
-                    $('.add-post-btn').prop('disabled', false);
+                if ($(".add-post-btn").is(":disabled") && post_upload_status) {
+                    $(".add-post-btn").prop('disabled', false);
                 }
             }
             else {
                 $post_length.text("beyond 60 char");
                 $post_length.css("color","#3f51b5");
-                $('.add-post-btn').prop('disabled', true);
+                $(".add-post-btn").prop("disabled", true);
             }
         }
         else {
@@ -30,7 +29,7 @@ $(document).ready(function(){
     }); 
     
     //click "UPLOAD IMAGE" button
-    $(document).on('click', '.post-upload-image', function(){
+    $(document).on("click", ".post-upload-image", function(){
         formData = new FormData();
         formArrar = new Array();
         $.ajax({
@@ -47,7 +46,7 @@ $(document).ready(function(){
     });
     
     //when post image change
-    $(document).on('change', '.post-upload-image', function(){
+    $(document).on("change", ".post-upload-image", function(){
         if (typeof (FileReader) != "undefined") {
             var upload_file = $(this)[0].files[0];
             switch (upload_file.type)
@@ -105,7 +104,6 @@ $(document).ready(function(){
                     }).appendTo(image_holder);
                 image_holder.show();
                 reader.readAsDataURL($(this)[0].files[0]);
-
                 break;
             default: 
                 //alert("This file has't been supported"); 
@@ -186,139 +184,139 @@ $(document).ready(function(){
                 $(".post-upload-div img").removeClass("unfinished-image");
                 $(".post-upload-div img").addClass("finished-image");
                 var post_length = $(".post-form-text").val().length + 1;
-                if (  post_length >= 2 && post_length <= 60 && $('.add-post-btn').is(":disabled")) {
+                if (post_length >= 2 && post_length <= 60 && $('.add-post-btn').is(":disabled")) {
                     $('.add-post-btn').prop('disabled', false);
                 }
             },
         });
     });
 
-    $("#post-content").submit(function(e){
-      e.preventDefault();
-      $activity_input = $(".activity-details-content input");
-      var post_content = $(".post-form-text").val();
-      var csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-      formArray[4] = $activity_input.eq(0).val();
-      formArray[6] = post_content
-      $.ajax({
-          url: "/api/posts/",
-          type: "POST",
-          data: {
-              csrfmiddlewaretoken: csrf_token,
-              "post_thumb_url": formArray[1],
-              "post_thumb_width": formArray[2], "post_thumb_height": formArray[3], "nsfw": 1, "post_mime_types": formArray[5], "act": formArray[4], "post_content": formArray[6]}, 
-          datatype: "json",
-          beforeSend: function(){
-              $(".post-form-text").prop("disabled", true);
-          },
-          success: function(data) {
-              var date = data["post_create_time"].split("T", 1);
-              var post_a = $("<a />", {
-                          "class": "post-thumb-a",
-                          href: "#post_details",
-                          "data-toggle": "modal",
-                          "data-target": "#post-details",
-                      });
-               if (data["post_mime_types"] == 0) {
-                   var post_image = $("<img />", {
-                          "class": "post-container-img",
-                          src: httpsUrl + data["post_thumb_url"],
-                      });
-                    post_a.append(post_image)
-               }
-               else if (data["post_mime_types"] == 1) {
-                   var audio_div_wrapper = $("<div />", {
-                          "class": "audio-div-wrapper",
-                      });
-                   var audio_div = $("<div />", {
-                          "class": "audio-div",
-                      });
-                   var audio_div_p = $("<p />", {
-                          "class": "audio-div-p",
-                          text: data["post_content"],
-                      });
-                   var audio_fadeout = $("<div />", {
-                          "class": "act-fadeout",
-                      });
-                   var audio_tag = $("<audio />", {
-                          "class": "audio-div-audio",
-                          src: httpsUrl + data["post_thumb_url"],
+    $(document).on("submit", ".post-content-upload", function(e){
+        e.preventDefault();
+        $activity_input = $(".activity-details-content input");
+        var post_content = $(".post-form-text").val();
+        var csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+        formArray[4] = $activity_input.eq(0).val();
+        formArray[6] = post_content
+        $.ajax({
+            url: "/api/posts/",
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: csrf_token,
+                "post_thumb_url": formArray[1],
+                "post_thumb_width": formArray[2], "post_thumb_height": formArray[3], "nsfw": 1, "post_mime_types": formArray[5], "act": formArray[4], "post_content": formArray[6]}, 
+            datatype: "json",
+            beforeSend: function(){
+                $(".post-form-text").prop("disabled", true);
+            },
+            success: function(data) {
+                var date = data["post_create_time"].split("T", 1);
+                var post_a = $("<a />", {
+                            "class": "post-thumb-a",
+                            href: "#post_details",
+                            "data-toggle": "modal",
+                            "data-target": "#post-details",
+                        });
+                 if (data["post_mime_types"] == 0) {
+                     var post_image = $("<img />", {
+                            "class": "post-container-img",
+                            src: httpsUrl + data["post_thumb_url"],
+                        });
+                      post_a.append(post_image)
+                 }
+                 else if (data["post_mime_types"] == 1) {
+                     var audio_div_wrapper = $("<div />", {
+                            "class": "audio-div-wrapper",
+                        });
+                     var audio_div = $("<div />", {
+                            "class": "audio-div",
+                        });
+                     var audio_div_p = $("<p />", {
+                            "class": "audio-div-p",
+                            text: data["post_content"],
+                        });
+                     var audio_fadeout = $("<div />", {
+                            "class": "act-fadeout",
+                        });
+                     var audio_tag = $("<audio />", {
+                            "class": "audio-div-audio",
+                            src: httpsUrl + data["post_thumb_url"],
 
-                          "controls": "controls",
-                          "preload": "auto",
-                      });
-                   audio_div.append(audio_div_p);
-                   audio_div_wrapper.append(audio_div);
-                   post_a.append(audio_div_wrapper);
-                   post_a.append(audio_fadeout);
-                   post_a.append(audio_tag);
-               }
-               var post_div_wrapper = $("<div />", {
-                          "class": "post-container-col"
-                      });
-               var post_div = $("<div />", {
-                          "class": "post-container col-xs-12 col-sm-6 col-md-6 col-lg-4",
-                          id: "post-" + data["id"]
-                      });
-               var post_border = $("<div />", {
-                          "class": "post-border"
-                      });
-               var post_title = $("<div />", {
-                          "class": "post-title"
-                      });
-               var post_user = $("<p />", {
-                          "class": "post-user",
-                          text: data["post_user"]["user_name"]
-                      });
-               var post_posttime = $("<div />", {
-                          "class": "post-posttime"
-                      });
-               var post_posttime_p = $("<p />", {
-                          "class": "post-posttime-p",
-                          text: date,
-                      });
-               var post_content = $("<div />", {
-                          "class": "post-content",
-                      });
-               var post_content_p = $("<p />", {
-                          "class": "post-content-p",
-                          text: data["post_content"],
-                      });
-               var post_footer = $("<div />", {
-                          "class": "post-footer clearfix"
-                      });
-               var post_like = $("<span />", {
-                          "class": "post-like glyphicon glyphicon-heart pull-right"
-                      });
-               var post_comment = $("<span />", {
-                          "class": "post-comment glyphicon glyphicon-comment pull-right"
-                      });
+                            "controls": "controls",
+                            "preload": "auto",
+                        });
+                     audio_div.append(audio_div_p);
+                     audio_div_wrapper.append(audio_div);
+                     post_a.append(audio_div_wrapper);
+                     post_a.append(audio_fadeout);
+                     post_a.append(audio_tag);
+                 }
+                 var post_div_wrapper = $("<div />", {
+                            "class": "post-container-col"
+                        });
+                 var post_div = $("<div />", {
+                            "class": "post-container col-xs-12 col-sm-6 col-md-6 col-lg-4",
+                            id: "post-" + data["id"]
+                        });
+                 var post_border = $("<div />", {
+                            "class": "post-border"
+                        });
+                 var post_title = $("<div />", {
+                            "class": "post-title"
+                        });
+                 var post_user = $("<p />", {
+                            "class": "post-user",
+                            text: data["post_user"]["user_name"]
+                        });
+                 var post_posttime = $("<div />", {
+                            "class": "post-posttime"
+                        });
+                 var post_posttime_p = $("<p />", {
+                            "class": "post-posttime-p",
+                            text: date,
+                        });
+                 var post_content = $("<div />", {
+                            "class": "post-content",
+                        });
+                 var post_content_p = $("<p />", {
+                            "class": "post-content-p",
+                            text: data["post_content"],
+                        });
+                 var post_footer = $("<div />", {
+                            "class": "post-footer clearfix"
+                        });
+                 var post_like = $("<span />", {
+                            "class": "post-like glyphicon glyphicon-heart pull-right"
+                        });
+                 var post_comment = $("<span />", {
+                            "class": "post-comment glyphicon glyphicon-comment pull-right"
+                        });
 
-               post_title.append(post_user);
-               post_posttime.append(post_posttime_p);
-               post_border.append(post_title);
-               post_border.append(post_posttime);
-               //
-               post_footer.append(post_like);
-               post_footer.append(post_comment);
-               //
-               post_content.append(post_content_p);
-               post_div_wrapper.append(post_a);
-               post_div_wrapper.append(post_border);
-               post_div_wrapper.append(post_content);
-               post_div_wrapper.append(post_footer);
-               post_div.append(post_div_wrapper);
-               $container.prepend(post_div)
-               $container.imagesLoaded(function() {
-                   $container.masonry('prepended', post_div);
-               });
-               $(".post-thumb-a:first").attr({"data-post-id": data["id"]});
-               $("#post-upload").modal("hide");
-          }, 
-          error: function(data) {
-          },
-       });
-    });
-});
+                 post_title.append(post_user);
+                 post_posttime.append(post_posttime_p);
+                 post_border.append(post_title);
+                 post_border.append(post_posttime);
+                 //
+                 post_footer.append(post_like);
+                 post_footer.append(post_comment);
+                 //
+                 post_content.append(post_content_p);
+                 post_div_wrapper.append(post_a);
+                 post_div_wrapper.append(post_border);
+                 post_div_wrapper.append(post_content);
+                 post_div_wrapper.append(post_footer);
+                 post_div.append(post_div_wrapper);
+                 $container.prepend(post_div)
+                 $container.imagesLoaded(function() {
+                     $container.masonry('prepended', post_div);
+                 });
+                 $(".post-thumb-a:first").attr({"data-post-id": data["id"]});
+                 $("#post-upload").modal("hide");
+            }, 
+            error: function(data) {
+            },
+         });
+      });
+  });
 
 

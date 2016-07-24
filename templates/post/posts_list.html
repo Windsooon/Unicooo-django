@@ -84,11 +84,11 @@
               </span>
             </div>
             <div class="post-form">
-              <form method="POST" id="post-content">
+              <form method="POST" class="post-content-upload">
                 {% csrf_token %}
                 <div class="form-group">
                   <label class="sr-only" for="" >Post Content</label>
-                  <input type="text" class="post-form-text form-control"  class="inter-upload-holder" placeholder="Please enter you post content." disabled>
+                  <input type="text" class="post-form-text form-control"  class="inter-upload-holder" placeholder="Please enter you post content." >
                 <h6 class="post-form-length">60</h6>
                 </div>
                 <button type="submit" disabled class="add-post-btn btn btn-primary pull-right">Submit</button>

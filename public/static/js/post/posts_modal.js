@@ -1,5 +1,9 @@
 $(document).ready(function(){
     var $container = $('#posts-container').masonry();
+    $("#post-upload").on("show.bs.modal", function(e) {
+        post_upload_status = false;
+    });
+
     $("#post-upload").on("hidden.bs.modal", function(e) {
         rebuild_modal($("#post-upload"));
     });
@@ -101,11 +105,11 @@ function rebuild_modal($modal) {
                                    "</span>" +
                                "</div>" +
                                "<div class='post-form'>" +
-                                   "<form method='POST' class='post-content'>" +
+                                   "<form method='POST' class='post-content-upload'>" +
                                        "<input type='hidden' name='csrfmiddlewaretoken' value=" + csrftoken + ">" + 
                                        "<div class='form-group'>" +
                                            "<label class='sr-only' for='' >Post Content</label>" +
-                                           "<input type='text' class='post-form-text form-control'  class='inter-upload-holder' placeholder='Please enter you post content.' disabled>" + 
+                                           "<input type='text' class='post-form-text form-control'  class='inter-upload-holder' placeholder='Please enter you post content.'>" + 
                                            "<h6 class='post-form-length'>60</h6>" +
                                        "</div>" +
                                        "<button type='submit' disabled class='add-post-btn btn btn-primary pull-right'>Submit</button>" +

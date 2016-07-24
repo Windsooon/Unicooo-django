@@ -59,20 +59,21 @@ $(document).ready(function(){
             },
         },
         submitHandler: function(form) {
-            var $form_group_loading = $(".form-group-loading");
-            var $form_submit_wrap = $(".submit-btn-wrap");
             $("#signup_form :input").prop("disabled", true);
-            $form_submit_wrap.empty()
-            var form_outer_loading = $("<div />", {
-                          "class": "loading-center",
-                      });
-            var form_loading = $("<div />", {
-                          "class": "la-ball-clip-rotate la-sm",
-                      });
-            var form_inner_loading = $("<div />");
-            form_loading.append(form_inner_loading);
-            form_outer_loading.append(form_loading);
-            $form_submit_wrap.append(form_outer_loading);
+            loadingBefore($(".submit-btn-wrap"));
+            //var $form_group_loading = $(".form-group-loading");
+            //var $form_submit_wrap = $(".submit-btn-wrap");
+            //$form_submit_wrap.empty()
+            //var form_outer_loading = $("<div />", {
+            //              "class": "loading-center",
+            //          });
+            //var form_loading = $("<div />", {
+            //              "class": "la-ball-clip-rotate la-sm",
+            //          });
+            //var form_inner_loading = $("<div />");
+            //form_loading.append(form_inner_loading);
+            //form_outer_loading.append(form_loading);
+            //$form_submit_wrap.append(form_outer_loading);
             var user_name = $("#username_signup").val();
             user_name = user_name.replace(/\s+/g, '-');
             $.ajax({
@@ -94,9 +95,8 @@ $(document).ready(function(){
                     $form_submit_wrap.append(form_submit_button);
                     var form_server_error = $("<div />", {
                           "class": "form-server-error"
-                      });
+                    });
                     if($('.form-server-error').length) {
-                        console.log("already");    
                     } 
                     else{
                         $form_submit_wrap.before(form_server_error);
