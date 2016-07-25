@@ -204,12 +204,16 @@ class UserList(generics.ListCreateAPIView):
         new_user = authenticate(email=email, password=password)
         jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
         jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+        payload = jwt_payload_handler(new_user)
+        token = jwt_encode_handler(payload)
         if new_user is not None:
             if new_user.is_active:
                 cache.set("user_points_" + str(new_user.id), 50, timeout=None)
+                cache.set("user_name_" + new_user.user_name,
+                          new_user.user_name, timeout=None)
+                cache.set("email_" + new_user.email,
+                          new_user.email, timeout=None)
                 django_login(request, new_user)
-                payload = jwt_payload_handler(new_user)
-                token = jwt_encode_handler(payload)
                 return Response(
                         token,
                         status=status.HTTP_201_CREATED,

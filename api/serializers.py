@@ -30,7 +30,6 @@ class UserSerializer(serializers.ModelSerializer):
             user_name=validated_data['user_name'],
             email=validated_data['email'],
         )
-
         user.set_password(validated_data['password'])
         user.save()
         return user
