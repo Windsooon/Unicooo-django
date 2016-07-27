@@ -133,8 +133,8 @@
 
 .activity-license {
     position: absolute;
-    left: 20px;
-    top: 5px;
+    left: 10px;
+    top: 10px;
     z-index: 999;
     color: white;
 }
@@ -282,7 +282,7 @@
 }
 
 .act-details-div {
-    border-top: 2px solid #2b6e90;
+    border-top: 5px solid #2b6e90;
     max-height: 300px;
     padding: 8px;
     text-overflow: ellipsis;
@@ -449,7 +449,6 @@
 
 .act-details-content {
    padding-top: 30px;
-   background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAABCAYAAADn9T9+AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABxJREFUeNpifPbs2X8GBGCE0nAxSUlJsBhAgAEAoWUE/8iu67gAAAAASUVORK5CYII=') transparent  repeat-x top left;
    font-size:20px; 
    word-wrap:break-word; word-break:normal;
 

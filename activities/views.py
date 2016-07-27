@@ -36,13 +36,16 @@ def act_list(request, act_list):
         return render(request, "error.html", {"error": error})
 
 
-def act_details(request, act_author, act_title):
+def act_details(request, act_url):
     if request.method == "GET":
+        print(act_url)
+        act_author = act_url.split("/")[0]
         try:
-            act_author = MyUser.objects.get(user_name=act_author)
+            act_author = MyUser.objects.get(
+                    user_name=act_author
+                    )
             act_details = Act.objects.get(
-                    act_title=act_title,
-                    user_id=act_author.id
+                    act_url=act_url,
                     )
         except:
             error = "Activity Not exist."

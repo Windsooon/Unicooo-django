@@ -37,7 +37,8 @@ $(document).ready(function() {
             success: function(data) {
                 if (data.results.length > 0) {
                     $.each(data.results, function(key, value){
-                        window.location.replace("/act/"+value["act_author"]+"/"+value["act_title"]);
+                        console.log(value["act_url"]);
+                        window.location.replace("/act/" + value["act_url"]);
                     })
                 }
             },
@@ -155,4 +156,9 @@ function loadingAfter(outer_div, text_code) {
                text: text,
            });
     upload_text.appendTo(outer_div).hide().fadeIn(500);
+}
+
+function urlConvert(string) {
+    string = string.replace(/,|<|>|{|}|。|，/g, ' ').replace(/\s+/g, ' ').trim().replace(/\s+/g, '-');
+    return string;
 }

@@ -13,39 +13,6 @@ $(document).ready(function(){
 
     });
 
-    $("#id_act_licence").on("change", function() {
-        var licence_val = $("#id_act_licence option:selected").val();
-        switch (licence_val) {
-            case "0":
-                $("#act_licence-error").text("Free to share and adapt.");
-                $(".cc-icon").attr("href", "https://creativecommons.org/licenses/by/4.0/"); 
-                
-                break;
-            case "1":
-                $("#act_licence-error").text("Free to share, adapt, but sharealike.");
-                $(".cc-icon").attr("href", "https://creativecommons.org/licenses/by-sa/4.0/"); 
-                break;
-            case "2":
-                $("#act_licence-error").text("Free to share and adapt, no commercial.");
-                $(".cc-icon").attr("href", "https://creativecommons.org/licenses/by-nc/4.0/"); 
-                break;
-            case "3":
-                $("#act_licence-error").text("Free to share and adapt, no commercial, but sharealike.");
-                $(".cc-icon").attr("href", "https://creativecommons.org/licenses/by-nc-sa/4.0/"); 
-                break;
-            case "4":
-                $("#act_licence-error").text("Free to share.");
-                $(".cc-icon").attr("href", "https://creativecommons.org/licenses/by-nd/4.0/"); 
-                break;
-            case "5":
-                $("#act_licence-error").text("Free to share, no commerial.");
-                $(".cc-icon").attr("href", "https://creativecommons.org/licenses/by-nc-nd/4.0/"); 
-                break;
-            default:
-                break;
-        }
-
-    });
     $("#new-act-form :input").prop("disabled", true);
     var formArray = new Array();
     var validator = $("#new-act-form").validate({
@@ -59,10 +26,10 @@ $(document).ready(function(){
                     type: "post",
                     data: {
                         act_title: function() {
-                        return $( "#act_title" ).val();
+                        return $("#act_title").val().trim();
                         },
                         current_user: function() {
-                        return $( ".request-user" ).text();
+                        return $(".request-user").text();
                         }
                     }
                 }
@@ -87,13 +54,12 @@ $(document).ready(function(){
         submitHandler: function(form) {
             var act_type = $("#id_act_type").val();
             var act_licence = $("#id_act_licence").val();
-            var act_title = $("#act_title").val();
-            act_title = act_title.replace(/\s+/g, '-');
-            console.log(act_title);
+            var act_title = $("#act_title").val().trim();
+            act_title_replace = urlConvert(act_title);
             var act_content = $("#act_content").val();
             var user_name = $(".request-user").text();
             var csrf_token = $("#new-act-form input").eq(0).val();
-            var act_url = "/act/" + user_name + "/" + act_title
+            var act_url = user_name + "/" + act_title_replace;
             var $form_group_loading = $(".form-group-loading");
             var $form_submit_wrap = $(".submit-btn-wrap");
             csrf_token = $("input[name='csrfmiddlewaretoken']").val();
@@ -110,14 +76,13 @@ $(document).ready(function(){
             form_outer_loading.append(form_loading);
             $form_submit_wrap.append(form_outer_loading);
             $.ajax({
-                              
                 url: "/api/acts/",
                 type: "POST",
                 datatype: "json",
-                data:  {csrfmiddlewaretoken: csrf_token, "act_title": act_title, "act_content": act_content, "act_thumb_url": formArray[1], "act_type": act_type, "act_ident": 22, "act_licence": act_licence, "act_url": act_url},
+                data:  {csrfmiddlewaretoken: csrf_token, "act_title": act_title, "act_content": act_content, "act_thumb_url": formArray[1], "act_type": act_type, "act_ident": 20, "act_licence": act_licence, "act_url": act_url},
                 beforeSend:function() {},
                 success: function(data) {
-                    window.location.replace("/act/" + data["act_author"] + "/" + data["act_title"]);
+                    window.location.replace("/act/" + data["act_url"] + "/");
                 },
                 error: function(xhr, status, error) {
                     $form_submit_wrap.empty();
