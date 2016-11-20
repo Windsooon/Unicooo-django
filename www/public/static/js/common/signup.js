@@ -15,11 +15,11 @@ $(document).ready(function(){
                 regex: /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i,   
                 minlength: 7,
                 remote: {
-                    url: "/email/",
+                    url: "/checkemail/",
                     type: "post",
                     data: {
                         email: function() {
-                        return $( "#email_signup" ).val();
+                        return $("#email_signup").val();
                         }
                     }
                 }
@@ -27,12 +27,13 @@ $(document).ready(function(){
             user_name: {
                 required: true,
                 minlength: 6,
+                maxlength: 30,
                 remote: {
                     url: "/checkuser/",
                     type: "post",
                     data: {
                         user_name: function() {
-                        return $( "#username_signup" ).val();
+                        return $("#username_signup").val();
                         }
                     }
                 }
@@ -46,6 +47,7 @@ $(document).ready(function(){
             user_name: {
                 required: "Please enter your username.",
                 minlength: jQuery.validator.format("Please Enter at least {0} characters."),
+                maxlength: jQuery.validator.format("Username under 30 characters will be nice."),
                 remote: "This username had already been registered."
             },
             password: {
@@ -59,29 +61,17 @@ $(document).ready(function(){
             },
         },
         submitHandler: function(form) {
-            var $form_group_loading = $(".form-group-loading");
-            var $form_submit_wrap = $(".submit-btn-wrap");
-            //csrf_token = $("input[name='csrfmiddlewaretoken']").val();
             $("#signup_form :input").prop("disabled", true);
-            $form_submit_wrap.empty()
-            var form_outer_loading = $("<div />", {
-                          "class": "loading-center",
-                      });
-            var form_loading = $("<div />", {
-                          "class": "la-ball-clip-rotate la-sm",
-                      });
-            var form_inner_loading = $("<div />");
-            form_loading.append(form_inner_loading);
-            form_outer_loading.append(form_loading);
-            $form_submit_wrap.append(form_outer_loading);
+            loadingBefore($(".submit-btn-wrap"));
+            var user_name = $("#username_signup").val();
+            user_name = user_name.replace(/\s+/g, '-');
             $.ajax({
                 url: "/api/users/",
                 type: "POST",
                 datatype: "json",
-                data:  {"email": $("#email_signup").val(), "user_name": $("#username_signup").val(), "password": $("#password_signup").val()},
+                data:  {"email": $("#email_signup").val(), "user_name": user_name, "password": $("#password_signup").val()},
                 beforeSend:function() {},
                 success: function(xhr) {
-                    console.log("success");
                     window.location.replace("/");
                 },
                 error: function(xhr, status, error) {
@@ -94,9 +84,8 @@ $(document).ready(function(){
                     $form_submit_wrap.append(form_submit_button);
                     var form_server_error = $("<div />", {
                           "class": "form-server-error"
-                      });
+                    });
                     if($('.form-server-error').length) {
-                        console.log("already");    
                     } 
                     else{
                         $form_submit_wrap.before(form_server_error);

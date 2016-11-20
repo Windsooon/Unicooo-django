@@ -1,9 +1,3 @@
-function imgError(image) {
-    image.onerror = "";
-    image.src = "../../static/img/error.png";
-    return true;
-}
-
 $(document).ready(function(){
     $('.ball-scale div').show();
     $('.carousel-img').on('load', function(){

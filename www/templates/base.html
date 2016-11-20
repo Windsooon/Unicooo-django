@@ -16,6 +16,7 @@
     <link href="{% static 'css/bootstrap-material-design.min.css' %}" rel="stylesheet"/>
     <link href="{% static 'css/ripples.min.css' %}" rel="stylesheet"/>
     <link href="{% static 'css/common.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/loading.css' %}" rel="stylesheet"/>
   {% endblock %}
   {% block extra_head %}
   {% endblock %}
@@ -28,6 +29,7 @@
     <script src="{% static 'js/plugin/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/plugin/material.min.js' %}"></script>
     <script src="{% static 'js/plugin/ripples.min.js' %}"></script>
+    <script src="{% static 'js/common/base.js' %}"></script>
     <script src="{% static 'js/plugin/jquery.i18n.properties.min.js' %}"></script>
     <script>
         jQuery.i18n.properties({ 
@@ -72,12 +74,13 @@
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse navbar-responsive-collapse" id="uni-nav">
-      <!-- <form class="navbar-form navbar-left" role="search">
-        <div class="form-group is-empty">
-          <span class="icon-right glyphicon glyphicon-search" aria-hidden="true"></span><input type="text" class="form-control col-md-8" placeholder="Not Ready yet">
+      <form class="navbar-form navbar-left" role="search">
+        <div class="form-group is-empty col-xs-12">
+          <input type="text" class="form-control act-search-text" placeholder="Act Id">
           <span class="material-input"></span>
+        <a class="glyphicon glyphicon-search act-search" href=""></a>
         </div>
-      </form> -->
+      </form>
       <ul class="nav navbar-nav navbar-right">
           <li><a href="{% url 'act_type' 'public' %}"><span class="icon-right glyphicon glyphicon-globe" aria-hidden="true"></span><span id="inter-activies">Activies</span></a></li>
         <li><a href="{% url 'act_type' 'new' %}"><span class="icon-right glyphicon glyphicon-pencil" aria-hidden="true"></span><span id="inter-add">Add</span></a></li>
@@ -87,10 +90,11 @@
         <input id="user-id" type="hidden" value={{request.user.id}} />
         <input id="user-avatar" type="hidden" value={{request.user.user_avatar}} />
           <ul class="dropdown-menu">
-              <li><a href="{% url 'personal' request.user.user_name %}act_create/"><span class="icon-big-right glyphicon glyphicon-user" aria-hidden="true"></span><span id="inter-personal">Personal</span></a></li>
-              <li><a href="{% url 'personal' request.user.user_name %}comments/"><span class="icon-big-right glyphicon glyphicon-comment" aria-hidden="true"></span><span id="inter-comments">Comments</span></a></li>
+            <li class="base-personal"><a href="{% url 'personal' request.user.user_name %}act_create/"><span class="icon-big-right glyphicon glyphicon-user" aria-hidden="true"></span><span id="inter-personal">Personal</span></a></li>
+            <li class="base-comments"><a href="{% url 'personal' request.user.user_name %}comments/"><span class="icon-big-right glyphicon glyphicon-comment" aria-hidden="true"></span><span id="inter-comments">Comments</span></a></li>
             <li role="separator" class="divider"></li>
-            <li><a href="{% url 'personal' request.user.user_name %}"><span class="icon-big-right glyphicon glyphicon-cog" aria-hidden="true"></span><span id="inter-settings">Settings</span></a></li>
+            <li class="base-settings"><a href="{% url 'personal' request.user.user_name %}"><span class="icon-big-right glyphicon glyphicon-cog" aria-hidden="true"></span><span id="inter-settings">Settings</span></a></li>
+            <li class="base-logout"><a href="{% url 'logout' %}"><span class="icon-big-right glyphicon glyphicon-log-out" aria-hidden="true"></span><span id="inter-logout">Logout</span></a></li>
           </ul>
         </li>
       {% else %}
@@ -103,19 +107,24 @@
   </div>
   <!--  end container-fluid -->
 </nav>
+{% if user.is_authenticated %}
+    <script type="text/javascript">
+         poll();
+     </script>
+{% endif %}
 {% endblock %}
 {% block content %}
 {% endblock %}
 {% block footer %}
   <section class="front-footer col-lg-8 col-lg-offset-2">
     <hr>
-    <div class="col-lg-4">
+    <div class="col-md-4 col-lg-4">
         <a href="{%url 'contect' %}"><p class="footer-text text-center" id="inter-contect">CONTECT US</p></a>
     </div>
-    <div class="col-lg-4">
+    <div class="col-md-4 col-lg-4">
         <a href=""><p class="footer-text text-center" id="inter-thank">THANK YOU</p></a>
     </div>
-    <div class="col-lg-4">
+    <div class="col-md-4 col-lg-4">
       <p class="footer-text text-center">Copyright © 2016 Unicooo Inc. All rights reserved.</p>
     </div>
     <hr>

@@ -10,31 +10,50 @@ function getPost(post_id, e) {
                   var httpsUrl = "https://o3e6g3hdp.qnssl.com/";
                   var avatarStyle = "-avatarSetting";
                   var imageStyle = "-postDetails";
+                  var post_image_b = $(".post-image-b");
+                  //if user had like this post
+                  if (data["like_status"] == 1) {
+                      $(".post-like-details-a").removeClass("glyphicon glyphicon-heart-empty");
+                      $(".post-like-details-a").addClass("glyphicon glyphicon-heart");
+                  }
+                  else if (data["like_status"] == 0) {
+                      $(".post-like-details-a").removeClass("glyphicon glyphicon-heart");
+                      $(".post-like-details-a").addClass("glyphicon glyphicon-heart-empty");
+                  }
+                  if ($("#user-id").val() == data["post_user"]["id"]) {
+                      $("#post-delete").css("display", "block");
+                  }
                   if (data["post_mime_types"] == 0) {
+                      post_image_b.empty(); 
                       var post_thumb_url = httpsUrl + data["post_thumb_url"] + imageStyle;
+                      var post_raw_details = $("<img />", {
+                          "class": "post-raw-details",
+                          src: post_thumb_url,
+                      });
+                      post_image_b.append(post_raw_details);
                   }
                   else if (data["post_mime_types"] == 1) {
-                     $(".post-image-b").empty();
-                     var audio_div_warpper = $("<div />", {
-                         "class": "audio-div-wrapper",
-                     });
-                     var audio_div= $("<div />", {
-                         "class": "audio-div",
-                     });
-                     var audio_fadeout= $("<div />", {
-                         "class": "act-fadeout",
-                     });
-                     var audio_div_audio= $("<audio />", {
-                         "class": "audio-div-audio",
-                         src: httpsUrl + data["post_thumb_url"],
-                         "controls": "controls",
-                         "preload": "auto"
-                     });
-                     if (data["post_content"].length <= 10) {
-                         var audio_div_p= $("<p />", {
-                             "class": "audio-div-p",
-                             text: data["post_content"]
-                         });
+                      post_image_b.empty(); 
+                      var audio_div_warpper = $("<div />", {
+                          "class": "audio-div-wrapper",
+                      });
+                      var audio_div= $("<div />", {
+                          "class": "audio-div",
+                      });
+                      var audio_fadeout= $("<div />", {
+                          "class": "act-fadeout",
+                      });
+                      var audio_div_audio= $("<audio />", {
+                          "class": "audio-div-audio",
+                          src: httpsUrl + data["post_thumb_url"],
+                          "controls": "controls",
+                          "preload": "auto"
+                      });
+                      if (data["post_content"].length <= 10) {
+                          var audio_div_p= $("<p />", {
+                              "class": "audio-div-p",
+                              text: data["post_content"]
+                          });
                       }
                       else {
                          var audio_div_p= $("<p />", {
@@ -44,9 +63,9 @@ function getPost(post_id, e) {
                       }
                       audio_div.append(audio_div_p);
                       audio_div_warpper.append(audio_div);
-                      $(".post-image-b").append(audio_div_warpper);
-                      $(".post-image-b").append(audio_fadeout);
-                      $(".post-image-b").append(audio_div_audio);
+                      post_image_b.append(audio_div_warpper);
+                      post_image_b.append(audio_fadeout);
+                      post_image_b.append(audio_div_audio);
                   }
                   var elems = [];
                   var post_date = data["post_create_time"].split("T", 1);

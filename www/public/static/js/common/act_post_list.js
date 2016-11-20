@@ -2,12 +2,11 @@ function get_act_list(data, container){
     $.ajax({
         url: "/api/acts/",
         type: "GET",
-        datatype: "json",
+        datatype: "url",
         data: data,
         beforeSend:function(){
         },
         success: function(data) {
-            var httpsUrl = "https://o3e6g3hdp.qnssl.com/"
             var imageStyle = "-actCoverSmall"
             if (data.results.length > 0) {
                 $.each(data.results, function(key, value){
@@ -22,7 +21,7 @@ function get_act_list(data, container){
                     //act thumb image
                     var $act_thumb_a = $("<a />", {
                             "class": "act-thumb-a",
-                            href: "/act/" + value["act_user"]["user_name"] + "/" + value["act_title"],
+                            href: "/act/" + value["act_url"] + "/",
                             "data-toggle": "modal",
                             });
                     var $act_thumb_img = $("<img />", {
@@ -58,16 +57,8 @@ function get_act_list(data, container){
                     $act_inner_container.append($act_thumb_a);
                     $act_outer_container.append($act_inner_container);
                     $act_outer_container.appendTo(container).hide().fadeIn();
-                    //container.masonry( 'appended', $act_outer_container )
                 });
             }
-            else {
-            }
-            //end for each
-            //container.imagesLoaded(function(){
-            //    $elems.show();
-            //    container.masonry('appended', $elems); 
-            //});
         },
         complete:function(data){
             var complete_data = $.parseJSON(data.responseText); 
@@ -87,16 +78,13 @@ function get_post_list(data, container){
         datatype: "json",
         data:  data,
         beforeSend:function(){
-           var post_outer_loading = $("<div />", {
-                      "class": "outer_loading",
-                  });
-           var post_loading = $("<div />", {
-                      "class": "la-ball-clip-rotate",
-                  });
-           var post_inner_loading = $("<div />");
-           post_loading.append(post_inner_loading);
-           post_outer_loading.append(post_loading);
-           //$("#posts-container").after(post_outer_loading);
+           if (!$(".outer_loading").length) {
+               var post_outer_loading = $("<div />", {
+                          "class": "outer_loading",
+                      });
+               $("#posts-container").append(post_outer_loading);
+               loadingBefore(post_outer_loading, "la-md");
+           }
         },
         success: function(data) {
             if (data.results.length > 0) {
@@ -106,7 +94,8 @@ function get_post_list(data, container){
                 $.each(data.results, function(key, value){
                     var date = value["post_create_time"].split("T", 1);
                     var single_post = document.createElement("div");
-                    single_post.className = "post-container col-xs-12 col-sm-6 col-md-6 col-lg-4";
+                    single_post.className = "post-container col-xs-12 col-sm-6 col-md-4 col-lg-4";
+                    single_post.setAttribute("id", "post-" + value["id"]);
                     //post container col
                     var single_post_col = document.createElement("div");
                     single_post_col.className = "post-container-col";
@@ -117,6 +106,8 @@ function get_post_list(data, container){
                     post_thumb_a.setAttribute("data-toggle", "modal");
                     post_thumb_a.setAttribute("data-target", "#post-details");
                     post_thumb_a.setAttribute("data-post-id", value["id"]);
+                    //delete buttton
+                    
                     //if post is image
                     if (value["post_mime_types"] == 0) {
                         var post_thumb_url = document.createElement("img");
@@ -184,6 +175,9 @@ function get_post_list(data, container){
                     }
                     var single_footer_like_p = document.createElement("p");
                     single_footer_like_p.className = "post-like-p"
+                    if (value["likes"] != 0) {
+                        single_footer_like_p.innerHTML = value["likes"];
+                    }
                     //content div
                     var single_content = document.createElement("div");
                     single_content.className = "post-content";
@@ -219,11 +213,17 @@ function get_post_list(data, container){
                 var $elems = $(elems).hide();
                 container.append($elems);
                 container.imagesLoaded(function(){
+                    $(".outer_loading").fadeOut(150, function(){
+                        $(this).remove();
+                    });
                     $elems.show();
                     container.masonry('appended', $elems); 
                 });
             }
             else {
+                $(".outer_loading").fadeOut(150, function(){
+                    $(this).remove();
+                });
             }
         },
         complete:function(data){
@@ -235,14 +235,4 @@ function get_post_list(data, container){
     });
 }
 //end get_post_list
-
-function checkScroll(outerContainer, innerContainer){
-    if($(window).scrollTop() > Math.round(outerContainer.height()*2/5)){
-        return true; 
-    }
-    else{
-        return false;
-    }
-}
-
 

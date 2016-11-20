@@ -13,41 +13,11 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
-    ),
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 20,
-    'DEFAULT_THROTTLE_CLASSES': (
-        'rest_framework.throttling.AnonRateThrottle',
-        'rest_framework.throttling.UserRateThrottle'
-    ),
-    'DEFAULT_THROTTLE_RATES': {
-        'anon': '300/minute',
-        'user': '500/minute'
-    }
-
-}
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
+BASE_DIR = os.path.dirname(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'b+v!u5c5_dkjq7$epme3cnx=9q9pbr5)x-bv#wjod&pznno)w%'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
-
-# Application definition
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -59,14 +29,15 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     'api',
     'rest_framework',
-    'rest_framework.authtoken',
     'common',
     'activities',
     'comment',
     'post',
+    'test',
 )
 
 MIDDLEWARE_CLASSES = (
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -75,9 +46,23 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'django.middleware.gzip.GZipMiddleware',
 )
 
 ROOT_URLCONF = 'unicooo.urls'
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://" + "redis" + "/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
 
 TEMPLATES = [
     {
@@ -99,24 +84,6 @@ WSGI_APPLICATION = 'unicooo.wsgi.application'
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
 
-
-# Database
-# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'locat_test',
-        'USER': 'windson',
-        'PASSWORD': '123456',
-        'HOST': 'localhost',
-        'PORT': '5432',
-        'CHARSET': 'UTF-8',
-
-    }
-}
-
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
@@ -132,19 +99,14 @@ USE_TZ = True
 
 AUTH_USER_MODEL = 'common.MyUser'
 
-AUTHENTICATION_BACKENDS = ('common.models.CustomAuth', 'django.contrib.auth.backends.ModelBackend')
+AUTHENTICATION_BACKENDS = (
+    'common.models.CustomAuth', 'django.contrib.auth.backends.ModelBackend')
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.8/howto/static-files/
-
+STATIC_ROOT = '/static/'
 STATIC_URL = '/static/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
-
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
-    os.path.join(BASE_DIR, "media"),
     'public/static/',
 )

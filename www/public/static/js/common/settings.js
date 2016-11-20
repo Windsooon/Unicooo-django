@@ -18,17 +18,7 @@ $(document).ready(function() {
             var $form_submit_wrap = $(".submit-btn-wrap");
             var csrf_token = $("input[name='csrfmiddlewaretoken']").val();
             $("#settings-form :input").prop("disabled", true);
-            $form_submit_wrap.empty()
-            var form_outer_loading = $("<div />", {
-                          "class": "loading-center-settings",
-                      });
-            var form_loading = $("<div />", {
-                          "class": "la-ball-clip-rotate la-sm",
-                      });
-            var form_inner_loading = $("<div />");
-            form_loading.append(form_inner_loading);
-            form_outer_loading.append(form_loading);
-            $form_submit_wrap.append(form_outer_loading);
+            loadingBefore($form_submit_wrap);
             if (formArray[1]) {
                 user_avatar = formArray[1];
             }
@@ -121,7 +111,7 @@ $(document).ready(function() {
                 }).appendTo(image_holder);
 
             }
-            image_holder.show();
+            //image_holder.show();
             reader.readAsDataURL($(this)[0].files[0]);
         } 
         else {
@@ -160,23 +150,5 @@ $(document).ready(function() {
         });
     });
 });
-
-function csrfSafeMethod(method) {
-    // these HTTP methods do not require CSRF protection
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-}
-function sameOrigin(url) {
-    // test that a given url is a same-origin URL
-    // url could be relative or scheme relative or absolute
-    var host = document.location.host; // host + port
-    var protocol = document.location.protocol;
-    var sr_origin = '//' + host;
-    var origin = protocol + sr_origin;
-    // Allow absolute or scheme relative URLs to same origin
-    return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
-        (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
-        // or any other URL that isn't scheme relative or absolute i.e relative.
-        !(/^(\/\/|http:|https:).*/.test(url));
-}
 
 

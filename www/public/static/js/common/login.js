@@ -31,21 +31,9 @@ $(document).ready(function(){
             },
         },
         submitHandler: function(form) {
-            var $form_group_loading = $(".form-group-loading");
-            var $form_submit_wrap = $(".submit-btn-wrap");
-            csrf_token = $("input[name='csrfmiddlewaretoken']").val();
             $("#login_form :input").prop("disabled", true);
-            $form_submit_wrap.empty()
-            var form_outer_loading = $("<div />", {
-                          "class": "loading-center",
-                      });
-            var form_loading = $("<div />", {
-                          "class": "la-ball-clip-rotate la-sm",
-                      });
-            var form_inner_loading = $("<div />");
-            form_loading.append(form_inner_loading);
-            form_outer_loading.append(form_loading);
-            $form_submit_wrap.append(form_outer_loading);
+            loadingBefore($(".submit-btn-wrap"));
+            csrf_token = $("input[name='csrfmiddlewaretoken']").val();
             $.ajax({
                 url: "/login/",
                 type: "POST",
@@ -69,7 +57,10 @@ $(document).ready(function(){
                           "class": "form-server-error"
                       });
                     $form_submit_wrap.before(form_server_error);
-                    if (xhr.status >= 400 && xhr.status < 500) {
+                    if (xhr.status == 588) {
+                        error_text = "Email or password incorrect.";
+                    } 
+                    else if (xhr.status >= 400 && xhr.status < 500) {
                         error_text = "Please check again your input.";
                     }
                     else {

@@ -1,8 +1,8 @@
 from django.db import models
-from django.conf import settings
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 from django.contrib.auth import get_user_model
 from activities.choices import USERGENDER
+
 
 class MyUserManager(BaseUserManager):
     def create_user(self, username, email, password=None, **kwargs):
@@ -11,23 +11,31 @@ class MyUserManager(BaseUserManager):
             raise ValueError('Users must have an email address')
 
         user = self.model(
-            user_name = username,
+            user_name=username,
             email=self.normalize_email(email),
         )
         user.set_password(password)
         if kwargs:
-            if kwargs.get('is_active', None): user.is_active = kwargs['is_active']
-            if kwargs.get('is_admin', None): user.is_admin = kwargs['is_admin']
+            if kwargs.get('is_active', None):
+                user.is_active = kwargs['is_active']
+            if kwargs.get('is_admin', None):
+                user.is_admin = kwargs['is_admin']
         user.save(using=self._db)
         return user
 
 
 class MyUser(AbstractBaseUser):
-    email = models.EmailField(verbose_name='Email Address', max_length=255, unique=True)
+    email = models.EmailField(
+            verbose_name='Email Address',
+            max_length=255,
+            unique=True
+            )
     user_name = models.CharField(max_length=30, unique=True)
     user_avatar = models.CharField(max_length=255, blank=True)
-    user_gender = models.IntegerField(choices=USERGENDER, default=USERGENDER[0][0])
-    user_point = models.IntegerField(default=0)
+    user_gender = models.IntegerField(
+            choices=USERGENDER,
+            default=USERGENDER[0][0]
+            )
     user_details = models.CharField(max_length=80)
     user_register_time = models.DateTimeField(auto_now=True)
     user_validated = models.IntegerField(default=0)
@@ -62,6 +70,7 @@ class MyUser(AbstractBaseUser):
     class Meta:
         db_table = 'common_user'
 
+
 class CustomAuth(object):
     """自定义用户验证"""
     def authenticate(self, email=None, password=None):
@@ -71,7 +80,7 @@ class CustomAuth(object):
                 return user
         except MyUser.DoesNotExist:
             return None
-    
+
     def get_user(self, user_id):
         try:
             user = get_user_model().objects.get(pk=user_id)
@@ -80,6 +89,3 @@ class CustomAuth(object):
             return None
         except MyUser.DoesNotExist:
             return None
-
-
-

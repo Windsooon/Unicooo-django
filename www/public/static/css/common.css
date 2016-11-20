@@ -1,6 +1,18 @@
+.modal {
+    -webkit-overflow-scrolling: auto;
+}
+
+.navbar-form {
+    box-shadow: 0 0 0 0;
+    -webkit-box-shadow: 0 0 0 0;
+    border-top: 0px;
+    border-bottom: 0px;
+}
+
 .opacity8 {
     opacity: .8;
 }
+
 .navbar.navbar-inverse {
     background-color: #303f9f;
 }
@@ -67,6 +79,16 @@ a:hover {
     height: 170px;
 }
 
+.base-circle {
+    position: absolute;
+    left: 30px;
+    top: 5px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: red;
+    z-index: 99;
+}
 /* bootstrap input focut */
 textarea:focus, input:focus, input[type]:focus, .uneditable-input:focus {   
     border-color: #48D1CC;
@@ -152,4 +174,6 @@ input {
   opacity:1;    
 }
 
-
+.page-error {
+    font-size: 40px;
+}

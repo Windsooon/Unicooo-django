@@ -1,6 +1,5 @@
 from django.db import models
-from post.models import Post
-from common.models import MyUser
+
 
 class Comment(models.Model):
     post = models.ForeignKey("post.Post", related_name="comment_post")
@@ -8,5 +7,4 @@ class Comment(models.Model):
     reply_id = models.IntegerField()
     comment_content = models.CharField(max_length=140)
     comment_create_time = models.DateTimeField(auto_now=True)
-
-
+    comment_update_time = models.DateTimeField(auto_now_add=True)

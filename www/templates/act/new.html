@@ -8,7 +8,7 @@
 <div class="uniform container">
   <!--<span class="text-center center-block glyphicon glyphicon-road" aria-hidden="true"></span> -->
   <div class="well col-sm-12 col-md-12 col-lg-8 col-lg-offset-2">
-    <h2 class="create-text text-center">Create Your Own Activity</h2>
+    <h2 class="create-text text-center" id="inter-create-act">Create Your Own Activity</h2>
     <hr>
     <form action="" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
@@ -34,13 +34,6 @@
         <label for="act_type" class="control-label" id="inter-act-type">Act Type</label>
           {{ form.act_type }}
           <label id="act_type-error" class="error" for="act_type">This activity won't be shown in frontpage.</label>
-      </div>
-      <div class="form-group">
-        <label for="act_licence" class="control-label" id="inter-act-license">Act License</label>
-          {{ form.act_licence }}
-          <label id="act_licence-error" class="error" for="act_licence">Free to share, adapt, but sharealike.
-          </label>
-          <a class="cc-icon glyphicon glyphicon-question-sign" href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" aria-hidden="true"></a><p class="cc-icon-p">learn more</p>
       </div>
       <div class="form-group label-floating is-empty">
         <label for="act_title" class="control-label" id="inter-act-title">Act Title</label>
@@ -76,6 +69,7 @@
             async: true,
             encoding: 'UTF-8', //文件编码方式
             callback: function() {// 回调方法
+                $("#inter-create-act").text(jQuery.i18n.prop('act_create_act'));
                 $("#inter-upload-cover").text(jQuery.i18n.prop('act_upload_cover'));
                 $("#inter-act-type").text(jQuery.i18n.prop('act_type'));
                 $("#inter-act-license").text(jQuery.i18n.prop('act_license'));
