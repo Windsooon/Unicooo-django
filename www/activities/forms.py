@@ -1,16 +1,15 @@
 from django import forms
 from .models import Act
-from django.utils.translation import ugettext as _
+
 
 class ActCreateForm(forms.ModelForm):
     class Meta:
         model = Act
-        fields = ("act_title", "act_content", "act_type", "act_licence")
+        fields = ("act_title", "act_content", "act_type",)
         labels = {
-            "act_title": "Activitiy Title", 
-            "act_content": "Activitiy Content", 
-            "act_type": "Activitiy Type", 
-            "act_licence": "Activitiy Licence", 
+            "act_title": "Activitiy Title",
+            "act_content": "Activitiy Content",
+            "act_type": "Activitiy Type",
         }
         widgets = {
             "act_title": forms.TextInput(
@@ -32,11 +31,4 @@ class ActCreateForm(forms.ModelForm):
                     "class": "form-control",
                 }
             ),
-            "act_licence": forms.Select(
-                attrs={
-                    "class": "form-control",
-                }
-            ),
-
         }
-

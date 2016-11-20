@@ -1,7 +1,7 @@
 ACTTYPE = (
-    (0, "Personal Activities"),
-    (1, "Group Activities"),
-    (2, "Public Activities"),
+    (0, "For yourself"),
+    (1, "For a group"),
+    (2, "For public"),
 )
 
 ACTLICENCE = (
