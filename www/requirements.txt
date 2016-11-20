@@ -2,6 +2,7 @@ Django==1.9.4
 gunicorn
 djangorestframework==3.3.3
 djangorestframework-jwt==1.8.0
+gevent
 qiniu
 django_redis
 iso8601
