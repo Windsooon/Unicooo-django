@@ -12,12 +12,17 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import json
 
 BASE_DIR = os.path.dirname(
         os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'b+v!u5c5_dkjq7$epme3cnx=9q9pbr5)x-bv#wjod&pznno)w%'
+secret_file = os.path.join(BASE_DIR, ".secret.json")
+
+with open(secret_file) as json_data:
+    d = json.load(json_data)
+
+SECRET_KEY = d["django_secret_key"]
 
 INSTALLED_APPS = (
     'django.contrib.admin',
