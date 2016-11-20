@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block extra_head %}
+{% endblock %}
+{% block content %}
+<!-- container begin -->
+<div class="uniform container">
+  <!-- signup_form begin -->
+  <div class="well login-form col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6">
+    <div>
+      <div class="col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6">
+        <span class="span-uni"><h3 id="inter-login-welcome">Welcome back!</h3></span>
+        <hr>
+      </div>
+    <div>
+      <a href="#" class="thumbnail">
+        <img class="login-thumb" src="https://o3e6g3hdp.qnssl.com/unicooo_cover.png?imageView2/1/w/532/h/170/interlace/1/format/jpg/q/100" alt="welcome to login unicooo" />
+      </a>
+    </div>
+    <div>
+      <form action="" method="POST" id="login_form">
+        {% csrf_token %}
+        <fieldset>
+          <div class="form-group label-floating is-empty">
+            <div class="input-group">
+              <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+              <label for="email_login" class="control-label" id="inter-login-email">Email Address</label>
+                {{ form.email }}
+            </div>
+          </div>
+          <div class="form-group label-floating is-empty">
+            <div class="input-group">
+              <span class="input-group-addon"><span class="glyphicon glyphicon-star"></span></span>
+              <label for="password_login" class="control-label" id="inter-login-password">Password</label>
+                {{ form.password }}
+            </div>
+          </div>
+          <div class="form-group form-group-loading">
+            <div class="submit-btn-wrap">
+              <button type="submit" class="submit-btn btn btn-primary btn-block"><span class="glyphicon glyphicon-ok"></span></button>
+            </div>
+          </div>
+      </form>
+    <div class="pull-right">
+        <a href="{%url 'sign_up' %}?next={% firstof request.path '/' %}"><h5 class="opacity8" id="inter-login-change">Sign up an account</h5></a>
+    </div>
+  </div>
+  </div>
+  <!-- login_form end -->
+</div>
+</div>
+{% endblock %}
+{% block script %}
+  <script src="{% static 'js/plugin/jquery.validate.min.js' %}"></script>
+  <script src="{% static 'js/common/login.js' %}"></script>
+  <script>
+  $.material.init();
+  </script>
+  <script>
+        jQuery.i18n.properties({ 
+            name: 'base',// 资源文件名称
+            path: '{% static 'international/' %}',// 资源文件所在目录路径
+            mode: 'map',// 模式：变量或 Map 
+            cache: false, 
+            async: true,
+            encoding: 'UTF-8', //文件编码方式
+            callback: function() {// 回调方法
+                $("#inter-login-email").text(jQuery.i18n.prop('login_email'));
+                $("#inter-login-password").text(jQuery.i18n.prop('login_password'));
+                $("#inter-login-welcome").text(jQuery.i18n.prop('login_welcome'));
+                $("#inter-login-change").text(jQuery.i18n.prop('login_change'));
+            } 
+        });
+    </script>
+{% endblock %}
+
