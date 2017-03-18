@@ -220,8 +220,10 @@ def update_posts_like(request, postId):
     post_likes_users = get_redis_connection("default")
 
     user_points = cache.get("user_points_" + str(request.user.id))
+    if user_points is None:
+    	cache.set("user_points_" + str(request.user.id), 50)
     # if user doesn't have enough point
-    if user_points < 1:
+    elif user_points < 1:
         return HttpResponse(error_messages[1], status=500)
     # if user already like the post
     try:
