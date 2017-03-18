@@ -15,7 +15,7 @@ services:
       - "8000"
     volumes:
       - ./www:/usr/src/app
-    command: bash -c "export DJANGO_SETTINGS_MODULE='unicooo.settings.local' && python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --noinput && /usr/local/bin/gunicorn unicooo.wsgi:application -w 2 -b :8000 --reload"
+    command: bash -c "export DJANGO_SETTINGS_MODULE='unicooo.settings.production' && python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --noinput && /usr/local/bin/gunicorn unicooo.wsgi:application -w 2 -k gevent -b :8000 --reload"
     depends_on:
       - db
     links:
@@ -25,6 +25,11 @@ services:
     build: ./nginx/
     ports:
       - "80:80"
+      - "443:443"
+    volumes:
+     - ~/www:/www
+     - ~/unicooo_project:/var/unicooo_project
+     - ~/unicooo_project/nginx/conf.d:/etc/nginx/conf.d
     volumes_from:
       - web
     links:
