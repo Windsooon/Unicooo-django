@@ -1,11 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 from django import forms
-from django.contrib import admin
-from django.contrib.auth.models import Group as DjangoGroup
-from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from .models import MyUser
+
 
 class UserCreateForm(forms.ModelForm):
     password = forms.CharField(
@@ -53,8 +51,8 @@ class UserCreateForm(forms.ModelForm):
 
 class UserLoginForm(forms.ModelForm):
     email = forms.EmailField(
-         widget=forms.TextInput(
-             attrs={
+        widget=forms.TextInput(
+            attrs={
                 'id': 'email_login',
                 'class': 'form-control',
                 'minlength': 8,
@@ -71,7 +69,6 @@ class UserLoginForm(forms.ModelForm):
         )
     )
 
-    
     class Meta:
         model = MyUser
         fields = ('email',)
@@ -81,11 +78,12 @@ class UserLoginForm(forms.ModelForm):
 class UserChangeForm(forms.ModelForm):
     """A form for change user"""
     password = ReadOnlyPasswordHashField()
+
     class Meta:
         model = MyUser
         fields = "__all__"
         labels = {
-                "user_gender": "User Gender", 
+                "user_gender": "User Gender",
                 "user_details": "User Details"
         }
         widgets = {
@@ -101,13 +99,7 @@ class UserChangeForm(forms.ModelForm):
                     "minlength": 10,
                 }
             ),
-    }
-    
+        }
+
     def clean_password(self):
         return self.initial["password"]
-
-
-    
-
-
-

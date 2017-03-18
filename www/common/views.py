@@ -57,7 +57,6 @@ def public_activities(request):
 def front_page(request):
     act_list = Act.objects.filter(act_type=2).order_by("-act_create_time")[:9]
     imageStyle = "-actCoverSmall"
-    # user_points = cache.get("user_points_" + str(request.user.id))
     return render(
             request, "common/frontpage.html",
             {"act_list": act_list,
@@ -93,7 +92,7 @@ def login_in(request):
                         }
                     )
         else:
-            return HttpResponse("Email or password incorrect.", status=588)
+            return HttpResponse(10002, status=400)
     else:
         return render(request, "error.html", {"error": "Method not accepted."})
 

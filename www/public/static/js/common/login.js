@@ -46,6 +46,7 @@ $(document).ready(function(){
                     window.location.replace(location[1]);
                 },
                 error: function(xhr, status, error) {
+                    $form_submit_wrap = $(".submit-btn-wrap");
                     $form_submit_wrap.empty();
                     $("#login_form :input").prop("disabled", false);
                     $(".form-server-error").empty();
@@ -57,14 +58,16 @@ $(document).ready(function(){
                           "class": "form-server-error"
                       });
                     $form_submit_wrap.before(form_server_error);
-                    if (xhr.status == 588) {
-                        error_text = "Email or password incorrect.";
-                    } 
-                    else if (xhr.status >= 400 && xhr.status < 500) {
-                        error_text = "Please check again your input.";
+                    if (xhr.status >= 400 && xhr.status < 500) {
+                        if (xhr.responseText == 10002) {
+                            error_text = "Email or password incorrect.";
+                        }
+                        else {
+                            error_text = "Please check again your input.";
+                        }
                     }
                     else {
-                        error_text = "Please try again later";
+                        error_text = "Something wrong with our server!";
                     }
                     $form_server_error_span = $("<span />", {"class": "pull-left form-server-error-span glyphicon glyphicon-exclamation-sign"});
                     $form_server_error_p = $("<p />", {"class": "form-server-error-p", text: error_text});
