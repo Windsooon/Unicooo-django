@@ -209,6 +209,7 @@
 /* activitities */
 .act-outer-container {
     padding:35px;
+    min-height: 499px;
 }
 
 .act-inner-container {
