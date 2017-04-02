@@ -16,9 +16,9 @@ from comment.models import Comment
 from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 from .serializers import ActSerializer, PostAllSerializer, PostSerializer, \
-        UserSerializer, UserSettingsSerializer, CommentSerializer
+        UserSerializer, CommentSerializer
 from .permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly, \
-        IsAuthenticatedOrCreate, IsOwnerOrPostReadOnly
+        IsAuthenticatedOrCreate, IsOwnerOrPostReadOnly, IsActCreatorOrReadOnly
 
 # django rest framework jwt
 from rest_framework_jwt.settings import api_settings
@@ -29,9 +29,7 @@ from django_redis import get_redis_connection
 
 
 class ActList(generics.ListCreateAPIView):
-    permission_classes = (
-            permissions.IsAuthenticatedOrReadOnly,
-            IsOwnerOrReadOnly)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     queryset = Act.objects.all().order_by('-act_create_time')
     serializer_class = ActSerializer
 
@@ -62,9 +60,7 @@ class ActList(generics.ListCreateAPIView):
 
 
 class ActDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (
-            permissions.IsAuthenticatedOrReadOnly,
-            IsAdminOrReadOnly)
+    permission_classes = (IsActCreatorOrReadOnly,)
     queryset = Act.objects.all()
     serializer_class = ActSerializer
 
@@ -119,9 +115,7 @@ class PostList(generics.ListCreateAPIView):
 
 
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (
-            permissions.IsAuthenticatedOrReadOnly,
-            IsOwnerOrPostReadOnly)
+    permission_classes = (IsOwnerOrPostReadOnly, )
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
@@ -178,9 +172,7 @@ class CommentList(generics.ListCreateAPIView):
 
 
 class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (
-            permissions.IsAuthenticatedOrReadOnly,
-            IsAdminOrReadOnly)
+    permission_classes = (IsAdminOrReadOnly, )
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
@@ -226,8 +218,23 @@ class UserList(generics.ListCreateAPIView):
 
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (
-            permissions.IsAuthenticatedOrReadOnly,
-            IsOwnerOrReadOnly)
+    permission_classes = (IsOwnerOrReadOnly,)
     queryset = MyUser.objects.all()
-    serializer_class = UserSettingsSerializer
+    serializer_class = UserSerializer
+
+    def update(self, request, *args, **kwargs):
+        if "user_name" in request.data:
+            return Response(
+                status=status.HTTP_403_FORBIDDEN,
+                )
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(
+            instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)

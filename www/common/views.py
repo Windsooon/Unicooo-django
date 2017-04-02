@@ -9,9 +9,6 @@ from django.contrib.auth import authenticate, \
         login as django_login, logout as django_logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
-from .form import UserCreateForm, UserLoginForm, UserChangeForm
-from activities.models import Act
-from common.models import MyUser
 
 # redis
 from django.core.cache import cache
@@ -21,6 +18,9 @@ from django_redis import get_redis_connection
 from qiniu import Auth
 from .qiniuSettings import accessKey, secretKey, bucket
 from common.qiniuSettings import httpsUrl
+from common.models import MyUser
+from .form import UserCreateForm, UserLoginForm, UserChangeForm
+from activities.models import Act
 
 
 def dictfetchall(cursor):
@@ -104,6 +104,12 @@ def logout_user(request):
 
 
 @login_required
+def personal(request, personal):
+    '''TODO change this to personal front page'''
+    pass
+
+
+@login_required
 def personal_settings(request, personal):
     if request.method == "GET":
         if request.user.user_name != personal:
@@ -169,14 +175,9 @@ def personal_comments(request, personal):
         return render(request, "404.html")
 
 
-def accounts(request, accounts):
-    """User settings"""
-    return render(request, "common/accounts.html")
-
-
-def contect(request):
-    """Contect Us"""
-    return render(request, "common/contect.html")
+def contact(request):
+    """Contact Us"""
+    return render(request, "common/contact.html")
 
 
 @login_required
@@ -197,6 +198,8 @@ def move_notifications(request):
 @login_required
 def get_upload_token(request):
     upload_type = request.GET.get("type")
+    if upload_type is None:
+        return HttpResponse("wrong argument", status=400)
     auth = Auth(accessKey, secretKey)
     upToken = auth.upload_token(bucket, key=None)
     sha1 = hashlib.sha1()
@@ -221,7 +224,7 @@ def update_posts_like(request, postId):
 
     user_points = cache.get("user_points_" + str(request.user.id))
     if user_points is None:
-    	cache.set("user_points_" + str(request.user.id), 50)
+        cache.set("user_points_" + str(request.user.id), 50)
     # if user doesn't have enough point
     elif user_points < 1:
         return HttpResponse(error_messages[1], status=500)

@@ -3,7 +3,7 @@ from .choices import ACTTYPE, ACTLICENCE
 
 
 class Act(models.Model):
-    user = models.ForeignKey("common.MyUser", related_name="act_user")
+    user = models.ForeignKey('common.MyUser', related_name='act_user')
     act_title = models.CharField(max_length=30)
     act_content = models.CharField(max_length=1000)
     act_thumb_url = models.CharField(max_length=400)
@@ -19,3 +19,6 @@ class Act(models.Model):
     act_delete = models.IntegerField(default=0)
     act_create_time = models.DateTimeField(auto_now=True)
     act_update_time = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'act_title')

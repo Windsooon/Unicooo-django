@@ -14,13 +14,11 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = MyUser
         fields = (
-            "id",  "email", "password", "user_name", "user_avatar",
-            "user_gender", "user_details")
+            "id",  "email", "user_name", "password",)
         extra_kwargs = {
-            "password": {"write_only": True},
-            "email": {"write_only": True}}
-        read_only_fields = (
-            "id", "user_avatar", "user_details", "user_gender",)
+            "email": {"write_only": True},
+            "password": {"write_only": True}}
+        read_only_fields = ("id",)
 
     def create(self, validated_data):
         user = MyUser.objects.create(
@@ -32,10 +30,17 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
-class UserSettingsSerializer(serializers.ModelSerializer):
+class UserModifySerializer(serializers.ModelSerializer):
     class Meta:
         model = MyUser
-        fields = ("id", "user_gender", "user_details", "user_avatar")
+        fields = (
+            "email", "password", "user_avatar",
+            "user_gender", "user_details")
+        extra_kwargs = {
+            "password": {"write_only": True},
+            "email": {"write_only": True}}
+        read_only_fields = (
+            "id", "user_avatar", "user_details", "user_gender",)
 
 
 class ActSerializer(serializers.ModelSerializer):

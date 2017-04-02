@@ -93,7 +93,7 @@
             <li class="base-personal"><a href="{% url 'personal' request.user.user_name %}act_create/"><span class="icon-big-right glyphicon glyphicon-user" aria-hidden="true"></span><span id="inter-personal">Personal</span></a></li>
             <li class="base-comments"><a href="{% url 'personal' request.user.user_name %}comments/"><span class="icon-big-right glyphicon glyphicon-comment" aria-hidden="true"></span><span id="inter-comments">Comments</span></a></li>
             <li role="separator" class="divider"></li>
-            <li class="base-settings"><a href="{% url 'personal' request.user.user_name %}"><span class="icon-big-right glyphicon glyphicon-cog" aria-hidden="true"></span><span id="inter-settings">Settings</span></a></li>
+            <li class="base-settings"><a href="{% url 'personal' request.user.user_name %}settings/"><span class="icon-big-right glyphicon glyphicon-cog" aria-hidden="true"></span><span id="inter-settings">Settings</span></a></li>
             <li class="base-logout"><a href="{% url 'logout' %}"><span class="icon-big-right glyphicon glyphicon-log-out" aria-hidden="true"></span><span id="inter-logout">Logout</span></a></li>
           </ul>
         </li>
@@ -119,7 +119,7 @@
   <section class="front-footer col-lg-8 col-lg-offset-2">
     <hr>
     <div class="col-md-4 col-lg-4">
-        <a href="{%url 'contect' %}"><p class="footer-text text-center" id="inter-contect">CONTECT US</p></a>
+        <a href="{%url 'contact' %}"><p class="footer-text text-center" id="inter-contect">CONTACT US</p></a>
     </div>
     <div class="col-md-4 col-lg-4">
         <a href=""><p class="footer-text text-center" id="inter-thank">THANK YOU</p></a>

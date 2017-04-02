@@ -1,3 +1,4 @@
+import sys
 from .base import *
 
 REST_FRAMEWORK = {
@@ -35,3 +36,6 @@ DATABASES = {
         'CHARSET': 'UTF-8',
     }
 }
+
+if 'test' in sys.argv:
+    DATABASES['default'] = {'ENGINE': 'django.db.backends.sqlite3'}
