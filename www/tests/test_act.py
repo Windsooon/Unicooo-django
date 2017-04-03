@@ -201,6 +201,21 @@ class ActTestCase(TestCase):
             json.dumps(json_data), content_type="application/json")
         self.assertEqual(response.status_code, 400)
 
+    def test_act_content_too_long(self):
+        act_c_title = 'just a change title'
+        act_c_content = 'just a change content, content'*100
+        act_c_thumb_url = '888888814968b2eaff2f9ae1a02ec01108757eb768d81dfc'
+        json_data = {
+            'act_title': act_c_title,
+            'act_content': act_c_content,
+            'act_thumb_url': act_c_thumb_url,
+            'act_url': self.username + '/' + act_c_title,
+        }
+        response = self.client.put(
+            '/api/acts/' + str(self.act_object.id) + '/',
+            json.dumps(json_data), content_type="application/json")
+        self.assertEqual(response.status_code, 400)
+
     def test_create_new_act_without_title(self):
         act_c_content = 'just a change content, content'
         act_c_thumb_url = '888888814968b2eaff2f9ae1a02ec01108757eb768d81dfc'
