@@ -38,14 +38,15 @@ class ActTestCase(TestCase):
         self.act_content = 'just a test content, content'
         self.act_thumb_url = '1490031868b2eaff2f9ae1a02ec01108757eb768d81dfc'
         self.act_type = 1
-        self.client.post('/api/acts/', {
-            'act_title': self.act_title,
-            'act_content': self.act_content,
-            'act_thumb_url': self.act_thumb_url,
-            'act_type': self.act_type,
-            'act_ident': 20,
-            'act_url': self.username + '/' + self.act_title,
-        })
+        Act.objects.create(
+            user=self.user,
+            act_title=self.act_title,
+            act_content=self.act_content,
+            act_thumb_url=self.act_thumb_url,
+            act_type=self.act_type,
+            act_ident=10,
+            act_url=self.username + '/' + self.act_title,
+            )
         self.act_object = Act.objects.get(act_title=self.act_title)
 
     def test_create_new_act_without_login(self):
