@@ -19,6 +19,8 @@ class ActTestCase(TestCase):
                 password=self.password,
                 options=active,
             )
+        self.user_object = get_user_model(). \
+            objects.get(id=self.user.id)
         # second user
         self.email2 = '2just_test@test.com'
         self.password2 = '2123456saasdfasdf'
@@ -30,7 +32,7 @@ class ActTestCase(TestCase):
                 options=active,
             )
         self.user_object2 = get_user_model(). \
-            objects.get(email='2just_test@test.com')
+            objects.get(id=self.user2.id)
 
         self.client = Client()
         self.client.force_login(self.user)
@@ -38,7 +40,7 @@ class ActTestCase(TestCase):
         self.act_content = 'just a test content, content'
         self.act_thumb_url = '1490031868b2eaff2f9ae1a02ec01108757eb768d81dfc'
         self.act_type = 1
-        Act.objects.create(
+        self.act = Act.objects.create(
             user=self.user,
             act_title=self.act_title,
             act_content=self.act_content,
@@ -47,7 +49,7 @@ class ActTestCase(TestCase):
             act_ident=10,
             act_url=self.username + '/' + self.act_title,
             )
-        self.act_object = Act.objects.get(act_title=self.act_title)
+        self.act_object = Act.objects.get(id=self.act.id)
 
     def test_create_new_act_without_login(self):
         self.client.logout()

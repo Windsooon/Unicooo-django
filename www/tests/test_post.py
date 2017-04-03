@@ -1,3 +1,4 @@
+import json
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.test import Client
@@ -12,7 +13,7 @@ class PostTestCase(TestCase):
         self.password = '123456saasdfasdf'
         self.username = 'just_test'
         active = {'is_active': 1}
-        self.user = get_user_model().objects.create_user(
+        self.user_object = get_user_model().objects.create_user(
                 username=self.username,
                 email=self.email,
                 password=self.password,
@@ -22,27 +23,81 @@ class PostTestCase(TestCase):
         self.email2 = '2just_test@test.com'
         self.password2 = '2123456saasdfasdf'
         self.username2 = '2just_test'
-        self.user2 = get_user_model().objects.create_user(
+        self.user_object2 = get_user_model().objects.create_user(
                 username=self.username2,
                 email=self.email2,
                 password=self.password2,
                 options=active,
             )
-        self.user_object2 = get_user_model(). \
-            objects.get(email='2just_test@test.com')
-
         self.client = Client()
-        self.client.force_login(self.user)
+        self.client.force_login(self.user_object)
+
+        # act default vale
         self.act_title = 'just a test title'
         self.act_content = 'just a test content, content'
         self.act_thumb_url = '1490031868b2eaff2f9ae1a02ec01108757eb768d81dfc'
         self.act_type = 1
-        self.client.post('/api/acts/', {
-            'act_title': self.act_title,
-            'act_content': self.act_content,
-            'act_thumb_url': self.act_thumb_url,
-            'act_type': self.act_type,
-            'act_ident': 10,
-            'act_url': self.username + '/' + self.act_title,
+        self.act_object = Act.objects.create(
+            user=self.user_object,
+            act_title=self.act_title,
+            act_content=self.act_content,
+            act_thumb_url=self.act_thumb_url,
+            act_type=self.act_type,
+            act_ident=10,
+            act_url=self.username + '/' + self.act_title,
+            )
+
+        # post default vale
+        self.post_content = 'just_sample_content'
+        self.post_thumb_url = '1457502382959cf00'
+        self.post_thumb_width = 1000
+        self.post_thumb_height = 1000
+        self.post_mime_types = 1
+        self.nsfw = 1
+        self.post_object = Post.objects.create(
+            act=self.act_object,
+            user=self.user_object,
+            post_content=self.post_content,
+            post_thumb_url=self.post_thumb_url,
+            post_thumb_width=self.post_thumb_width,
+            post_thumb_height=self.post_thumb_height,
+            post_mime_types=self.post_mime_types,
+            nsfw=self.nsfw,
+        )
+
+    def test_create_new_same_post(self):
+        response = self.client.post('/api/posts/', {
+            'act': self.act_object.id,
+            'post_content': self.post_content,
+            'post_thumb_url': self.post_thumb_url,
+            'post_thumb_width': self.post_thumb_width,
+            'post_thumb_height': self.post_thumb_height,
+            'post_mime_types': self.post_mime_types,
+            'nsfw': self.nsfw,
         })
-        self.act_object = Act.objects.get(act_title=self.act_title)
+        self.assertEqual(response.status_code, 201)
+
+    def test_modify_post(self):
+        post_c_content = 'modify_post_content'
+        post_c_thumb_url = 'modify_url'
+        post_c_thumb_width = 100
+        post_c_thumb_height = 100
+        json_data = {
+            'act': self.act_object.id,
+            'user': self.user_object.id,
+            'post_content': post_c_content,
+            'post_thumb_url': post_c_thumb_url,
+            'post_thumb_width': post_c_thumb_width,
+            'post_thumb_height': post_c_thumb_height,
+            'post_mime_types': self.post_mime_types,
+            'nsfw': self.nsfw,
+        }
+        response = self.client.put(
+            '/api/posts/' + str(self.post_object.id) + '/',
+            json.dumps(json_data), content_type="application/json")
+        self.assertEqual(response.status_code, 200)
+        post_object = Post.objects.get(id=self.post_object.id)
+        self.assertEqual(post_object.post_content, post_c_content)
+        self.assertEqual(post_object.post_thumb_url, post_c_thumb_url)
+        self.assertEqual(post_object.post_thumb_width, post_c_thumb_width)
+        self.assertEqual(post_object.post_thumb_height, post_c_thumb_height)

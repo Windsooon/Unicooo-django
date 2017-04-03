@@ -106,8 +106,9 @@ class PostAllSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     """Post api fields"""
-    post_comment = CommentSerializer(many=True, source="comment_post")
-    post_user = UserSerializer(source="user")
+    post_comment = CommentSerializer(
+        many=True, source="comment_post", required=False)
+    post_user = UserSerializer(source="user", required=False)
     comment_count = serializers.SerializerMethodField()
     likes = serializers.SerializerMethodField()
 

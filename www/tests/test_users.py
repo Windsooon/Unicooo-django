@@ -15,26 +15,23 @@ class visitPageTest(TestCase):
         self.username = 'just_test'
         self.login_required_url = '/act/new/'
         active = {'is_active': 1}
-        self.user = get_user_model().objects.create_user(
+        self.user_object = get_user_model().objects.create_user(
                 username=self.username,
                 email=self.email,
                 password=self.password,
                 options=active,
             )
-        self.user_object = get_user_model(). \
-            objects.get(email='just_test@test.com')
         # second user
         self.email2 = '2just_test@test.com'
         self.password2 = '2123456saasdfasdf'
         self.username2 = '2just_test'
-        self.user2 = get_user_model().objects.create_user(
+        self.user_object2 = get_user_model().objects.create_user(
                 username=self.username2,
                 email=self.email2,
                 password=self.password2,
                 options=active,
             )
-        self.user_object2 = get_user_model(). \
-            objects.get(email='2just_test@test.com')
+        self.client.force_login(self.user_object)
 
     def test_user_info(self):
         self.assertEqual('just_test@test.com', self.user_object.email)
@@ -53,6 +50,7 @@ class visitPageTest(TestCase):
             target_status_code=target_status_code)
 
     def test_create_user(self):
+        self.client.logout()
         response = self.client.post('/api/users/', {
             'user_name': 'just_create_user',
             'email': 'just_create_user@gmail.com',
@@ -61,6 +59,7 @@ class visitPageTest(TestCase):
         self.assertEqual(response.status_code, 201)
 
     def test_create_user_without_email(self):
+        self.client.logout()
         response = self.client.post('/api/users/', {
             'user_name': 'just_create_user',
             'password': 'just_create_password',
@@ -68,6 +67,7 @@ class visitPageTest(TestCase):
         self.assertEqual(response.status_code, 400)
 
     def test_create_user_without_username(self):
+        self.client.logout()
         response = self.client.post('/api/users/', {
             'email': 'just_create_user@gmail.com',
             'password': 'just_create_password',
@@ -75,6 +75,7 @@ class visitPageTest(TestCase):
         self.assertEqual(response.status_code, 400)
 
     def test_create_user_without_password(self):
+        self.client.logout()
         response = self.client.post('/api/users/', {
             'user_name': 'just_create_user',
             'email': 'just_create_user@gmail.com',
@@ -82,22 +83,20 @@ class visitPageTest(TestCase):
         self.assertEqual(response.status_code, 400)
 
     def test_modify_user_name(self):
-        self.client.force_login(self.user)
         json_data = {
             'user_name': 'just_modify_user',
         }
         response = self.client.patch(
-            '/api/users/' + str(self.user.id) + '/',
+            '/api/users/' + str(self.user_object.id) + '/',
             json.dumps(json_data), content_type="application/json")
         self.assertEqual(response.status_code, 403)
 
     def test_modify_user_email(self):
-        self.client.force_login(self.user)
         json_data = {
             'email': 'just_modify_user@test.com',
         }
         response = self.client.patch(
-            '/api/users/' + str(self.user.id) + '/',
+            '/api/users/' + str(self.user_object.id) + '/',
             json.dumps(json_data), content_type="application/json")
         self.assertEqual(response.status_code, 200)
         self.assertTrue(
@@ -105,99 +104,97 @@ class visitPageTest(TestCase):
             (email='just_modify_user@test.com').exists())
 
     def test_modify_user_email_illegal(self):
-        self.client.force_login(self.user)
         json_data = {
             'email': 'just_modify_usertest.com',
         }
         response = self.client.patch(
-            '/api/users/' + str(self.user.id) + '/',
+            '/api/users/' + str(self.user_object.id) + '/',
             json.dumps(json_data), content_type="application/json")
         self.assertEqual(response.status_code, 400)
 
     def test_modify_user_without_user_name(self):
-        self.client.force_login(self.user)
         json_data = {
             'email': 'just_modify_user@gmail.com',
             'user_details': 'just_modify_details',
             'user_avatar': '12121231313311',
         }
         response = self.client.patch(
-            '/api/users/' + str(self.user.id) + '/',
+            '/api/users/' + str(self.user_object.id) + '/',
             json.dumps(json_data), content_type="application/json")
         self.assertEqual(response.status_code, 200)
 
     def test_modify_other_user_failed(self):
-        self.client.force_login(self.user)
         json_data = {
             'user_name': 'just_modify_user',
             'email': 'just_modify_user@gmail.com',
             'user_details': 'just_modify_details',
         }
         response = self.client.put(
-            '/api/users/' + str(self.user2.id) + '/',
+            '/api/users/' + str(self.user_object2.id) + '/',
             json.dumps(json_data), content_type="application/json")
         self.assertEqual(response.status_code, 403)
 
     def test_modify_other_user_patch_failed(self):
-        self.client.force_login(self.user)
         json_data = {
             'email': 'just_modify_user@gmail.com',
             'user_details': 'just_modify_details',
         }
         response = self.client.patch(
-            '/api/users/' + str(self.user2.id) + '/',
+            '/api/users/' + str(self.user_object2.id) + '/',
             json.dumps(json_data), content_type="application/json")
         self.assertEqual(response.status_code, 403)
 
     def test_login(self):
+        self.client.logout()
         self.client.login(
             email=self.email, password=self.password)
         response = self.client.get(self.login_required_url)
         self.assertEqual(response.status_code, 200)
 
     def test_wrong_email(self):
+        self.client.logout()
         self.client.login(
             email='wrongemail@email.com', password=self.password)
         response = self.client.get(self.login_required_url)
         self.redirect_to_home(response)
 
     def test_wrong_password(self):
+        self.client.logout()
         self.client.login(
             email=self.email, password='just_wrong_password')
         response = self.client.get(self.login_required_url)
         self.redirect_to_home(response)
 
     def test_login_without_email(self):
+        self.client.logout()
         self.client.login(
             password=self.password)
         response = self.client.get(self.login_required_url)
         self.redirect_to_home(response)
 
     def test_login_withour_password(self):
+        self.client.logout()
         self.client.login(
             password=self.password)
         response = self.client.get(self.login_required_url)
         self.redirect_to_home(response)
 
     def test_logout(self):
-        self.client.force_login(self.user)
-        self.assertFalse(is_anonymous(self.user))
+        self.assertFalse(is_anonymous(self.user_object))
         self.client.logout()
         response = self.client.get(self.login_required_url)
         self.redirect_to_home(response)
 
     def test_get_comments(self):
-        self.client.force_login(self.user)
         response = self.client.get('/' + self.username + '/comments/')
         self.assertEqual(response.status_code, 200)
 
     def test_get_settings(self):
-        self.client.force_login(self.user)
+        self.client.force_login(self.user_object)
         response = self.client.get('/' + self.username + '/settings/')
         self.assertEqual(response.status_code, 200)
 
     def test_all_pages(self):
-        self.client.force_login(self.user)
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
         response = self.client.get('/act/public/')
@@ -208,7 +205,6 @@ class visitPageTest(TestCase):
         self.assertEqual(response.status_code, 400)
 
     def test_login_signup(self):
-        self.client.force_login(self.user)
         response = self.client.get('/signup/')
         self.assertRedirects(
             response,
@@ -217,7 +213,6 @@ class visitPageTest(TestCase):
             target_status_code=200)
 
     def test_login_login(self):
-        self.client.force_login(self.user)
         response = self.client.get('/login/')
         self.assertRedirects(
             response,
