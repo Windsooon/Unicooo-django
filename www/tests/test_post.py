@@ -42,7 +42,7 @@ class PostTestCase(TestCase):
             'act_content': self.act_content,
             'act_thumb_url': self.act_thumb_url,
             'act_type': self.act_type,
-            'act_ident': 20,
+            'act_ident': 10,
             'act_url': self.username + '/' + self.act_title,
         })
         self.act_object = Act.objects.get(act_title=self.act_title)
