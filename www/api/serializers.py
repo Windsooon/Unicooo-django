@@ -116,7 +116,8 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = (
                 "id", "user", "post_title", "post_content",
-                "likes", "post_thumb_url", "post_mime_types",
+                "likes", "post_thumb_url", "post_thumb_width",
+                "post_thumb_height", "post_mime_types",
                 "post_create_time", "post_user", "comment_count",
                 "post_comment"
         )

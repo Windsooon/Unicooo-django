@@ -50,8 +50,8 @@ class PostTestCase(TestCase):
         # post default vale
         self.post_content = 'just_sample_content'
         self.post_thumb_url = '1457502382959cf00'
-        self.post_thumb_width = 1000
-        self.post_thumb_height = 1000
+        self.post_thumb_width = 500.0
+        self.post_thumb_height = 1000.0
         self.post_mime_types = 1
         self.nsfw = 1
         self.post_object = Post.objects.create(
@@ -80,8 +80,8 @@ class PostTestCase(TestCase):
     def test_modify_post(self):
         post_c_content = 'modify_post_content'
         post_c_thumb_url = 'modify_url'
-        post_c_thumb_width = 100
-        post_c_thumb_height = 100
+        post_c_thumb_width = 100.0
+        post_c_thumb_height = 200.0
         json_data = {
             'act': self.act_object.id,
             'user': self.user_object.id,
@@ -101,3 +101,118 @@ class PostTestCase(TestCase):
         self.assertEqual(post_object.post_thumb_url, post_c_thumb_url)
         self.assertEqual(post_object.post_thumb_width, post_c_thumb_width)
         self.assertEqual(post_object.post_thumb_height, post_c_thumb_height)
+
+    def test_delete_post(self):
+        response = self.client.delete(
+            '/api/posts/' + str(self.post_object.id) + '/',
+            content_type="application/json")
+        self.assertEqual(response.status_code, 204)
+
+    def test_modify_post_without_content(self):
+        post_c_thumb_url = 'modify_url'
+        post_c_thumb_width = 100.0
+        post_c_thumb_height = 200.0
+        json_data = {
+            'act': self.act_object.id,
+            'user': self.user_object.id,
+            'post_thumb_url': post_c_thumb_url,
+            'post_thumb_width': post_c_thumb_width,
+            'post_thumb_height': post_c_thumb_height,
+            'post_mime_types': self.post_mime_types,
+            'nsfw': self.nsfw,
+        }
+        response = self.client.patch(
+            '/api/posts/' + str(self.post_object.id) + '/',
+            json.dumps(json_data), content_type="application/json")
+        self.assertEqual(response.status_code, 200)
+        post_object = Post.objects.get(id=self.post_object.id)
+        self.assertEqual(post_object.post_content, self.post_content)
+        self.assertEqual(post_object.post_thumb_url, post_c_thumb_url)
+        self.assertEqual(post_object.post_thumb_width, post_c_thumb_width)
+        self.assertEqual(post_object.post_thumb_height, post_c_thumb_height)
+
+    def test_modify_post_without_url(self):
+        post_c_content = 'modify_post_content'
+        post_c_thumb_width = 100.0
+        post_c_thumb_height = 200.0
+        json_data = {
+            'act': self.act_object.id,
+            'user': self.user_object.id,
+            'post_content': post_c_content,
+            'post_thumb_width': post_c_thumb_width,
+            'post_thumb_height': post_c_thumb_height,
+            'post_mime_types': self.post_mime_types,
+            'nsfw': self.nsfw,
+        }
+        response = self.client.patch(
+            '/api/posts/' + str(self.post_object.id) + '/',
+            json.dumps(json_data), content_type="application/json")
+        self.assertEqual(response.status_code, 200)
+        post_object = Post.objects.get(id=self.post_object.id)
+        self.assertEqual(post_object.post_content, post_c_content)
+        self.assertEqual(post_object.post_thumb_url, self.post_thumb_url)
+        self.assertEqual(post_object.post_thumb_width, post_c_thumb_width)
+        self.assertEqual(post_object.post_thumb_height, post_c_thumb_height)
+
+    def test_modify_ohter_user_post_failed(self):
+        self.client.logout()
+        self.client.force_login(self.user_object2)
+        post_c_content = 'modify_post_content'
+        post_c_thumb_url = 'modify_url'
+        post_c_thumb_width = 100.0
+        post_c_thumb_height = 200.0
+        json_data = {
+            'act': self.act_object.id,
+            'user': self.user_object.id,
+            'post_content': post_c_content,
+            'post_thumb_url': post_c_thumb_url,
+            'post_thumb_width': post_c_thumb_width,
+            'post_thumb_height': post_c_thumb_height,
+            'post_mime_types': self.post_mime_types,
+            'nsfw': self.nsfw,
+        }
+        response = self.client.put(
+            '/api/posts/' + str(self.post_object.id) + '/',
+            json.dumps(json_data), content_type="application/json")
+        self.assertEqual(response.status_code, 403)
+
+    def test_modify_post_logout_failed(self):
+        self.client.logout()
+        post_c_content = 'modify_post_content'
+        post_c_thumb_url = 'modify_url'
+        post_c_thumb_width = 100.0
+        post_c_thumb_height = 200.0
+        json_data = {
+            'act': self.act_object.id,
+            'user': self.user_object.id,
+            'post_content': post_c_content,
+            'post_thumb_url': post_c_thumb_url,
+            'post_thumb_width': post_c_thumb_width,
+            'post_thumb_height': post_c_thumb_height,
+            'post_mime_types': self.post_mime_types,
+            'nsfw': self.nsfw,
+        }
+        response = self.client.put(
+            '/api/posts/' + str(self.post_object.id) + '/',
+            json.dumps(json_data), content_type="application/json")
+        self.assertEqual(response.status_code, 403)
+
+    def test_create_new_same_post_logout_failed(self):
+        self.client.logout()
+        response = self.client.post('/api/posts/', {
+            'act': self.act_object.id,
+            'post_content': self.post_content,
+            'post_thumb_url': self.post_thumb_url,
+            'post_thumb_width': self.post_thumb_width,
+            'post_thumb_height': self.post_thumb_height,
+            'post_mime_types': self.post_mime_types,
+            'nsfw': self.nsfw,
+        })
+        self.assertEqual(response.status_code, 403)
+
+    def test_delete_post_logout(self):
+        self.client.logout()
+        response = self.client.delete(
+            '/api/posts/' + str(self.post_object.id) + '/',
+            content_type="application/json")
+        self.assertEqual(response.status_code, 403)

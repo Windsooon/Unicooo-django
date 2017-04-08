@@ -1,4 +1,5 @@
 Django==1.9.4
+selenium
 gunicorn
 djangorestframework==3.3.3
 djangorestframework-jwt==1.8.0

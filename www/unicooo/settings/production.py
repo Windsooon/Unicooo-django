@@ -36,10 +36,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'unicooo_sunkist',
-        'USER': 'admin',
-        'PASSWORD': 'for_unicooo_test',
-        'HOST': 'db',
-        'PORT': '3306',
+        'USER': 'root',
+        'PASSWORD': 'kuyyaku2012AC',
+        'HOST': 'unicooo.c921zwhbyg7s.us-west-2.rds.amazonaws.com',
+        'PORT': '5999',
         'CHARSET': 'UTF-8',
     }
 }
