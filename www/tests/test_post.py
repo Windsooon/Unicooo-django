@@ -77,6 +77,24 @@ class PostTestCase(TestCase):
         })
         self.assertEqual(response.status_code, 201)
 
+    def test_create_new_post_content_too_long(self):
+        post_long_content = "asdflasdfsafsadfjaskdfjasf" + \
+                            "askdjfsldjfaskdfjsadfjsdfj" + \
+                            "askdjfsldjfaskdfjsadfjsdfj" + \
+                            "askdjfsldjfaskdfjsadfjsdfj" + \
+                            "askdjfsldjfaskdfjsadfjsdfj" + \
+                            "askdjfsldjfaskdfjsadfjsdfj"
+        response = self.client.post('/api/posts/', {
+            'act': self.act_object.id,
+            'post_content': post_long_content,
+            'post_thumb_url': self.post_thumb_url,
+            'post_thumb_width': self.post_thumb_width,
+            'post_thumb_height': self.post_thumb_height,
+            'post_mime_types': self.post_mime_types,
+            'nsfw': self.nsfw,
+        })
+        self.assertEqual(response.status_code, 400)
+
     def test_modify_post(self):
         post_c_content = 'modify_post_content'
         post_c_thumb_url = 'modify_url'

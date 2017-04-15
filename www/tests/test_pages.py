@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.core.urlresolvers import reverse
+from selenium import webdriver
 
 
 class visitPageTest(TestCase):
@@ -50,3 +51,20 @@ class visitPageTest(TestCase):
             expected_url=reverse('login') + '?next=/act/new/',
             status_code=302,
             target_status_code=200)
+
+
+class visitPageWebdriver(TestCase):
+    def setUp(self):
+        # create a new Firefox session
+        self.driver = webdriver.Firefox()
+        self.driver.maximize_window()
+        # navigate to the application home page
+
+    def test_search_box(self):
+        # check search box exists on Home page
+        self.driver.get("http://127.0.0.1/")
+        self.assertInHTML('Welcome to Unicooo', self.driver.title)
+
+    def tearDown(self):
+        # close the browser window
+        self.driver.quit()

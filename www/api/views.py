@@ -17,7 +17,7 @@ from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 from .serializers import ActSerializer, PostAllSerializer, PostSerializer, \
         UserSerializer, CommentSerializer
-from .permissions import IsOwnerOrReadOnly, IsAdminOrReadOnly, \
+from .permissions import IsOwnerOrReadOnly, \
         IsAuthenticatedOrCreate, IsOwnerOrPostReadOnly, IsActCreatorOrReadOnly
 
 # django rest framework jwt
@@ -171,8 +171,8 @@ class CommentList(generics.ListCreateAPIView):
         return queryset
 
 
-class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAdminOrReadOnly, )
+class CommentDetail(generics.RetrieveAPIView):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
