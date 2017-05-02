@@ -1,4 +1,3 @@
-# from unittest import TestCase
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.contrib.auth import get_user_model
 from selenium.webdriver.support.ui import WebDriverWait
@@ -22,6 +21,7 @@ class VisitPageWebdriver(StaticLiveServerTestCase):
     @classmethod
     def tearDownClass(cls):
         cls.driver.quit()
+        cls.display.stop()
         super(VisitPageWebdriver, cls).tearDownClass()
 
     def setUp(self):
@@ -37,24 +37,15 @@ class VisitPageWebdriver(StaticLiveServerTestCase):
             )
 
     def test_signup_success(self):
+        '''
+        signup succeed from /signup/
+        '''
         self.driver.get(self.live_server_url + '/signup/')
         email_signup = self.driver.find_element_by_id('email_signup')
         username_signup = self.driver.find_element_by_id('username_signup')
         password_signup = self.driver.find_element_by_id('password_signup')
         signup_form = self.driver.find_element_by_class_name('signup-form')
         # the sign_up form in the middle of the screen
-        self.assertAlmostEqual(
-            email_signup.location['x'] + email_signup.size['width']/2,
-            512, delta=25
-        )
-        self.assertAlmostEqual(
-            username_signup.location['x'] + username_signup.size['width']/2,
-            512, delta=25
-        )
-        self.assertAlmostEqual(
-            password_signup.location['x'] + password_signup.size['width']/2,
-            512, delta=25
-        )
         self.assertAlmostEqual(
             signup_form.location['x'] + signup_form.size['width']/2,
             512, delta=25
@@ -73,7 +64,61 @@ class VisitPageWebdriver(StaticLiveServerTestCase):
             self.assertEqual(
                 self.driver.current_url, self.live_server_url + '/')
 
+    def test_signup_error_text_appear(self):
+        self.driver.get(self.live_server_url + '/signup/')
+        email_signup = self.driver.find_element_by_id('email_signup')
+        username_signup = self.driver.find_element_by_id('username_signup')
+        password_signup = self.driver.find_element_by_id('password_signup')
+        # click sign up without enter text
+        self.driver.find_element_by_class_name('submit-btn').click()
+        email_signup_error = self.driver.find_element_by_id(
+            'email_signup-error')
+        username_signup_error = self.driver.find_element_by_id(
+            'username_signup-error')
+        password_signup_error = self.driver.find_element_by_id(
+            'password_signup-error')
+        email_error_text = email_signup_error.text
+        username_error_text = username_signup_error.text
+        password_error_text = password_signup_error.text
+        self.assertEqual(
+                email_error_text, 'Please enter a valid email address.')
+        self.assertEqual(
+                username_error_text, 'Please enter your username.')
+        self.assertEqual(
+                password_error_text, 'Please enter your password.')
+        email_signup.send_keys('just_for_test@email.com')
+        username_signup.send_keys('just_for_test')
+        password_signup.send_keys('just_password')
+        email_error_text2 = email_signup_error.text
+        username_error_text2 = username_signup_error.text
+        password_error_text2 = password_signup_error.text
+        self.assertEqual(
+                email_error_text2, '')
+        self.assertEqual(
+                username_error_text2, '')
+        self.assertEqual(
+                password_error_text2, '')
+
+    def test_signup_wrong_email_error_text_appear(self):
+        self.driver.get(self.live_server_url + '/signup/')
+        email_signup = self.driver.find_element_by_id('email_signup')
+        email_signup.send_keys('just_for_test')
+        self.driver.find_element_by_class_name('submit-btn').click()
+        email_signup_error = self.driver.find_element_by_id(
+            'email_signup-error')
+        email_error_text = email_signup_error.text
+        self.assertEqual(
+                email_error_text, 'Please enter a valid email address.')
+        email_signup.clear()
+        email_signup.send_keys('just_test@test.com')
+        email_error_text2 = email_signup_error.text
+        self.assertEqual(
+                email_error_text2, 'Please enter a valid email address.')
+
     def test_login_success(self):
+        '''
+        login succeed from /login/ url
+        '''
         self.driver.get(self.live_server_url + '/login/')
         email_login = self.driver.find_element_by_id('email_login')
         password_login = self.driver.find_element_by_id('password_login')
@@ -103,8 +148,3 @@ class VisitPageWebdriver(StaticLiveServerTestCase):
         finally:
             self.assertEqual(
                 self.driver.current_url, self.live_server_url + '/')
-
-    def tearDown(self):
-        # close the browser window
-        self.driver.quit()
-        self.display.stop()
