@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'comment',
     'post',
     'tests',
+    'func_tests',
 )
 
 MIDDLEWARE_CLASSES = (

@@ -21,6 +21,7 @@ from common.qiniuSettings import httpsUrl
 from common.models import MyUser
 from .form import UserCreateForm, UserLoginForm, UserChangeForm
 from activities.models import Act
+from post.models import Post
 
 
 def dictfetchall(cursor):
@@ -85,12 +86,7 @@ def login_in(request):
         if user is not None:
             if user.is_active:
                 django_login(request, user)
-                return render(
-                        request, "error.html",
-                        {
-                            "error": "Method not accepted."
-                        }
-                    )
+                return HttpResponseRedirect('/')
         else:
             return HttpResponse(10002, status=400)
     else:
@@ -221,6 +217,8 @@ def update_posts_like(request, postId):
             }
     post_author_id = request.POST.get("post_author_id", "")
     post_likes_users = get_redis_connection("default")
+    post_object = Post.objects.get(id=postId)
+    act_id = post_object.act_id
 
     user_points = cache.get("user_points_" + str(request.user.id))
     if user_points is None:
@@ -242,6 +240,11 @@ def update_posts_like(request, postId):
                 ("post_"+str(postId)),
                 time.time(),
                 "user"+":"+str(request.user.id)
+                )
+        post_likes_users.zadd(
+                ("act_"+str(act_id)),
+                time.time(),
+                "post"+":"+str(postId)
                 )
     except:
         return HttpResponse(error_messages[3], status=500)

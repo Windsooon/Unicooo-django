@@ -18,7 +18,11 @@
       </a>
     </div>
     <div>
-      <form action="" method="POST" id="login_form">
+      {% if next %}
+      <form action="/login/?next={{next}}" method="POST" id="login_form">
+      {%else%}
+      <form action="/login/" method="POST" id="login_form">
+      {% endif %}
         {% csrf_token %}
         <fieldset>
           <div class="form-group label-floating is-empty">

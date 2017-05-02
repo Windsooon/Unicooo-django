@@ -3,7 +3,6 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.core.cache import cache
 from rest_framework.compat import is_anonymous
-from selenium import webdriver
 
 
 class visitPageTest(TestCase):
@@ -236,22 +235,3 @@ class visitPageTest(TestCase):
     def test_user_points(self):
         self.assertEqual(
             cache.get("user_points_" + str(self.user_object.id)), 50)
-
-
-class visitPageWebdriver(TestCase):
-    def setUp(self):
-        # create a new Firefox session
-        self.driver = webdriver.Firefox()
-        self.driver.implicitly_wait(30)
-        self.driver.maximize_window()
-        # navigate to the application home page
-        self.driver.get("http://127.0.0.1/login/")
-
-    def test_search_box(self):
-        # check search box exists on Home page
-        driver = webdriver.Firefox()
-        driver.find_element_by_id('email_login')
-
-    def tearDown(self):
-        # close the browser window
-        self.driver.quit()
