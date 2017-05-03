@@ -1,14 +1,11 @@
 from django.shortcuts import render
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from common.qiniuSettings import httpsUrl, imageStyle, avatarStyle
 from .forms import ActCreateForm
 from .models import Act
 from common.models import MyUser
 from .choices import ACTLICENCE
-
-
-class AjaxableResponseMixin(object):
-    pass
 
 
 @login_required
@@ -46,7 +43,7 @@ def act_details(request, act_url):
             act_details = Act.objects.get(
                     act_url=act_url,
                     )
-        except:
+        except ValueError:
             error = "Activity Not exist."
             return render(request, "error.html", {"error": error})
         else:
@@ -67,3 +64,21 @@ def act_details(request, act_url):
     else:
         error = "Method not allowed."
         return render(request, "error.html", {"error": error})
+
+
+def act_intro(request, act_intro):
+    if request.method == "GET":
+        act_url = act_intro.split('details')[0]
+        try:
+            act_details = Act.objects.get(
+                    act_url=act_url,
+                    )
+        except ObjectDoesNotExist:
+            error = "Activity Not exist."
+            return render(request, "error.html", {"error": error})
+        return render(
+                request, "act/act_intro.html",
+                {
+                    "act_details": act_details
+                }
+            )

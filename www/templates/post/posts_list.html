@@ -43,6 +43,7 @@
       </div>
       </div>
       <div class="check-auth">
+        <a class="btn btn-lg btn-primary details-act-btn" href="../../{{ act_details.act_url }}" role="button">Details</a>
         {% if request.user.is_authenticated %}
           {% if act_details.act_type == 0 %}
             {% if request.user.user_name != act_details.user.user_name %}

@@ -412,6 +412,12 @@
     overflow:hidden;
 }
 
+.details-act-btn {
+    position: absolute;
+    right: 125px;
+    bottom: 0;
+}
+
 .join-act-btn {
     position: absolute;
     right: 0;
