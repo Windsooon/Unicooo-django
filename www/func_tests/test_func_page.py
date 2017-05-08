@@ -1,6 +1,5 @@
-import unittest
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, get_user
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -37,7 +36,7 @@ class VisitPageWebdriver(StaticLiveServerTestCase):
                 options=active,
             )
 
-    @unittest.skip("demonstrating skipping")
+    # @unittest.skip("demonstrating skipping")
     def test_signup_success(self):
         '''
         signup succeed from /signup/
@@ -65,8 +64,10 @@ class VisitPageWebdriver(StaticLiveServerTestCase):
         finally:
             self.assertEqual(
                 self.driver.current_url, self.live_server_url + '/')
+            response = self.driver.get(self.live_server_url + '/')
+            self.assertEqual(response.status_code, 400)
 
-    @unittest.skip("demonstrating skipping")
+    # @unittest.skip("demonstrating skipping")
     def test_signup_error_text_appear(self):
         self.driver.get(self.live_server_url + '/signup/')
         email_signup = self.driver.find_element_by_id('email_signup')
@@ -118,7 +119,7 @@ class VisitPageWebdriver(StaticLiveServerTestCase):
         self.assertEqual(
                 email_error_text2, 'Please enter a valid email address.')
 
-    @unittest.skip("demonstrating skipping")
+    # @unittest.skip("demonstrating skipping")
     def test_login_success(self):
         '''
         login succeed from /login/ url

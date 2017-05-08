@@ -128,6 +128,8 @@ REST_FRAMEWORK = {
 
 DEBUG = False
 TEMPLATE_DEBUG = False
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'front_page'
 
 DATABASES = {
     'default': {

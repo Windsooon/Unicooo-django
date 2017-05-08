@@ -185,6 +185,22 @@ class UserList(generics.ListCreateAPIView):
     serializer_class = UserSerializer
     permission_classes = (IsAuthenticatedOrCreate,)
 
+    @csrf_exempt
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        new_user = authenticate(
+            email=request.POST.get('email'),
+            password=request.POST.get('password'),
+            )
+        if new_user is not None:
+            if new_user.is_active:
+                django_login(request, new_user)
+        return Response(
+            serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsOwnerOrReadOnly,)

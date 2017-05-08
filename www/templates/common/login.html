@@ -18,11 +18,7 @@
       </a>
     </div>
     <div>
-      {% if next %}
-      <form action="/login/?next={{next}}" method="POST" id="login_form">
-      {%else%}
-      <form action="/login/" method="POST" id="login_form">
-      {% endif %}
+        <form action="{%url 'login' %}?next={{ request.META.HTTP_REFERER }} method="POST" id="login_form">
         {% csrf_token %}
         <fieldset>
           <div class="form-group label-floating is-empty">

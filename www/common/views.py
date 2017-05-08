@@ -3,6 +3,7 @@ import time
 import hashlib
 
 from django.shortcuts import render
+from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib.auth import authenticate, \
@@ -77,16 +78,20 @@ def sign_up(request):
 @anonymous_required
 def login_in(request):
     if request.method == "GET":
+        next_page = request.GET.get("next")
+        if next_page is None:
+            return HttpResponseRedirect(
+                   reverse('login') + "?next=/")
         form = UserLoginForm()
         return render(request, "common/login.html", {"form": form})
     elif request.method == "POST":
         email = request.POST.get("email", None)
         password = request.POST.get("password", None)
         user = authenticate(email=email, password=password)
-        if user is not None:
-            if user.is_active:
-                django_login(request, user)
-                return HttpResponseRedirect('/')
+        if user is not None and user.is_active:
+            django_login(request, user)
+            return HttpResponseRedirect(
+               reverse('front_page'))
         else:
             return HttpResponse(10002, status=400)
     else:
@@ -260,9 +265,7 @@ def update_posts_like(request, postId):
 @csrf_exempt
 def check_email_exist(request):
     email = request.POST.get("email")
-    try:
-        cache.get("email_" + email)
-    except TypeError:
+    if cache.get("email_" + email):
         return HttpResponse("false")
     return HttpResponse("true")
 
@@ -270,9 +273,7 @@ def check_email_exist(request):
 @csrf_exempt
 def check_username_exist(request):
     user_name = request.POST.get("user_name")
-    try:
-        cache.get("user_name_" + user_name)
-    except TypeError:
+    if cache.get("user_name_" + user_name):
         return HttpResponse("false")
     return HttpResponse("true")
 
