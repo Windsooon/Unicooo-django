@@ -1,5 +1,6 @@
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from django.contrib.auth import get_user_model, get_user
+from django.contrib.auth import get_user_model
+from django.core.cache import cache
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -15,7 +16,6 @@ class VisitPageWebdriver(StaticLiveServerTestCase):
         cls.display.start()
         cls.driver = webdriver.Firefox(
             executable_path='/usr/src/app/selenium_sources/geckodriver')
-        cls.driver.implicitly_wait(1)
         cls.driver.set_window_size(1024, 768)
 
     @classmethod
@@ -26,8 +26,8 @@ class VisitPageWebdriver(StaticLiveServerTestCase):
 
     def setUp(self):
         self.email = 'just_test@test.com'
-        self.password = '123456saasdfasdf'
         self.username = 'just_test'
+        self.password = '123456saasdfasdf'
         active = {'is_active': 1}
         self.user_object = get_user_model().objects.create_user(
                 username=self.username,
@@ -35,6 +35,14 @@ class VisitPageWebdriver(StaticLiveServerTestCase):
                 password=self.password,
                 options=active,
             )
+
+        self.signup_email = "just_for_test_sign@email.com"
+        self.signup_username = "just_for_signup"
+        self.signup_password = "signup_password"
+
+    def tearDown(self):
+        cache.delete("email_" + self.signup_email)
+        cache.delete("user_name_" + self.signup_username)
 
     # @unittest.skip("demonstrating skipping")
     def test_signup_success(self):
@@ -52,27 +60,43 @@ class VisitPageWebdriver(StaticLiveServerTestCase):
             512, delta=25
         )
         # create a new user, submit the correct form
-        email_signup.send_keys('just_for_test@email.com')
-        username_signup.send_keys('just_for_test')
-        password_signup.send_keys('just_for_password')
-        self.driver.find_element_by_class_name('submit-btn').click()
+        email_signup.send_keys(self.signup_email)
+        username_signup.send_keys(self.signup_username)
+        password_signup.send_keys(self.signup_password)
+
+        # email field don't have error message
+        email_signup_error = self.driver.find_element_by_id(
+            'email_signup-error')
+        self.assertEqual(
+                email_signup_error.text, '')
+
+        # username field don't have error message
+        username_signup_error = self.driver.find_element_by_id(
+            'username_signup-error')
+        self.assertEqual(
+                username_signup_error.text, '')
+
+        # password_signup_error = self.driver.find_element_by_id(
+        #     'password_signup-error')
+        # self.assertEqual(
+        #         password_signup_error.text, '')
+
         # wait for the front page show up
+        self.driver.find_element_by_class_name('submit-btn').click()
         try:
-            WebDriverWait(self.driver, 3).until(
+            WebDriverWait(self.driver, 5).until(
                 EC.presence_of_element_located((By.ID, "front-matrix"))
             )
         finally:
             self.assertEqual(
                 self.driver.current_url, self.live_server_url + '/')
-            response = self.driver.get(self.live_server_url + '/')
-            self.assertEqual(response.status_code, 400)
+            from django.contrib import auth
+            user = auth.get_user(self.client)
+            assert user.is_authenticated()
 
     # @unittest.skip("demonstrating skipping")
     def test_signup_error_text_appear(self):
         self.driver.get(self.live_server_url + '/signup/')
-        email_signup = self.driver.find_element_by_id('email_signup')
-        username_signup = self.driver.find_element_by_id('username_signup')
-        password_signup = self.driver.find_element_by_id('password_signup')
         # click sign up without enter text
         self.driver.find_element_by_class_name('submit-btn').click()
         email_signup_error = self.driver.find_element_by_id(
@@ -90,9 +114,13 @@ class VisitPageWebdriver(StaticLiveServerTestCase):
                 username_error_text, 'Please enter your username.')
         self.assertEqual(
                 password_error_text, 'Please enter your password.')
-        email_signup.send_keys('just_for_test@email.com')
-        username_signup.send_keys('just_for_test')
-        password_signup.send_keys('just_password')
+        # signup normally
+        email_signup = self.driver.find_element_by_id('email_signup')
+        username_signup = self.driver.find_element_by_id('username_signup')
+        password_signup = self.driver.find_element_by_id('password_signup')
+        email_signup.send_keys(self.signup_email)
+        username_signup.send_keys(self.signup_username)
+        password_signup.send_keys(self.signup_password)
         email_error_text2 = email_signup_error.text
         username_error_text2 = username_signup_error.text
         password_error_text2 = password_signup_error.text
@@ -117,7 +145,7 @@ class VisitPageWebdriver(StaticLiveServerTestCase):
         email_signup.send_keys('just_test@test.com')
         email_error_text2 = email_signup_error.text
         self.assertEqual(
-                email_error_text2, 'Please enter a valid email address.')
+                email_error_text2, 'This email had already been registered.')
 
     # @unittest.skip("demonstrating skipping")
     def test_login_success(self):

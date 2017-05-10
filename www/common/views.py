@@ -265,7 +265,7 @@ def update_posts_like(request, postId):
 @csrf_exempt
 def check_email_exist(request):
     email = request.POST.get("email")
-    if cache.get("email_" + email):
+    if email and cache.get("email_" + email):
         return HttpResponse("false")
     return HttpResponse("true")
 
@@ -273,7 +273,7 @@ def check_email_exist(request):
 @csrf_exempt
 def check_username_exist(request):
     user_name = request.POST.get("user_name")
-    if cache.get("user_name_" + user_name):
+    if user_name and cache.get("user_name_" + user_name):
         return HttpResponse("false")
     return HttpResponse("true")
 

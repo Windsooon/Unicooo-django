@@ -14,7 +14,11 @@ class visitPageTest(TestCase):
 
     def test_login(self):
         response = self.client.get('/login/')
-        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(
+            response,
+            expected_url=reverse('login') + '?next=/',
+            status_code=302,
+            target_status_code=200)
 
     def test_check_email(self):
         response = self.client.get('/checkemail/')

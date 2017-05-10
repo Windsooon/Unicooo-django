@@ -87,8 +87,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'unicooo.wsgi.application'
-LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'front_page'
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/

@@ -2,6 +2,7 @@ import json
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.core.cache import cache
+from django.core.urlresolvers import reverse
 from rest_framework.compat import is_anonymous
 
 
@@ -213,10 +214,10 @@ class visitPageTest(TestCase):
             target_status_code=200)
 
     def test_login_login(self):
-        response = self.client.get('/login/')
+        response = self.client.get('/login/?next=/')
         self.assertRedirects(
             response,
-            expected_url='/',
+            expected_url=reverse('front_page'),
             status_code=302,
             target_status_code=200)
 
