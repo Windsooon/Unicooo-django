@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 migrations/
+qiniu*.py
+.s*t.json
+
 
 # C extensions
 *.so
