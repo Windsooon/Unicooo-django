@@ -11,6 +11,7 @@ class UserCreateForm(forms.ModelForm):
             attrs={
                 'id': 'password_signup',
                 'class': 'form-control',
+                'maxlength': 40,
                 'minlength': 8,
             }
         )
@@ -29,6 +30,7 @@ class UserCreateForm(forms.ModelForm):
                 attrs={
                     'id': 'username_signup',
                     'class': 'form-control',
+                    'maxlength': 30,
                     'minlength': 6,
                 }
             ),
@@ -36,6 +38,7 @@ class UserCreateForm(forms.ModelForm):
                 attrs={
                     'id': 'email_signup',
                     'class': 'form-control',
+                    'maxlength': 255,
                     'minlength': 8,
                 }
             ),

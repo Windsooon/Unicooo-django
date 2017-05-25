@@ -37,10 +37,12 @@ $(document).ready(function() {
             success: function(data) {
                 if (data.results.length > 0) {
                     $.each(data.results, function(key, value){
-                        console.log(value["act_url"]);
                         window.location.replace("/act/" + value["act_url"]);
                     })
                 }
+                else {
+                    alert("Can't find this activity"); 
+                };
             },
             error: function() {
             }
