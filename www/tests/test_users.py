@@ -75,6 +75,15 @@ class visitPageTest(TestCase):
         })
         self.assertEqual(response.status_code, 400)
 
+    def test_create_user_username_toolong(self):
+        self.client.logout()
+        response = self.client.post('/api/users/', {
+            'email': 'just_create_user@gmail.com',
+            'user_name': 'just_create_user_just_create_user_just_create_user',
+            'password': 'just_create_password',
+        })
+        self.assertEqual(response.status_code, 400)
+
     def test_create_user_without_password(self):
         self.client.logout()
         response = self.client.post('/api/users/', {
