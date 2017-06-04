@@ -13,14 +13,13 @@ services:
     build: ./www
     ports:
       - "8000"
-    environment:
-      - PATH=/usr/src/app/:$PATH
-      - PATH=/usr/src/app/selenium_sources/geckodriver:$PATH
-      - PYTHONPATH=/usr/src/app/
-      - DJANGO_SETTINGS_MODULE=unicooo.settings.tests
     volumes:
       - ./www:/usr/src/app
-    command: bash -c "python manage.py makemigrations && python manage.py migrate && /usr/local/bin/gunicorn unicooo.wsgi:application -w 3 --timeout 200 -k gevent -b :8000 --reload"
+    environment:
+      - PATH=/usr/src/app/:$PATH
+      - PYTHONPATH=/usr/src/app/
+      - DJANGO_SETTINGS_MODULE=unicooo.settings.local
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --noinput && /usr/local/bin/gunicorn unicooo.wsgi:application -w 2 --timeout 200 -k gevent -b :8000 --reload"
     depends_on:
       - db
     links:
