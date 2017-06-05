@@ -11,14 +11,14 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         return obj == request.user
 
 
-class IsOwnerOrPostReadOnly(permissions.BasePermission):
+class IsOwnerOrAdminOrPostReadOnly(permissions.BasePermission):
     """
     Custom permission to only allow owners of an object to edit it.
     """
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
             return True
-        return obj.user == request.user
+        return request.user.is_admin or obj.user == request.user
 
 
 class IsActCreatorOrReadOnly(permissions.BasePermission):

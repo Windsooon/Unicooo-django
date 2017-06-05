@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 from django.contrib.auth import get_user_model
 from activities.choices import USERGENDER
+from django.core.cache import cache
 
 
 class MyUserManager(BaseUserManager):
@@ -61,11 +62,25 @@ class MyUser(AbstractBaseUser):
         # Simplest possible answer: Yes, always
         return True
 
+    def has_perm(self, perm, obj=None):
+        return self.is_admin
+
+    def replace_html(self, text):
+        return str(text).replace('&', '&amp;').replace('<', '&lt;') \
+            .replace('>', '&gt;').replace('"', '&quot;').replace("'", '&#39;')
+
     @property
     def is_staff(self):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
+
+    @property
+    def points(self):
+        '''
+        get user points
+        '''
+        return cache.get("user_points_"+str(self.id))
 
     class Meta:
         db_table = 'common_user'

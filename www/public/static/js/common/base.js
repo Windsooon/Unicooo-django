@@ -22,32 +22,38 @@ $(document).ready(function() {
     });   
     // serach acd by act_id
     $(".act-search").on("click", function() {
-        act_id = parseInt($(".act-search-text").val(), 10);
-        if (act_id < 10000) {
-            act_id = 0
+        act_search_text = $(".act-search-text").val();
+        if (act_search_text){
+            act_id = parseInt($(".act-search-text").val(), 10);
+            if (act_id < 10000) {
+                alert("Can't find this activity"); 
+            }
+            else {
+                act_id = act_id - 10000;
+            }
+            $.ajax({
+                url: "/api/acts/",
+                dataType: "json",
+                data: {"act_id": act_id},
+                type: "GET",
+                success: function(data) {
+                    if (data.results.length > 0) {
+                        $.each(data.results, function(key, value){
+                            window.location.replace("/act/" + value["act_url"]);
+                        })
+                    }
+                    else {
+                        alert("Can't find this activity"); 
+                    };
+                },
+                error: function() {
+                }
+            });
         }
         else {
-            act_id = act_id - 10000;
+            alert("Please enter activity id for searching.");
         }
-        $.ajax({
-            url: "/api/acts/",
-            dataType: "json",
-            data: {"act_id": act_id},
-            type: "GET",
-            success: function(data) {
-                if (data.results.length > 0) {
-                    $.each(data.results, function(key, value){
-                        window.location.replace("/act/" + value["act_url"]);
-                    })
-                }
-                else {
-                    alert("Can't find this activity"); 
-                };
-            },
-            error: function() {
-            }
         });
-    });
 });
 
 function poll() {
@@ -58,6 +64,7 @@ function poll() {
 		dataType: "json",
         statusCode: {
             200: function(response) {
+                console.log(123);
                 append_circle(); 
             }
         },
@@ -66,7 +73,7 @@ function poll() {
 		error: function () {
 		},
 		complete: function () {
-			poll_interval=90000;
+			poll_interval=10000;
 			setTimeout(poll, poll_interval);
 		},
 	});
@@ -164,4 +171,10 @@ function loadingAfter(outer_div, text_code) {
 function urlConvert(string) {
     string = string.replace(/,|<|>|{|}|。|，/g, ' ').replace(/\s+/g, ' ').trim().replace(/\s+/g, '-').replace(/-+/g, '-');
     return string;
+}
+
+function imgError(image) {
+    image.onerror = "";
+    image.src = "../../../static/img/error.png";
+    return true;
 }

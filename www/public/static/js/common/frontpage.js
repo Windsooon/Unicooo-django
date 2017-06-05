@@ -3,10 +3,14 @@ $(document).ready(function(){
     $('.carousel-img').on('load', function(){
       $('.ball-scale div').hide();
     });
-    
-    if($(window).width() <= 767) {
-        $(".thumbnail img").each(function() {
-            $(this).attr("src", $(this).attr("src").replace("actCoverInterS", "actCoverInterB"));
-        });
-    }
+    var page = 1;
+    var data = {"act_type": 2, "page": page};
+    var scrollTimeout;
+    var $container = $(".row").masonry({
+        itemSelector: '.act-outer-container',
+        transitionDuration: '0.3s',
+        hiddenStyle: { opacity: 0 },
+        visibleStyle: { opacity: 1 }
+    });
+    get_act_list(data, $container)
 });

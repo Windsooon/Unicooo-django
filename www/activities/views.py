@@ -76,9 +76,18 @@ def act_intro(request, act_intro):
         except ObjectDoesNotExist:
             error = "Activity Not exist."
             return render(request, "error.html", {"error": error})
-        return render(
-                request, "act/act_intro.html",
-                {
-                    "act_details": act_details
-                }
-            )
+        else:
+            act_license = ACTLICENCE[act_details.act_licence]
+            act_thumb = httpsUrl + act_details.act_thumb_url + imageStyle
+            return render(
+                    request, "act/act_intro.html",
+                    {
+                        "act_details": act_details,
+                        "act_author": act_details.user,
+                        "act_thumb": act_thumb,
+                        "httpsUrl": httpsUrl,
+                        "imageStyle": imageStyle,
+                        "avatarStyle": avatarStyle,
+                        "act_license": act_license[1]
+                    }
+                )

@@ -2,7 +2,6 @@ import operator
 import time
 import iso8601
 
-from datetime import datetime
 from django.contrib.auth import authenticate, login as django_login
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
@@ -18,10 +17,9 @@ from rest_framework.response import Response
 from .serializers import ActSerializer, PostAllSerializer, PostSerializer, \
         UserSerializer, CommentSerializer
 from .permissions import IsOwnerOrReadOnly, \
-        IsAuthenticatedOrCreate, IsOwnerOrPostReadOnly, IsActCreatorOrReadOnly
+        IsAuthenticatedOrCreate, IsOwnerOrAdminOrPostReadOnly, IsActCreatorOrReadOnly
 
 # django rest framework jwt
-from rest_framework_jwt.settings import api_settings
 
 # django redis
 from django.core.cache import cache
@@ -35,6 +33,26 @@ class ActList(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            serializer_data = sorted(
+                serializer.data,
+                key=lambda d: (
+                    d["likes"]+1)/((time.time()-(
+                        iso8601.parse_date(d["act_create_time"])).
+                        timestamp())/3600)**1.2,
+                reverse=True)
+            return self.get_paginated_response(serializer_data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        serializer_data = sorted(
+                serializer.data, key=operator.itemgetter('likes'),
+                reverse=True)
+        return Response(serializer_data)
 
     def get_queryset(self):
         queryset = Act.objects.all().order_by('-act_create_time')
@@ -81,8 +99,9 @@ class PostList(generics.ListCreateAPIView):
             serializer = self.get_serializer(page, many=True)
             serializer_data = sorted(
                 serializer.data,
-                key=lambda d: (d["likes"]+1)/((time.time()-datetime.timestamp(
-                    iso8601.parse_date(d["post_create_time"])))/3600)**1.5,
+                key=lambda d: (d["likes"]+1)/((time.time()-(
+                    iso8601.parse_date(d["post_create_time"])).
+                    timestamp())/3600)**1.5,
                 reverse=True)
             return self.get_paginated_response(serializer_data)
 
@@ -115,7 +134,7 @@ class PostList(generics.ListCreateAPIView):
 
 
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsOwnerOrPostReadOnly, )
+    permission_classes = (IsOwnerOrAdminOrPostReadOnly, )
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
@@ -154,7 +173,7 @@ class CommentList(generics.ListCreateAPIView):
 
     def create(self, request, *args, **kwargs):
         reply_id = request.data.get("reply_id")
-        cache.set(str(reply_id) + "_comments", "True")
+        cache.set(str(reply_id) + "_comments", "True", timeout=None)
         return super().create(request, args, kwargs)
 
     def get_queryset(self):

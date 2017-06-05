@@ -76,6 +76,7 @@ $(document).ready(function(){
                     window.location.replace("/");
                 },
                 error: function(xhr, status, error) {
+                    $form_submit_wrap = $(".submit-btn-wrap");
                     $form_submit_wrap.empty();
                     $("#signup_form :input").prop("disabled", false);
                     $(".form-server-error").empty();

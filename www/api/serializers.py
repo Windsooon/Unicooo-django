@@ -1,4 +1,6 @@
+import logging
 from activities.models import Act
+from django.core.cache import cache
 from common.models import MyUser
 from post.models import Post
 from comment.models import Comment
@@ -9,12 +11,14 @@ from rest_framework import serializers
 # Django-redis
 from django_redis import get_redis_connection
 
+logging.basicConfig(filename='www.log', level=logging.INFO)
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = MyUser
         fields = (
-            "id",  "email", "user_name", "password",)
+            "id",  "email", "password", "user_name")
         extra_kwargs = {
             "email": {"write_only": True},
             "password": {"write_only": True}}
@@ -47,15 +51,24 @@ class ActSerializer(serializers.ModelSerializer):
     """Activity api fields"""
     act_user = UserSerializer(source="user", read_only=True)
     act_author = serializers.ReadOnlyField(source='user.user_name')
+    likes = serializers.SerializerMethodField()
 
     class Meta:
         model = Act
         fields = (
-                "id", "act_author", "act_title", "act_content",
-                "act_thumb_url", "act_type", "act_licence",
+                "id", "act_author", "act_title", "act_content", "likes",
+                "act_thumb_url", "act_type", "act_licence", "act_intro",
                 "act_star", "act_status", "act_url", "act_delete",
                 "act_create_time", "act_user"
         )
+
+    def get_likes(self, obj):
+        act_id = obj.id
+        likes = cache.get("act_"+str(act_id))
+        if likes is None:
+            return 0
+        else:
+            return likes
 
 
 class CommentSerializer(serializers.ModelSerializer):

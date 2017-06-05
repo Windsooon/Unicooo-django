@@ -30,6 +30,9 @@ $(document).ready(function(){
                   $('#post-details').modal('hide')
                   $('#post-delete-modal').modal('hide')
                 },
+                error: function() {
+                  alert("You don't have permission to delete this post"); 
+                },
             });
         });
     });

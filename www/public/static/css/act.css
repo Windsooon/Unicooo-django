@@ -331,6 +331,29 @@
     float: right;
 }
 
+.ql-editor {
+    font-size: 1.5em;
+}
+
+#act-edit-btn {
+    display:block;
+    margin: 0 auto;
+    background-color: white;
+    margin-top: 20px;
+}
+.act-editor-row {
+    padding-top: 10px;
+}
+
+#editor {
+    min-height: 500px;
+}
+
+#act-editor {
+    min-height:500px;
+    background-color: white;
+}
+
 .single-act-border {
     margin-top: 0px;
     border: 1px solid #bfbfbf;
@@ -379,9 +402,6 @@
     margin-top: 20px;
 }
 
-.act-bottom-div {
-}
-
 .act-author {
     margin-top: 8px;
     margin-right: 12px;
@@ -414,7 +434,7 @@
 
 .details-act-btn {
     position: absolute;
-    right: 125px;
+    right: 170px;
     bottom: 0;
 }
 

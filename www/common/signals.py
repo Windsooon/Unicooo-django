@@ -7,6 +7,6 @@ from .models import MyUser
 @receiver(post_save, sender=MyUser)
 def init_user(sender, **kwargs):
     user = kwargs['instance']
-    cache.set("email_" + user.email, 1)
-    cache.set("user_name_" + user.user_name, 1)
-    cache.set("user_points_" + str(user.id), 50)
+    cache.set("email_" + user.email, 1, timeout=None)
+    cache.set("user_name_" + user.user_name, 1, timeout=None)
+    cache.set("user_points_" + str(user.id), 50, timeout=None)
