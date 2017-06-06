@@ -6,6 +6,10 @@ $(document).ready(function(){
     var xhrAjax = null;
     $post_cover_span = $(".upload-cover");
 
+    $("body").on("click", ".add-url-btn", function() {
+        $(".post-form-url").show();
+    });
+
     //显示剩余输入字数
     $(document).on("keyup", ".post-form-text", function(){
         var $post_length = $(".post-form-length");
@@ -122,6 +126,11 @@ $(document).ready(function(){
                 xhrAjax.abort();
                 xhrAjax = null;
         }
+
+        $("#post-upload").on('hidden.bs.modal', function(e) { 
+                xhrAjax.abort();
+        });
+        
         xhrAjax = $.ajax({
             xhr: function() {
                 var xhr = new window.XMLHttpRequest();
@@ -199,6 +208,7 @@ $(document).ready(function(){
         e.preventDefault();
         $activity_input = $(".activity-details-content input");
         var post_content = $(".post-form-text").val();
+        var post_url = $(".post-form-url").val();
         var base64_src = $(".post-upload-img").attr("src");
         var csrf_token = $("input[name='csrfmiddlewaretoken']").val();
         formArray[4] = $activity_input.eq(0).val();
@@ -209,7 +219,7 @@ $(document).ready(function(){
             data: {
                 csrfmiddlewaretoken: csrf_token,
                 "post_thumb_url": formArray[1],
-                "post_thumb_width": formArray[2], "post_thumb_height": formArray[3], "nsfw": 1, "post_mime_types": formArray[5], "act": formArray[4], "post_content": formArray[6]}, 
+                "post_thumb_width": formArray[2], "post_thumb_height": formArray[3], "nsfw": 0, "post_mime_types": formArray[5], "act": formArray[4], "post_content": formArray[6], "post_url": post_url}, 
             datatype: "json",
             beforeSend: function(){
                 $(".post-form-text").prop("disabled", true);

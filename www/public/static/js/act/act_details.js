@@ -8,6 +8,8 @@ $act_edit_btn.on("click", function() {
     }
     else if ($act_edit_btn.text() == "Save") {
         var editor = $("#act-editor").data('quill');
+
+        editor.disable();
         var delta = editor.getContents();
         var act_id = $(".activity-details-content").children('input').val();
         var csrftoken = getCookie('csrftoken');

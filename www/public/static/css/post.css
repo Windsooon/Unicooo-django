@@ -253,6 +253,10 @@
     }
 }
 
+.post-form-url {
+    display: none;
+}
+
 .audio-div-audio {
     width: 100%;
 }

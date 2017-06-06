@@ -2,10 +2,17 @@ $(document).ready(function(){
     var $container = $('#posts-container').masonry();
     $("#post-upload").on("show.bs.modal", function(e) {
         post_upload_status = false;
+        if ($(".progress-bar").length == 0){
+            $(".progress").append("<div class='progress-bar'></div>");
+        }
     });
 
-    $("#post-upload").on("hidden.bs.modal", function(e) {
-        rebuild_modal($("#post-upload"));
+    var originalModal = $("#post-upload > .modal-dialog > .modal-content").clone();
+    $("#post-upload").on('hidden.bs.modal', function(e) { 
+        $("#post-upload > .modal-dialog").empty();
+        var clone = originalModal.clone();
+        $("#post-upload > .modal-dialog").append(clone);
+        $(".progress-bar").remove();
     });
 
     $("#post-details").on("show.bs.modal", function(e) {
@@ -82,50 +89,3 @@ $(document).ready(function(){
         }
     });
 });
-
-function rebuild_modal($modal) {
-    $modal.html("");
-    var csrftoken = getCookie('csrftoken');
-    var elem = "<div class='modal-dialog'>" + 
-                       "<div class='modal-content'>" + 
-                           "<div class='modal-header'>" +
-                               "<button type='button' class='close' data-dismiss='modal' aria-label='Close'>" + 
-                                  "<span aria-hidden='true'>&times;</span></button>" +
-                               "</button>" + 
-                               "<h4 class='modal-title' class='inter-act-content'>Post Content</h4>" +
-                           "</div>" +
-                           "<div class='modal-body'>" +
-                               "<div class='post-upload-wrapper'>" +
-                                   "<div class='post-upload-div'>" +
-                                       "<img class='post-upload-img' src=" + httpsUrl + "post-example.jpg" + ">" +
-                                   "</div>" +
-                                   "<div class='progress'>" +
-                                       "<div class='progress-bar'></div>" +
-                                   "</div>" +
-                                   "<span class='upload-cover btn btn-primary btn-file btn-block'>" +
-                                       "<span class='inter-upload-post'>Upload Image / Audio</span>" +
-                                           "<input type='file' class='post-upload-image' accept='image/*, audio/* '>" +
-                                   "</span>" +
-                               "</div>" +
-                               "<div class='post-form'>" +
-                                   "<form method='POST' class='post-content-upload'>" +
-                                       "<input type='hidden' name='csrfmiddlewaretoken' value=" + csrftoken + ">" + 
-                                       "<div class='form-group'>" +
-                                           "<label class='sr-only' for='' >Post Content</label>" +
-                                           "<input type='text' class='post-form-text form-control'  class='inter-upload-holder' placeholder='Please enter you post content.'>" + 
-                                           "<h6 class='post-form-length'>60</h6>" +
-                                       "</div>" +
-                                       "<button type='submit' disabled class='add-post-btn btn btn-primary pull-right'>Submit</button>" +
-                                       "<button type='submit' disabled class='add-upload-more-btn btn btn-primary pull-right'>More</button>" +
-                                   "</form>" +
-                               "</div>" +
-                           "</div>" +
-                           "<div class='modal-footer'>" + 
-                           "</div>" + 
-                       "</div>" +
-               "</div>";
-    $modal.append(elem);
-    $("#post-upload-change").on("hidden.bs.modal", function (e) {
-        $(this).remove();
-    });
-}
