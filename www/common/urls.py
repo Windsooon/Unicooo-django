@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 from django.conf.urls import url
-from django.conf import settings
-from django.conf.urls.static import static
 from common import views
 
 urlpatterns = [
@@ -10,7 +8,7 @@ urlpatterns = [
                   url(r'^sub/$', views.get_notifications),
                   url(r'^sub_no/$', views.move_notifications),
                   url(r'^token/$', views.get_upload_token),
-                  url(r'^likes/(?P<postId>\d+)/$', views.update_posts_like),
+                  url(r'^likes/(?P<post_id>\d+)/$', views.update_posts_like),
                   url(r'^checkemail/$', views.check_email_exist),
                   url(r'^checkuser/$', views.check_username_exist),
                   url(r'^act_title/$', views.check_act_title),
@@ -26,5 +24,4 @@ urlpatterns = [
                       views.personal_settings, name="personal_settings"),
                   url(r'^(?P<personal>.[^/]+)/$',
                       views.personal, name="personal"),
-              ] + static(settings.STATIC_URL,
-                         document_root=settings.STATIC_ROOT)
+              ]

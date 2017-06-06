@@ -18,7 +18,8 @@ class IsOwnerOrAdminOrPostReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
             return True
-        return request.user.is_admin or obj.user == request.user
+        return (request.user.is_authenticated() and request.user.is_admin) \
+            or obj.user == request.user
 
 
 class IsActCreatorOrReadOnly(permissions.BasePermission):

@@ -192,7 +192,7 @@ def get_notifications(request):
 @login_required
 def move_notifications(request):
     if cache.get(str(request.user.id) + "_comments") == "True":
-        cache.set(str(request.user.id) + "_comments", "False")
+        cache.set(str(request.user.id) + "_comments", "False", timeout=None)
     return HttpResponse(status=204)
 
 
@@ -212,7 +212,7 @@ def get_upload_token(request):
 
 
 @login_required
-def update_posts_like(request, postId):
+def update_posts_like(request, post_id):
     error_messages = {
             1: "Sorry, you are run out of points.\
                You could get points with great posts.",
@@ -222,19 +222,16 @@ def update_posts_like(request, postId):
             }
     post_author_id = request.POST.get("post_author_id", "")
     post_likes_users = get_redis_connection("default")
-    post_object = Post.objects.get(id=postId)
+    post_object = Post.objects.get(id=post_id)
     act_id = post_object.act_id
 
     user_points = cache.get("user_points_" + str(request.user.id))
-    if user_points is None:
-        cache.set("user_points_" + str(request.user.id), 50)
-    # if user doesn't have enough point
-    elif user_points < 1:
+    if user_points < 1:
         return HttpResponse(error_messages[1], status=500)
     # if user already like the post
     try:
         post_likes_users.zscore(
-            "post_"+str(postId),
+            "post_"+str(post_id),
             "user"+":"+str(request.user.id)
             )
     except:
@@ -242,15 +239,23 @@ def update_posts_like(request, postId):
     # add like to post
     try:
         post_likes_users.zadd(
-                ("post_"+str(postId)),
+                ("post_"+str(post_id)),
                 time.time(),
                 "user"+":"+str(request.user.id)
                 )
+        if cache.get("post_"+str(post_id)):
+            cache.incr("post_"+str(post_id))
+        else:
+            cache.set("post_"+str(post_id), 1, timeout=None)
         post_likes_users.zadd(
                 ("act_"+str(act_id)),
                 time.time(),
-                "post"+":"+str(postId)
+                "post"+":"+str(post_id)
                 )
+        if cache.get("act_"+str(act_id)):
+            cache.incr("act_"+str(act_id))
+        else:
+            cache.set("act_"+str(act_id), 1, timeout=None)
     except:
         return HttpResponse(error_messages[3], status=500)
     else:
