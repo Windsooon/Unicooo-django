@@ -20,39 +20,6 @@
   {% endblock %}
   {% block extra_head %}
   {% endblock %}
-  {% block scripts %}
-    <!--[if lt IE 9]>
-    <script src="{% static 'js/respond.min.js' %}></script>
-    <![endif]-->
-    <!--[if (gte IE 9)|!(IE)]><!-->
-    <script src="{% static 'js/plugin/jquery-2.1.4.min.js' %}"></script>
-    <script src="{% static 'js/plugin/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/plugin/material.min.js' %}"></script>
-    <script src="{% static 'js/plugin/ripples.min.js' %}"></script>
-    <script src="{% static 'js/common/base.js' %}"></script>
-    <script src="{% static 'js/plugin/jquery.i18n.properties.min.js' %}"></script>
-    <script>
-        jQuery.i18n.properties({ 
-            name: 'base',// 资源文件名称
-            path: '{% static 'international/' %}',// 资源文件所在目录路径
-            mode: 'map',// 模式：变量或 Map 
-            cache: false, 
-            async: true,
-            encoding: 'UTF-8', //文件编码方式
-            callback: function() {// 回调方法
-                $("#inter-activies").text(jQuery.i18n.prop('base_activies'));
-                $("#inter-add").text(jQuery.i18n.prop('base_add'));
-                $("#inter-personal").text(jQuery.i18n.prop('base_personal'));
-                $("#inter-comments").text(jQuery.i18n.prop('base_comments'));
-                $("#inter-settings").text(jQuery.i18n.prop('base_settings'));
-                $("#inter-signup").text(jQuery.i18n.prop('base_signup'));
-                $("#inter-contect").text(jQuery.i18n.prop('base_contect'));
-                $("#inter-thank").text(jQuery.i18n.prop('base_thank'));
-            } 
-        });
-    </script>        
-    <!--<![endif]-->
-  {% endblock %}
   {% block title %}
     <title>Welcome to Unicooo</title>
   {% endblock %}
@@ -86,12 +53,13 @@
         <li><a href="{% url 'act_type' 'new' %}"><span class="icon-right glyphicon glyphicon-pencil" aria-hidden="true"></span><span id="inter-add">Add</span></a></li>
       {% if user.is_authenticated %}
         <li class="dropdown">
-        <a href="#" id="base-user-username" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="request-user">{{request.user.user_name}}</span><span class="caret"></span></a>
+        <a href="#" id="base-user-username" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="request-user">{{ request.user.user_name }}</span><span class="caret"></span></a>
         <input id="user-id" type="hidden" value={{request.user.id}} />
         <input id="user-avatar" type="hidden" value={{request.user.user_avatar}} />
           <ul class="dropdown-menu">
             <li class="base-personal"><a href="{% url 'personal' request.user.user_name %}act_create/"><span class="icon-big-right glyphicon glyphicon-user" aria-hidden="true"></span><span id="inter-personal">Personal</span></a></li>
             <li class="base-comments"><a href="{% url 'personal' request.user.user_name %}comments/"><span class="icon-big-right glyphicon glyphicon-comment" aria-hidden="true"></span><span id="inter-comments">Comments</span></a></li>
+            <li class="base-points"><a href=""><span class="icon-big-right glyphicon glyphicon-comment" aria-hidden="true"></span><span>{{request.user.points}}</span></a></li>
             <li role="separator" class="divider"></li>
             <li class="base-settings"><a href="{% url 'personal' request.user.user_name %}settings/"><span class="icon-big-right glyphicon glyphicon-cog" aria-hidden="true"></span><span id="inter-settings">Settings</span></a></li>
             <li class="base-logout"><a href="{% url 'logout' %}"><span class="icon-big-right glyphicon glyphicon-log-out" aria-hidden="true"></span><span id="inter-logout">Logout</span></a></li>
@@ -107,13 +75,46 @@
   </div>
   <!--  end container-fluid -->
 </nav>
+
+{% endblock %}
+{% block content %}
+{% endblock %}
+{% block scripts %}
+<!--[if lt IE 9]>
+  <script src="{% static 'js/respond.min.js' %}></script>
+<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+    <script src="{% static 'js/plugin/jquery-2.1.4.min.js' %}"></script>
+    <script src="{% static 'js/plugin/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/plugin/material.min.js' %}"></script>
+    <script src="{% static 'js/plugin/ripples.min.js' %}"></script>
+    <script src="{% static 'js/common/base.js' %}"></script>
+    <script src="{% static 'js/plugin/jquery.i18n.properties.min.js' %}"></script>
+    <script>
+    jQuery.i18n.properties({ 
+        name: 'base',// 资源文件名称
+        path: '{% static 'international/' %}',// 资源文件所在目录路径
+        mode: 'map',// 模式：变量或 Map 
+        cache: false, 
+        async: true,
+        encoding: 'UTF-8', //文件编码方式
+        callback: function() {// 回调方法
+            $("#inter-activies").text(jQuery.i18n.prop('base_activies'));
+            $("#inter-add").text(jQuery.i18n.prop('base_add'));
+            $("#inter-personal").text(jQuery.i18n.prop('base_personal'));
+            $("#inter-comments").text(jQuery.i18n.prop('base_comments'));
+            $("#inter-settings").text(jQuery.i18n.prop('base_settings'));
+            $("#inter-signup").text(jQuery.i18n.prop('base_signup'));
+            $("#inter-contect").text(jQuery.i18n.prop('base_contect'));
+            $("#inter-thank").text(jQuery.i18n.prop('base_thank'));
+        } 
+    });
+</script>        
 {% if user.is_authenticated %}
     <script type="text/javascript">
          poll();
      </script>
-{% endif %}
-{% endblock %}
-{% block content %}
+{% endif %} <!--<![endif]-->
 {% endblock %}
 {% block footer %}
   <section class="front-footer col-lg-8 col-lg-offset-2">
@@ -125,7 +126,7 @@
         <a href=""><p class="footer-text text-center" id="inter-thank">THANK YOU</p></a>
     </div>
     <div class="col-md-4 col-lg-4">
-      <p class="footer-text text-center">Copyright © 2016 Unicooo Inc. All rights reserved.</p>
+      <p class="footer-text text-center">Copyright © 2017 Unicooo Inc. All rights reserved.</p>
     </div>
     <hr>
   </section>

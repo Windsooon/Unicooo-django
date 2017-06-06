@@ -45,10 +45,19 @@
             {'align': [] },
             {'header': [1, 2, 3, 4, 5, 6, false]}
         ],
-        ['code-block', 'blockquote'],
+        ['link', 'code-block', 'blockquote'],
         ['bold', { 'color': [] }],
         ['clean']                                         // remove formatting button
     ];
+    var Link = Quill.import("formats/link");
+    Link.sanitize = function(url) {
+        if (url.match("^http")) {
+            return url;
+        }
+        else
+            return "http://" + url;
+
+    }
     var editor = new Quill('#editor', {
        modules: {
          toolbar: toolbarOptions

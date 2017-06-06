@@ -13,22 +13,6 @@
 <div class="activity-container container">
   <!-- 加载loging效果 -->
   <div class="row">
-  {% for act in act_list %}
-    <div class="act-outer-container col-xs-12 col-sm-6 col-md-4 col-lg-4">
-      <div class="act-inner-container">
-        <a class="act-thumb-a" href="{% url 'act_details' act.act_url %}" class="thumbnail">
-            <img class="act-thumb-img" src="{{ httpsUrl }}{{ act.act_thumb_url }}{{ imageStyle }}" onerror="imgError(this)" alt="{{ act.act_title|title }}">
-        <div class="act-title-wrapper">
-          <p class="act-title-p">{{ act.act_title|title }}</p>
-        </div>
-        <div class="act-content-wrapper">
-          <p class="act-content-p">{{ act.act_content }}</p>
-        <div class="fadeout"></div>
-        </div>
-       </a>
-     </div>
-   </div>
-  {% endfor %}
   </div>
 </div>
 <!-- end container -->
@@ -39,25 +23,17 @@
 </div>
 {% endblock %}
 {% block script %}
+  <script src="{% static 'js/plugin/imageLoaded.min.js' %}"></script>
+  <script src="{% static 'js/plugin/masonry.min.js' %}"></script>
   <script src="{% static 'js/common/frontpage.js' %}"></script>
+  <script src="{% static 'js/common/act_post_list.js' %}"></script>
   <script src="{% static 'js/plugin/jquery.particleground.min.js' %}"></script>
   <script>
-  function imgError(image) {
-        image.onerror = "";
-        image.src = "../../../static/img/error.png";
-        return true;
-    }
+
   </script>
   <script>
   $('#front-matrix').particleground({
-    //dotColor: '#ff0000',
-    //lineColor: '#ff0000',
-    //particleRadius: 5,
-    //minSpeedX: 0.1,
     density: 13000,
-    //curvedLines: false,
-    //parallax: false,
-    //lineWidth: 2,
     dotColor: '#ffffff',
     lineColor: '#dbdbdb',
     parallaxMultiplier: 10,

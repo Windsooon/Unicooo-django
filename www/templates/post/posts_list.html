@@ -8,63 +8,66 @@
   <link href="{% static 'css/loading.css' %}" rel="stylesheet"/>
 {% endblock %}
 {% block content %}
-<div class="activity-container container">
-  <div class="row">
-    <div class="activity-details-thumb clearfix">
-      <div class="activity-license">
-        <p>{{ act_license }}</p>
-        <p>ID {{ act_details.id|add:"10000" }}</p>
-      </div>
-      <div class="activity-details-thumb-img col-sm-7 col-md-7 col-lg-7"> 
-        <a class="activity-details-thumb-a">
-            <img src="{{ act_thumb }}" alt="{{ act_details.act_title }}"/>
-        </a>
-      </div>
-      <div class="activity-details-content col-sm-5 col-md-5 col-lg-5">
-        <p class="act-details-title text-center">{{ act_details.act_title|title }}</p>
-        <div class="act-details-div">
-          <p class="act-details-content">{{ act_details.act_content }}</p>
-          <div class="fadeout"></div>
-        </div>
-        <input type="hidden" value="{{ act_details.id }}" />
-        <div class="act-bottom-div clearfix">
-        <div class="author-div">
-          <a class="author-a" href="{%url 'personal' act_author.user_name %}act_create">
-              {% if act_author.user_avatar %}
-              <img class="author-img" src="{{ httpsUrl }}{{ act_author.user_avatar }}{{ avatarStyle }}" alt=""/> 
-              {% else %}
-                <div class="act-avatar-div" >
-                  <p class="act-avatar-p">{{ act_author.user_name|slice:"1" }}</p>
+    {% block act_header %}
+        <div class="activity-container container">
+          <div class="row">
+            <div class="activity-details-thumb clearfix">
+              <div class="activity-license">
+                <p>{{ act_license }}</p>
+                <p>ID {{ act_details.id|add:"10000" }}</p>
+              </div>
+              <div class="activity-details-thumb-img col-sm-7 col-md-7 col-lg-7"> 
+                <a class="activity-details-thumb-a">
+                    <img src="{{ act_thumb }}" alt="{{ act_details.act_title }}"/>
+                </a>
+              </div>
+              <div class="activity-details-content col-sm-5 col-md-5 col-lg-5">
+                <p class="act-details-title text-center">{{ act_details.act_title|title }}</p>
+                <div class="act-details-div">
+                  <p class="act-details-content">{{ act_details.act_content }}</p>
+                  <div class="fadeout"></div>
                 </div>
-              {% endif %}
-              <p class="author-p">{{ act_author.user_name }}</p>
-          </a>
+                <input type="hidden" value="{{ act_details.id }}" />
+                <div class="act-bottom-div clearfix">
+                <div class="author-div">
+                  <a class="author-a" href="{%url 'personal' act_author.user_name %}act_create">
+                      {% if act_author.user_avatar %}
+                      <img class="author-img" src="{{ httpsUrl }}{{ act_author.user_avatar }}{{ avatarStyle }}" alt=""/> 
+                      {% else %}
+                        <div class="act-avatar-div" >
+                          <p class="act-avatar-p">{{ act_author.user_name|slice:"1" }}</p>
+                        </div>
+                      {% endif %}
+                      <p class="author-p">{{ act_author.user_name }}</p>
+                  </a>
+                </div> <!-- end author-div -->
+              </div>
+              </div>
+              <div class="check-auth">
+                <a class="btn btn-lg btn-primary details-act-btn" href="../../{{ act_details.act_url }}/details/" role="button">Details</a>
+                {% if request.user.is_authenticated %}
+                  {% if act_details.act_type == 0 %}
+                    {% if request.user.user_name != act_details.user.user_name %}
+                      <button type="button" class="btn btn-lg btn-primary" id="inter-personal-act">Personal Activity</button>
+                    {% else %}
+                      <button type="button" class="btn btn-lg btn-primary join-act-btn" data-toggle="modal" data-target="#post-upload" id="inter-join-act">Join the act</button>
+                    {% endif %}
+                  {% else %}
+                      <button type="button" class="btn btn-lg btn-primary join-act-btn" data-toggle="modal" data-target="#post-upload" id="inter-join-act">Join the act</button>
+                  {% endif %}
+                {% else %}
+                <a class="btn btn-lg btn-primary join-act-btn" href="{%url 'login' %}?next={% firstof request.path '/' %}" role="button" id="inter-login-join">Login to join</a>
+                {% endif %}
+              </div> <!-- end check-auth -->
+            </div>
         </div>
-      </div>
-      </div>
-      <div class="check-auth">
-        <a class="btn btn-lg btn-primary details-act-btn" href="../../{{ act_details.act_url }}" role="button">Details</a>
-        {% if request.user.is_authenticated %}
-          {% if act_details.act_type == 0 %}
-            {% if request.user.user_name != act_details.user.user_name %}
-              <button type="button" class="btn btn-lg btn-primary" id="inter-personal-act">Personal Activity</button>
-            {% else %}
-              <button type="button" class="btn btn-lg btn-primary join-act-btn" data-toggle="modal" data-target="#post-upload" id="inter-join-act">Join the act</button>
-            {% endif %}
-          {% else %}
-              <button type="button" class="btn btn-lg btn-primary join-act-btn" data-toggle="modal" data-target="#post-upload" id="inter-join-act">Join the act</button>
-          {% endif %}
-        {% else %}
-        <a class="btn btn-lg btn-primary join-act-btn" href="{%url 'login' %}?next={% firstof request.path '/' %}" role="button" id="inter-login-join">Login to join</a>
-        {% endif %}
-      </div>
-    </div>
-  </div>
-  <div class="row">
-  <div id="posts-container">
-  </div>
-  </div>
-  
+        {% endblock %}
+        {% block post_list %}
+        <div class="row">
+          <div id="posts-container">
+          </div>
+        </div>
+        {% endblock %}
   <!-- Display post upload image using modal -->
   <div id="post-upload" class="modal fade" tabindex="-1" style="display: none">
       <div class="modal-dialog">
@@ -94,8 +97,9 @@
                   <input type="text" class="post-form-text form-control"  class="inter-upload-holder" placeholder="Please enter you post content." >
                 <h6 class="post-form-length">60</h6>
                 </div>
+                <input type="text" class="post-form-url form-control"  placeholder="Please enter the url.">
                 <button type="submit" disabled class="add-post-btn btn btn-primary pull-right">Submit</button>
-                <button type="submit" disabled class="add-upload-more-btn btn btn-primary pull-right">More</button>
+                <button type="button" class="add-url-btn btn btn-primary pull-right">Url</button>
               </form>
             </div>
           </div>
