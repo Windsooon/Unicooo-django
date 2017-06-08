@@ -1,18 +1,11 @@
 version: '2'
 services:
-  db:
-   image: mysql
-   restart: always
-   volumes:
-     - mysqldata:/var/lib/mysql
-   ports:
-     - "3306:3306"
-   env_file: env/mysql.env
   web:
     restart: always
     build: ./www
     ports:
       - "8000"
+      - "8081:8081"
     environment:
       - PATH=/usr/src/app/:$PATH
       - PATH=/usr/src/app/selenium_sources/geckodriver:$PATH
@@ -20,12 +13,10 @@ services:
       - DJANGO_SETTINGS_MODULE=unicooo.settings.tests
     volumes:
       - ./www:/usr/src/app
-    command: bash -c "python manage.py makemigrations && python manage.py migrate && /usr/local/bin/gunicorn unicooo.wsgi:application -w 3 --timeout 200 -k gevent -b :8000 --reload"
-    depends_on:
-      - db
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && /usr/local/bin/gunicorn unicooo.wsgi:application -w 3 --timeout 200 -k gevent -b 0.0.0.0:8000 --reload"
     links:
       - redis:redis
-  nginx:
+  nginx_d:
     restart: always
     build: ./nginx/
     ports:

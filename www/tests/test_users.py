@@ -32,6 +32,7 @@ class visitPageTest(TestCase):
                 password=self.password2,
                 options=active,
             )
+        self.assertEqual(get_user_model().objects.count(), 2)
         self.client.force_login(self.user_object)
 
     def test_user_info(self):
@@ -57,6 +58,9 @@ class visitPageTest(TestCase):
             'email': 'just_create_user@gmail.com',
             'password': 'just_create_password',
         })
+        user = get_user_model().objects.get(email='just_create_user@gmail.com')
+        self.assertEqual(get_user_model().objects.count(), 3)
+        self.assertEqual(user.user_name, 'just_create_user')
         self.assertEqual(response.status_code, 201)
 
     def test_create_user_without_email(self):

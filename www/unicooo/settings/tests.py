@@ -133,11 +133,6 @@ TEMPLATE_DEBUG = False
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'unicooo_sunkist',
-        'USER': 'admin',
-        'PASSWORD': 'for_unicooo_test',
-        'HOST': 'db',
-        'PORT': '3306',
-        'CHARSET': 'UTF-8',
+        'NAME': 'sql_sunkist_t',
     }
 }
