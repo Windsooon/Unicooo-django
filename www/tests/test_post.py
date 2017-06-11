@@ -12,12 +12,11 @@ class PostTestCase(TestCase):
         self.email = 'just_test@test.com'
         self.password = '123456saasdfasdf'
         self.username = 'just_test'
-        active = {'is_active': 1}
         self.user_object = get_user_model().objects.create_user(
                 username=self.username,
                 email=self.email,
                 password=self.password,
-                options=active,
+                is_active=1,
             )
         # second user
         self.email2 = '2just_test@test.com'
@@ -27,7 +26,7 @@ class PostTestCase(TestCase):
                 username=self.username2,
                 email=self.email2,
                 password=self.password2,
-                options=active,
+                is_active=1
             )
         self.client = Client()
         self.client.force_login(self.user_object)
@@ -233,4 +232,166 @@ class PostTestCase(TestCase):
         response = self.client.delete(
             '/api/posts/' + str(self.post_object.id) + '/',
             content_type="application/json")
+        self.assertEqual(response.status_code, 403)
+
+    def test_other_delete_post_failed(self):
+        self.client.logout()
+        self.client.force_login(self.user_object2)
+        response = self.client.delete(
+            '/api/posts/' + str(self.post_object.id) + '/',
+            content_type="application/json")
+        self.assertEqual(response.status_code, 403)
+
+    def test_admin_delete_post(self):
+        self.admin_user = get_user_model().objects.create_user(
+            username='admin_user',
+            email='admin@admin.com',
+            password=self.password,
+            is_active=1,
+            is_admin=1
+            )
+        self.client.logout()
+        self.client.force_login(self.admin_user)
+
+        response = self.client.delete(
+            '/api/posts/' + str(self.post_object.id) + '/',
+            content_type="application/json")
+        self.assertEqual(response.status_code, 204)
+
+    def test_public_acts_author_can_join(self):
+        public_act = Act.objects.create(
+            user=self.user_object,
+            act_title='public_act',
+            act_content=self.act_content,
+            act_thumb_url=self.act_thumb_url,
+            act_type=2,
+            act_ident=10,
+            act_url=self.username + '/' + self.act_title,
+            )
+        self.client = Client()
+        self.client.force_login(self.user_object)
+        response = self.client.post('/api/posts/', {
+            'act': public_act.id,
+            'post_content': self.post_content,
+            'post_thumb_url': self.post_thumb_url,
+            'post_thumb_width': self.post_thumb_width,
+            'post_thumb_height': self.post_thumb_height,
+            'post_mime_types': self.post_mime_types,
+            'nsfw': self.nsfw,
+        })
+        self.assertEqual(response.status_code, 201)
+
+    def test_public_acts_other_can_join(self):
+        public_act = Act.objects.create(
+            user=self.user_object,
+            act_title='public_act',
+            act_content=self.act_content,
+            act_thumb_url=self.act_thumb_url,
+            act_type=2,
+            act_ident=10,
+            act_url=self.username + '/' + self.act_title,
+            )
+        self.client = Client()
+        self.client.force_login(self.user_object2)
+        response = self.client.post('/api/posts/', {
+            'act': public_act.id,
+            'post_content': self.post_content,
+            'post_thumb_url': self.post_thumb_url,
+            'post_thumb_width': self.post_thumb_width,
+            'post_thumb_height': self.post_thumb_height,
+            'post_mime_types': self.post_mime_types,
+            'nsfw': self.nsfw,
+        })
+        self.assertEqual(response.status_code, 201)
+
+    def test_group_acts_author_can_join(self):
+        group_act = Act.objects.create(
+            user=self.user_object,
+            act_title='public_act',
+            act_content=self.act_content,
+            act_thumb_url=self.act_thumb_url,
+            act_type=1,
+            act_ident=10,
+            act_url=self.username + '/' + self.act_title,
+            )
+        self.client = Client()
+        self.client.force_login(self.user_object)
+        response = self.client.post('/api/posts/', {
+            'act': group_act.id,
+            'post_content': self.post_content,
+            'post_thumb_url': self.post_thumb_url,
+            'post_thumb_width': self.post_thumb_width,
+            'post_thumb_height': self.post_thumb_height,
+            'post_mime_types': self.post_mime_types,
+            'nsfw': self.nsfw,
+        })
+        self.assertEqual(response.status_code, 201)
+
+    def test_group_acts_other_can_join(self):
+        group_act = Act.objects.create(
+            user=self.user_object,
+            act_title='public_act',
+            act_content=self.act_content,
+            act_thumb_url=self.act_thumb_url,
+            act_type=1,
+            act_ident=10,
+            act_url=self.username + '/' + self.act_title,
+            )
+        self.client = Client()
+        self.client.force_login(self.user_object2)
+        response = self.client.post('/api/posts/', {
+            'act': group_act.id,
+            'post_content': self.post_content,
+            'post_thumb_url': self.post_thumb_url,
+            'post_thumb_width': self.post_thumb_width,
+            'post_thumb_height': self.post_thumb_height,
+            'post_mime_types': self.post_mime_types,
+            'nsfw': self.nsfw,
+        })
+        self.assertEqual(response.status_code, 201)
+
+    def test_private_acts_author_can_join(self):
+        private_act = Act.objects.create(
+            user=self.user_object,
+            act_title='public_act',
+            act_content=self.act_content,
+            act_thumb_url=self.act_thumb_url,
+            act_type=0,
+            act_ident=10,
+            act_url=self.username + '/' + self.act_title,
+            )
+        self.client = Client()
+        self.client.force_login(self.user_object)
+        response = self.client.post('/api/posts/', {
+            'act': private_act.id,
+            'post_content': self.post_content,
+            'post_thumb_url': self.post_thumb_url,
+            'post_thumb_width': self.post_thumb_width,
+            'post_thumb_height': self.post_thumb_height,
+            'post_mime_types': self.post_mime_types,
+            'nsfw': self.nsfw,
+        })
+        self.assertEqual(response.status_code, 201)
+
+    def test_private_acts_other_join_failed(self):
+        private_act = Act.objects.create(
+            user=self.user_object,
+            act_title='public_act',
+            act_content=self.act_content,
+            act_thumb_url=self.act_thumb_url,
+            act_type=0,
+            act_ident=10,
+            act_url=self.username + '/' + self.act_title,
+            )
+        self.client = Client()
+        self.client.force_login(self.user_object2)
+        response = self.client.post('/api/posts/', {
+            'act': private_act.id,
+            'post_content': self.post_content,
+            'post_thumb_url': self.post_thumb_url,
+            'post_thumb_width': self.post_thumb_width,
+            'post_thumb_height': self.post_thumb_height,
+            'post_mime_types': self.post_mime_types,
+            'nsfw': self.nsfw,
+        })
         self.assertEqual(response.status_code, 403)

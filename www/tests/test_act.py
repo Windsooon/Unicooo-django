@@ -51,7 +51,7 @@ class ActTestCase(TestCase):
             )
         self.act_object = Act.objects.get(id=self.act.id)
 
-    def test_create_new_act_without_login(self):
+    def test_create_new_act_without_login_failed(self):
         self.client.logout()
         act_title = 'just a test st'
         act_content = 'just a test content, content'
@@ -68,7 +68,7 @@ class ActTestCase(TestCase):
         })
         self.assertEqual(response.status_code, 403)
 
-    def test_modify_act_without_login(self):
+    def test_modify_act_without_login_failed(self):
         self.client.logout()
         act_c_title = 'just a change title'
         act_c_content = 'just a change content, content'
@@ -84,7 +84,7 @@ class ActTestCase(TestCase):
             json.dumps(json_data), content_type="application/json")
         self.assertEqual(response.status_code, 403)
 
-    def test_delete_act_without_login(self):
+    def test_delete_act_without_login_failed(self):
         self.client.logout()
         response = self.client.delete(
             '/api/acts/' + str(self.act_object.id) + '/')
@@ -135,7 +135,7 @@ class ActTestCase(TestCase):
                 'act_url': self.username + act_title,
             })
 
-    def test_modify_act(self):
+    def test_modify_act_successed(self):
         act_c_title = 'just a change title'
         act_c_content = 'just a change content, content'
         act_c_thumb_url = '888888814968b2eaff2f9ae1a02ec01108757eb768d81dfc'
