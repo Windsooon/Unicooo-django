@@ -1,56 +1,21 @@
-import unittest
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.contrib.auth import get_user_model
-from django.test import Client
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from pyvirtualdisplay import Display
 from activities.models import Act
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from .base_tests import BaseTestStaticLiveServerTestCase
 
 
-class VisitFronePageWebdriver(StaticLiveServerTestCase):
-    @classmethod
-    def setUpClass(cls):
-        super(VisitFronePageWebdriver, cls).setUpClass()
-        cls.display = Display(visible=0, size=(1024, 800))
-        cls.display.start()
-        cls.driver = webdriver.Firefox(
-            executable_path='/usr/src/app/selenium_sources/geckodriver')
-        cls.driver.set_window_size(1024, 768)
+class VisitFronePageWebdriver(BaseTestStaticLiveServerTestCase):
 
-    @classmethod
-    def tearDownClass(cls):
-        cls.driver.quit()
-        cls.display.stop()
-        super(VisitFronePageWebdriver, cls).tearDownClass()
+    def setUp(self):
+        self.driver.get(self.live_server_url + '/')
 
     def tearDown(self):
         pass
 
-    def test_search_empty(self):
-        '''
-        search return nothing
-        '''
-        self.driver.get(self.live_server_url + '/')
-        self.driver.find_element_by_class_name('act-search').click()
-        alert = self.driver.switch_to_alert()
-        self.assertEqual(alert.text, 'Please enter activity id for searching.')
-
-    def test_search_no_activity(self):
-        '''
-        search return nothing
-        '''
-        self.driver.get(self.live_server_url + '/')
-        self.driver.find_element_by_class_name(
-            'act-search-text').send_keys(10080)
-        self.driver.find_element_by_class_name(
-            'act-search-text').send_keys(Keys.ENTER)
-        alert = self.driver.switch_to_alert()
-        self.assertEqual(alert.text, 'Can\'t find this activity')
-
     def test_search_correct(self):
         '''
-        search return nothing
+        search return act_details
         '''
         self.email = 'just_test@test.com'
         self.password = '123456saasdfasdf'
@@ -64,12 +29,11 @@ class VisitFronePageWebdriver(StaticLiveServerTestCase):
             )
         self.user_object = get_user_model(). \
             objects.get(id=self.user.id)
-        self.client = Client()
-        self.client.force_login(self.user)
         self.act_title = 'just a test title'
         self.act_content = 'just a test content, content'
-        self.act_thumb_url = '1490031868b2eaff2f9ae1a02ec01108757eb768d81dfc'
-        self.act_type = 1
+        self.act_thumb_url = '147326964570df47ebce96cc7' + \
+                             'bd661f788786d51c16afce068'
+        self.act_type = 2
         self.act = Act.objects.create(
             user=self.user,
             act_title=self.act_title,
@@ -79,8 +43,29 @@ class VisitFronePageWebdriver(StaticLiveServerTestCase):
             act_ident=10,
             act_url=self.username + '/' + self.act_title,
             )
+        self.assertEqual(Act.objects.count(), 1)
+
         self.driver.get(self.live_server_url + '/')
+        act_title = self.driver.find_element_by_class_name('act-title-p').text
+        self.assertIn('just a test title', act_title)
         act_search = self.driver.find_element_by_class_name('act-search-text')
-        act_search.send_keys('10001')
+        act_search.send_keys(self.act.id+10000)
+        self.driver.find_element_by_class_name('act-search').click()
+        self.wait_element_url(
+            "activity-details-thumb", 'class',
+            url=self.live_server_url + '/act/')
+
+    def test_search_no_activity(self):
+        '''
+        search return nothing
+        '''
         self.driver.find_element_by_class_name(
-            'act-search-text').send_keys(Keys.ENTER)
+            'act-search-text').send_keys(10080)
+        self.driver.find_element_by_class_name('act-search').click()
+        try:
+            WebDriverWait(self.driver, 6).until(
+                EC.alert_is_present(), 'timeout'
+            )
+            alert = self.driver.switch_to_alert()
+        finally:
+            self.assertEqual(alert.text, 'Can\'t find this activity')
