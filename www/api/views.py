@@ -17,7 +17,8 @@ from rest_framework.response import Response
 from .serializers import ActSerializer, PostAllSerializer, PostSerializer, \
         UserSerializer, CommentSerializer
 from .permissions import IsOwnerOrReadOnly, \
-        IsAuthenticatedOrCreate, IsOwnerOrAdminOrPostReadOnly, IsActCreatorOrReadOnly
+        IsAuthenticatedOrCreate, IsOwnerOrAdminOrPostReadOnly, \
+        IsActCreatorOrReadOnly
 
 # django rest framework jwt
 

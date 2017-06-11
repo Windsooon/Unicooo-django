@@ -49,7 +49,7 @@ $(document).ready(function(){
                     $form_submit_wrap = $(".submit-btn-wrap");
                     $form_submit_wrap.empty();
                     $("#login_form :input").prop("disabled", false);
-                    $(".form-server-error").empty();
+                    $(".form-server-error").remove();
                     var form_submit_button = $("<button />", {"class": "submit-btn btn btn-primary btn-block"});
                     var form_submit_button_span = $("<span />", {"class": "glyphicon glyphicon-ok"});
                     form_submit_button.append(form_submit_button_span);

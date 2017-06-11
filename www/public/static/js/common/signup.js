@@ -62,6 +62,7 @@ $(document).ready(function(){
             },
         },
         submitHandler: function(form) {
+            var csrftoken = getCookie('csrftoken');
             $("#signup_form :input").prop("disabled", true);
             loadingBefore($(".submit-btn-wrap"));
             var user_name = $("#username_signup").val();
@@ -69,8 +70,13 @@ $(document).ready(function(){
             $.ajax({
                 url: "/api/users/",
                 type: "POST",
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('X-CSRFToken', csrftoken)
+                },
                 datatype: "json",
-                data:  {"email": $("#email_signup").val(), "user_name": user_name, "password": $("#password_signup").val()},
+                data:  {
+                    csrfmiddlewaretoken: csrftoken,
+                    "email": $("#email_signup").val(), "user_name": user_name, "password": $("#password_signup").val()},
                 beforeSend:function() {},
                 success: function(xhr) {
                     window.location.replace("/");
@@ -87,19 +93,25 @@ $(document).ready(function(){
                     var form_server_error = $("<div />", {
                           "class": "form-server-error"
                     });
-                    if($('.form-server-error').length) {
-                    } 
-                    else{
+                    if($('.form-server-error').length == 0) {
                         $form_submit_wrap.before(form_server_error);
                     }
                     if (xhr.status >= 400 && xhr.status < 500) {
-                        error_text = "Please check again your input.";
+                        if (xhr.responseText.indexOf("exists") !== -1) {
+                           var error_text = "Username or Email already Exists, Please Login.";
+                        }
+                        else {
+                           var error_text = "Please try again later.";
+                        }
                     }
                     else {
-                        error_text = "Please try again later";
+                        var error_text = "Server Error.";
+                    }
+                    if ($(".form-server-error-p").length > 0) {
+                        $(".form-server-error-p").remove();
                     }
                     $form_server_error_span = $("<span />", {"class": "pull-left form-server-error-span glyphicon glyphicon-exclamation-sign"});
-                    $form_server_error_p = $("<p />", {"class": "form-server-error-p", text: "Please check again your input."});
+                    $form_server_error_p = $("<p />", {"class": "form-server-error-p", text: error_text});
                     $form_server_error_span.appendTo(form_server_error).hide().fadeIn();
                     $form_server_error_p.appendTo(form_server_error).hide().fadeIn();
                 },

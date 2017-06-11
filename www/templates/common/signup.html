@@ -16,7 +16,7 @@
       </a>
     </div>
     <div>
-      <form action="" method="POST" id="signup_form">
+      <form id="signup_form">
         {% csrf_token %}
         <fieldset>
           <div class="form-group label-floating is-empty">
@@ -55,7 +55,7 @@
 </div>
 </div>
 {% endblock %}
-{% block script %}
+{% block extra_scripts %}
   <script src="{% static 'js/plugin/jquery.validate.min.js' %}"></script>
   <script src="{% static 'js/common/signup.js' %}"></script>
   <script>

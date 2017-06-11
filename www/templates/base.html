@@ -75,15 +75,34 @@
   </div>
   <!--  end container-fluid -->
 </nav>
-
 {% endblock %}
+
 {% block content %}
 {% endblock %}
+
+{% block footer %}
+  <section class="front-footer col-lg-8 col-lg-offset-2">
+    <hr>
+    <div class="row">
+      <div class="col-md-4 col-lg-4">
+        <a href="{%url 'contact' %}"><p class="footer-text text-center" id="inter-contect">CONTACT US</p></a>
+      </div>
+      <div class="col-md-4 col-lg-4">
+        <a href=""><p class="footer-text text-center" id="inter-thank">THANK YOU</p></a>
+      </div>
+      <div class="col-md-4 col-lg-4">
+        <p class="footer-text text-center">Copyright © 2017 Unicooo Inc. All rights reserved.</p>
+      </div>
+    </div>
+    <hr>
+  </section>
+{% endblock %}
+
 {% block scripts %}
-<!--[if lt IE 9]>
-  <script src="{% static 'js/respond.min.js' %}></script>
-<![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!-->
+    <!--[if lt IE 9]>
+      <script src="{% static 'js/respond.min.js' %}></script>
+    <![endif]-->
+    <!--[if (gte IE 9)|!(IE)]><!-->
     <script src="{% static 'js/plugin/jquery-2.1.4.min.js' %}"></script>
     <script src="{% static 'js/plugin/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/plugin/material.min.js' %}"></script>
@@ -116,22 +135,8 @@
      </script>
 {% endif %} <!--<![endif]-->
 {% endblock %}
-{% block footer %}
-  <section class="front-footer col-lg-8 col-lg-offset-2">
-    <hr>
-    <div class="col-md-4 col-lg-4">
-        <a href="{%url 'contact' %}"><p class="footer-text text-center" id="inter-contect">CONTACT US</p></a>
-    </div>
-    <div class="col-md-4 col-lg-4">
-        <a href=""><p class="footer-text text-center" id="inter-thank">THANK YOU</p></a>
-    </div>
-    <div class="col-md-4 col-lg-4">
-      <p class="footer-text text-center">Copyright © 2017 Unicooo Inc. All rights reserved.</p>
-    </div>
-    <hr>
-  </section>
-{% endblock %}
-{% block script %}
+
+{% block extra_scripts %}
 {% endblock %}
 </body>
 </html>

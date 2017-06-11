@@ -45,14 +45,14 @@
       </div>
       <div class="form-group form-group-loading">
         <div class="submit-btn-wrap">
-          <button type="submit" class="submit-btn btn btn-primary btn-block" id="act-cover-btn"><span class="glyphicon glyphicon-ok"></span></button>
+          <button type="submit" class="submit-btn btn btn-primary btn-block" id="act-cover-btn" disabled><span class="glyphicon glyphicon-ok"></span></button>
         </div>
       </div>
     </form><!-- end form-cover -->
   </div>
 </div>
 {% endblock %}
-{% block script %}
+{% block extra_scripts %}
   <script src="{% static 'js/plugin/jquery.cropit.js' %}"></script>
   <script src="{% static 'js/plugin/jquery.validate.min.js' %}"></script>
   <script src="{% static 'js/plugin/hashids.min.js' %}"></script>

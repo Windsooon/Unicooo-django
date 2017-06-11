@@ -202,7 +202,7 @@ def get_upload_token(request):
     if upload_type is None:
         return HttpResponse("wrong argument", status=400)
     auth = Auth(accessKey, secretKey)
-    upToken = auth.upload_token(bucket, key=None)
+    upToken = auth.upload_token(bucket, expires=3600, key=None)
     sha1 = hashlib.sha1()
     serverTime = round(time.time())
     pre_key = str(request.user.id) + upload_type + secretKey[-6:]

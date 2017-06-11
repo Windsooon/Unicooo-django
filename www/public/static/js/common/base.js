@@ -1,7 +1,9 @@
 var httpsUrl = "https://o3e6g3hdp.qnssl.com/";
-
 $(document).ready(function() {
     //click get comments
+    window.onerror=function(msg){
+        $("body").attr("JSError",msg);
+    }
     $(".base-comments").on("click", function() {
         if ($(".base-circle").length > 0) {
             $(".base-circle").remove();
@@ -26,7 +28,8 @@ $(document).ready(function() {
         if (act_search_text){
             act_id = parseInt($(".act-search-text").val(), 10);
             if (act_id < 10000) {
-                alert("Can't find this activity"); 
+                alert("Activity id should be 5 digits."); 
+                return false;
             }
             else {
                 act_id = act_id - 10000;
@@ -46,8 +49,10 @@ $(document).ready(function() {
                         alert("Can't find this activity"); 
                     };
                 },
-                error: function() {
-                }
+                error: function(xhr, status, error) {
+                    alert(JSON.parse(xhr.responseText).Data)
+                    alert("Server error, please try again later.");
+                },
             });
         }
         else {
