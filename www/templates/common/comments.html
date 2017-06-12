@@ -30,7 +30,7 @@
   </div>
 </div>
 {% endblock %}
-{% block script %}
+{% block extra_scripts %}
   <script> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
   <script src="{% static 'js/plugin/imageLoaded.min.js' %}"></script>
   <script src="{% static 'js/plugin/masonry.min.js' %}"></script>

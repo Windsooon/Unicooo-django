@@ -97,7 +97,7 @@
                   <input type="text" class="post-form-text form-control"  class="inter-upload-holder" placeholder="Please enter you post content." >
                 <h6 class="post-form-length">60</h6>
                 </div>
-                <input type="text" class="post-form-url form-control"  placeholder="Please enter the url.">
+                <input type="text" class="post-form-url form-control"  placeholder="https://unicooo.com">
                 <button type="submit" disabled class="add-post-btn btn btn-primary pull-right">Submit</button>
                 <button type="button" class="add-url-btn btn btn-primary pull-right">Url</button>
               </form>
@@ -160,6 +160,9 @@
                 <p class="post-details-posttime"></p>
               </div>
               {% if request.user.is_authenticated %}
+                <div class="post-url-details">  
+                  <a href="" class="post-url-details-a glyphicon glyphicon-link" aria-hidden="true"></a>
+                </div>
                 <div class="post-like-details">  
                   <span class="post-like-details-a" aria-hidden="true"></span>
                 </div>
@@ -169,12 +172,14 @@
               <p class="post-details-content-p"></p>
             </div>
           </div>
+          {% if request.user.is_admin or request.user.user_name == act_author %}
           <div id="post-delete">
             <button class="btn btn-default" data-toggle="modal" href="#post-delete-modal" data-focus-on="input:first">
               <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
               <span class="post-delete-p">Delete this post</span>
             </button>
           </div> 
+          {% endif %}
           <div class="modal-footer">
             <!-- Key content display all comment -->
             <ul class="list-group">
@@ -204,7 +209,7 @@
 </div>
 
 {% endblock %}
-{% block script %}
+{% block extra_scripts %}
   <script src="{% static 'js/plugin/imageLoaded.min.js' %}"></script>
   <script src="{% static 'js/plugin/masonry.min.js' %}"></script>
   <script src="{% static 'js/common/act_post_list.js' %}"></script>
