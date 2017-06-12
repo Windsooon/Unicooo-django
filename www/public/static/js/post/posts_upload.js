@@ -1,4 +1,9 @@
 $(document).ready(function(){
+    $('.modal').on('hidden.bs.modal', function (e) {
+        if($('.modal').hasClass('in')) {
+            $('body').addClass('modal-open');
+        }    
+    });
     var $container = $('#posts-container').masonry();
     var formData = new FormData();
     var formArray = new Array();
@@ -206,6 +211,11 @@ $(document).ready(function(){
 
     $(document).on("submit", ".post-content-upload", function(e){
         e.preventDefault();
+        var post_form_url = $(".post-form-url").val();
+        if($(".post-form-url").css("display") != "none" && !validateUrl(post_form_url)) {
+            alert("not valid"); 
+            return false;
+        }
         $activity_input = $(".activity-details-content input");
         var post_content = $(".post-form-text").val();
         var post_url = $(".post-form-url").val();

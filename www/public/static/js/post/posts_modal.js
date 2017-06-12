@@ -22,7 +22,7 @@ $(document).ready(function(){
         var csrf_token = $("input[name='csrfmiddlewaretoken']").val();
         ajax_comment_list(reply_id, page)
         getPost(post_id, e);
-        $("#really-delete-btn").one("click", function() {
+        $('#really-delete-btn').click(function(){
             $.ajax({
                 url: "/api/posts/" + post_id + "/",
                 method: "DELETE",

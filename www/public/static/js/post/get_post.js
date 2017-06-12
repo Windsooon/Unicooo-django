@@ -20,6 +20,14 @@ function getPost(post_id, e) {
                       $(".post-like-details-a").removeClass("glyphicon glyphicon-heart");
                       $(".post-like-details-a").addClass("glyphicon glyphicon-heart-empty");
                   }
+                  if (data["post_url"]) {
+                      $(".glyphicon-link").css("color", "#2b6e90")
+                      $(".post-url-details-a").attr("href", data["post_url"])
+                  }
+                  else {
+                      $(".glyphicon-link").css("color", "gray")
+                      $(".post-url-details-a").removeAttr("href");
+                  }
                   if ($("#user-id").val() == data["post_user"]["id"]) {
                       $("#post-delete").css("display", "block");
                   }

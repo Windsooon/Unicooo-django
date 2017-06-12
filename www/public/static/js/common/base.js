@@ -69,7 +69,6 @@ function poll() {
 		dataType: "json",
         statusCode: {
             200: function(response) {
-                console.log(123);
                 append_circle(); 
             }
         },
@@ -182,4 +181,10 @@ function imgError(image) {
     image.onerror = "";
     image.src = "../../../static/img/error.png";
     return true;
+}
+
+function validateUrl(text_url) {
+    var urlregex = new RegExp(
+          "^(http:\/\/www.|https:\/\/www.|ftp:\/\/www.|www.){1}([0-9A-Za-z]+\.)");
+    return urlregex.test(text_url);
 }
