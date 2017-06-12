@@ -24,6 +24,7 @@ class ActCreateForm(forms.ModelForm):
                     "id": "act_content",
                     "class": "form-control",
                     "minlength": 6,
+                    "maxlength": 200,
                 }
             ),
             "act_type": forms.Select(

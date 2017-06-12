@@ -24,6 +24,19 @@ class MyUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+    def create_superuser(self, email, password=None, **kwargs):
+        """
+        创建公司管理员
+        """
+        user = self.create_user(
+            username="admin_username",
+            email=self.normalize_email(email),
+        )
+        user.set_password(password)
+        user.is_admin = 1
+        user.save(using=self._db)
+        return user
+
 
 class MyUser(AbstractBaseUser):
     email = models.EmailField(
