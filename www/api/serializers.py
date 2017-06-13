@@ -4,6 +4,7 @@ from django.core.cache import cache
 from common.models import MyUser
 from post.models import Post
 from comment.models import Comment
+from .base import text_contain_xss
 
 # Django rest-framework
 from rest_framework import serializers
@@ -33,6 +34,12 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
+
+    def validate_user_name(self, value):
+        if not text_contain_xss(value):
+            raise serializers.ValidationError(
+                "Username may only contain alphanumeric characters.")
+        return value
 
 
 class UserModifySerializer(serializers.ModelSerializer):
@@ -71,6 +78,18 @@ class ActSerializer(serializers.ModelSerializer):
         else:
             return likes
 
+    def validate_act_title(self, value):
+        if not text_contain_xss(value):
+            raise serializers.ValidationError(
+                "Act content may only contain alphanumeric characters.")
+        return value
+
+    def validate_act_content(self, value):
+        if not text_contain_xss(value):
+            raise serializers.ValidationError(
+                "Act content may only contain alphanumeric characters.")
+        return value
+
 
 class CommentSerializer(serializers.ModelSerializer):
     """Comment api fields"""
@@ -85,6 +104,12 @@ class CommentSerializer(serializers.ModelSerializer):
                 "reply_id", "comment_content",
                 "comment_create_time", "comment_user"
         )
+
+    def validate_comment_content(self, value):
+        if not text_contain_xss(value):
+            raise serializers.ValidationError(
+                "Comment may only contain alphanumeric characters.")
+        return value
 
 
 class PostAllSerializer(serializers.ModelSerializer):
@@ -104,6 +129,12 @@ class PostAllSerializer(serializers.ModelSerializer):
                 "post_mime_types", "nsfw", "post_create_time",
                 "post_user", "comment_count"
         )
+
+    def validate_post_content(self, value):
+        if not text_contain_xss(value):
+            raise serializers.ValidationError(
+                "Post content may only contain alphanumeric characters.")
+        return value
 
     def get_comment_count(self, obj):
         return obj.comment_post.count()

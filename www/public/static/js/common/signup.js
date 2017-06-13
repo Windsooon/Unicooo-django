@@ -5,7 +5,15 @@ $(document).ready(function(){
             var re = new RegExp(regexp);
             return this.optional(element) || re.test(value);
         },
-        "Please check your email."
+        "Email format is invalid."
+    );
+    $.validator.addMethod(
+        "regex_name",
+        function(value, element, regexp) {
+            var re = new RegExp(regexp);
+            return this.optional(element) || re.test(value);
+        },
+        "Username may only contain alphanumeric characters."
     );
     var validator = $("#signup_form").validate({
         rules: {
@@ -28,6 +36,7 @@ $(document).ready(function(){
                 required: true,
                 minlength: 6,
                 maxlength: 30,
+                regex_name: /^((?!'|"|<|>).)*$/,
                 remote: {
                     url: "/checkuser/",
                     type: "post",

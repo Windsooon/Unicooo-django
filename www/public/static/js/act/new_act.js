@@ -16,12 +16,21 @@ $(document).ready(function(){
     $("#new-act-form :input").prop("disabled", true);
     var formArray = new Array();
     var csrf_token = $("#new-act-form input").eq(0).val();
+    $.validator.addMethod(
+        "regex",
+        function(value, element, regexp) {
+            var re = new RegExp(regexp);
+            return this.optional(element) || re.test(value);
+        },
+        "Act content may only contain alphanumeric characters."
+    );
     var validator = $("#new-act-form").validate({
         rules: {
             act_title: {
                 required: true,
                 minlength: 6,
                 maxlength: 30,
+                regex: /^((?!'|"|<|>).)*$/,
                 remote: {
                     url: "/act_title/",
                     type: "post",
@@ -38,6 +47,7 @@ $(document).ready(function(){
             },
             act_content: {
                 required: true,
+                regex: /^((?!'|"|<|>).)*$/,
                 minlength: 6,
             },
         },

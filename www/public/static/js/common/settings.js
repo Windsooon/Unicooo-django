@@ -1,9 +1,18 @@
 $(document).ready(function() {
    formArray = new Array();
+   $.validator.addMethod(
+        "regex",
+        function(value, element, regexp) {
+            var re = new RegExp(regexp);
+            return this.optional(element) || re.test(value);
+        },
+        "Details may only contain alphanumeric characters."
+    );
    var validator = $("#settings-form").validate({
         rules: {
             user_details: {
                 required: true,
+                regex: /^((?!'|"|<|>).)*$/,
                 minlength: 10,
             },
         },

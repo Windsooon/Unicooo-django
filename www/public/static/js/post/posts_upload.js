@@ -211,13 +211,18 @@ $(document).ready(function(){
 
     $(document).on("submit", ".post-content-upload", function(e){
         e.preventDefault();
+        var re = new RegExp("^((?!\'|\"|<|>).)*$");
         var post_form_url = $(".post-form-url").val();
         if($(".post-form-url").css("display") != "none" && !validateUrl(post_form_url)) {
-            alert("not valid"); 
+            alert("Url not valid"); 
             return false;
         }
         $activity_input = $(".activity-details-content input");
         var post_content = $(".post-form-text").val();
+        if (!post_content.match(re)) {
+            alert("Post content may only contain alphanumeric characters."); 
+            return false;
+        }
         var post_url = $(".post-form-url").val();
         var base64_src = $(".post-upload-img").attr("src");
         var csrf_token = $("input[name='csrfmiddlewaretoken']").val();
