@@ -153,6 +153,23 @@ def personal_list(request, personal, status):
     else:
         return render(request, "404.html")
 
+def personal_feed(request, personal):
+    if request.method == "GET":
+        try:
+            person = MyUser.objects.get(user_name=personal)
+        except:
+            return render(request, "404.html")
+        else:
+            return render(
+                    request, "common/feed.html",
+                    {
+                        "person": person, "personal": personal,
+                        "httpsUrl": httpsUrl, "imageStyle": "-avatarSetting",
+                    }
+                )
+    else:
+        return render(request, "404.html")
+
 
 @login_required
 def personal_comments(request, personal):

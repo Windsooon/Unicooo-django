@@ -11,8 +11,12 @@ function personalInit(personal, status, page, container){
         data = {"act_post": personal, "page": page};
         get_act_list(data, container);
     }
-    else {
+    else if (status == "post") {
         data = {"post_author": personal, "page": page};
+        get_post_list(data, container);
+    }
+    else if (status == "feed") {
+        data = {"post_feed": personal, "page": page};
         get_post_list(data, container);
     }
 }

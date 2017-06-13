@@ -127,10 +127,15 @@ class PostList(generics.ListCreateAPIView):
         queryset = Post.objects.all().order_by('-post_create_time')
         act_id = self.request.query_params.get('act_id', None)
         post_author = self.request.query_params.get('post_author', None)
+        post_feed = self.request.query_params.get('post_feed', None)
         if act_id is not None:
             queryset = queryset.filter(act=act_id)
         if post_author is not None:
             queryset = queryset.filter(user__user_name=post_author)
+        if post_feed is not None:
+            act_list = queryset.filter(
+                user__user_name=post_feed).values_list('act_id', flat=True)
+            queryset = queryset.filter(act__in=act_list)
         return queryset
 
 

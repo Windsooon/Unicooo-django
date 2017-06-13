@@ -276,6 +276,10 @@ audio {
     opacity: .8;
 }
 
+.feed-container {
+    margin-top: 200px;
+}
+
 .act-fadeout {
     position: relative; 
     bottom: 2em;

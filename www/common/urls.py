@@ -18,6 +18,8 @@ urlpatterns = [
                   url(r'^logout/$', views.logout_user, name="logout"),
                   url(r'^(?P<personal>.[^/]+)/comments/$',
                       views.personal_comments, name="comments"),
+                  url(r'^(?P<personal>.[^/]+)/feed/$',
+                      views.personal_feed, name="feed"),
                   url(r'^(?P<personal>.[^/]+)/(?P<status>act_create|act_join|post)/$',
                       views.personal_list, name="status"),
                   url(r'^(?P<personal>.[^/]+)/settings/$',

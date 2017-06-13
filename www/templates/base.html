@@ -57,6 +57,7 @@
         <input id="user-id" type="hidden" value={{request.user.id}} />
         <input id="user-avatar" type="hidden" value={{request.user.user_avatar}} />
           <ul class="dropdown-menu">
+            <li class="base-feed"><a href=""><span class="icon-big-right glyphicon glyphicon-fire" aria-hidden="true"></span><span>Feed</span></a></li>
             <li class="base-personal"><a href="{% url 'personal' request.user.user_name %}act_create/"><span class="icon-big-right glyphicon glyphicon-user" aria-hidden="true"></span><span id="inter-personal">Personal</span></a></li>
             <li class="base-comments"><a href="{% url 'personal' request.user.user_name %}comments/"><span class="icon-big-right glyphicon glyphicon-comment" aria-hidden="true"></span><span id="inter-comments">Comments</span></a></li>
             <li class="base-points"><a href=""><span class="icon-big-right glyphicon glyphicon-heart" aria-hidden="true"></span><span>{{request.user.points}}</span></a></li>
