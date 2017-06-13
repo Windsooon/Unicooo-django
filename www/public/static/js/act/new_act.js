@@ -2,13 +2,13 @@ $(document).ready(function(){
     $("#id_act_type").on("change", function() {
         var select_val = $("#id_act_type option:selected").val();
         if (select_val == 0) {
-            $("#act_type-error").text("Only you can join this activity.")
+            $("#act_type-error").text("Only you can join this activity.But others still can see the activity details by activity id.")
         }
         else if (select_val == 1) {
-            $("#act_type-error").text("This activity won't be shown in frontpage.")
+            $("#act_type-error").text("Group activity won't be shown in frontpage or recommended, but still can be search by activity id.")
         }
         else {
-            $("#act_type-error").text("This activity may be reviewed.")
+            $("#act_type-error").text("Public activity will show in frontpage.")
         }
 
     });

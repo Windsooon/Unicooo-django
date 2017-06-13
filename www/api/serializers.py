@@ -15,6 +15,7 @@ logging.basicConfig(filename='www.log', level=logging.INFO)
 
 
 class UserSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = MyUser
         fields = (
@@ -98,7 +99,7 @@ class PostAllSerializer(serializers.ModelSerializer):
         model = Post
         fields = (
                 "id", "act", "act_type", "likes", "post_author",
-                "post_title", "post_content", "post_thumb_url",
+                "post_title", "post_content", "post_url", "post_thumb_url",
                 "post_thumb_width", "post_thumb_height",
                 "post_mime_types", "nsfw", "post_create_time",
                 "post_user", "comment_count"
@@ -129,7 +130,7 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = (
                 "id", "user", "post_title", "post_content",
-                "likes", "post_thumb_url", "post_thumb_width",
+                "likes", "post_thumb_url", "post_url", "post_thumb_width",
                 "post_thumb_height", "post_mime_types",
                 "post_create_time", "post_user", "comment_count",
                 "post_comment"

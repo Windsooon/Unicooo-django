@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 from django.contrib.auth import get_user_model
-from activities.choices import USERGENDER
 from django.core.cache import cache
+from activities.choices import USERGENDER
 
 
 class MyUserManager(BaseUserManager):
@@ -77,10 +77,6 @@ class MyUser(AbstractBaseUser):
 
     def has_perm(self, perm, obj=None):
         return self.is_admin
-
-    def replace_html(self, text):
-        return str(text).replace('&', '&amp;').replace('<', '&lt;') \
-            .replace('>', '&gt;').replace('"', '&quot;').replace("'", '&#39;')
 
     @property
     def is_staff(self):
