@@ -71,7 +71,7 @@ function get_act_list(data, container){
 //end function get_act_list
 
 
-function get_post_list(data, container){
+function get_post_list(data, container, out=false){
     $.ajax({
         url: "/api/posts/",
         type: "GET",
@@ -87,6 +87,13 @@ function get_post_list(data, container){
            }
         },
         success: function(data) {
+            if (data.results.length == 0 && out) {
+                var empty_text = $("<p />", {
+                          "id": "feed-empty",
+                          "text": "You haven't join any activity yet.",
+                      });
+                out.append(empty_text);
+            }
             if (data.results.length > 0) {
                 var httpsUrl = "https://o3e6g3hdp.qnssl.com/"
                 var imageStyle = "-postList"

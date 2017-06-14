@@ -306,6 +306,6 @@ audio {
     );
 } 
 
-.feed-empty {
+#feed-empty {
     font-size: 2em;
 }

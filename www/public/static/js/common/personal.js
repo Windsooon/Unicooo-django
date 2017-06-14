@@ -17,7 +17,7 @@ function personalInit(personal, status, page, container){
     }
     else if (status == "feed") {
         data = {"post_feed": personal, "page": page};
-        get_post_list(data, container);
+        get_post_list(data, container, $(".post-list"));
     }
 }
 
