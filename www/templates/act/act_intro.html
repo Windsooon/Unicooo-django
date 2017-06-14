@@ -73,5 +73,11 @@
         editor.setText(act_intro);
     {% endif %}
     $("#act-editor").data("quill", editor);
+
+    var timer = setInterval(function() {
+        var act_id = $(".activity-details-content").children('input').val();
+        auto_save(act_id);
+    }, 200000);
+
   </script>
 {% endblock %}
