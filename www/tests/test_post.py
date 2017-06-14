@@ -31,7 +31,7 @@ class PostTestCase(TestCase):
         self.client = Client()
         self.client.force_login(self.user_object)
 
-        # act default vale
+        # act default value
         self.act_title = 'just a test title'
         self.act_content = 'just a test content, content'
         self.act_thumb_url = '1490031868b2eaff2f9ae1a02ec01108757eb768d81dfc'

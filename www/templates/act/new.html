@@ -10,7 +10,7 @@
   <div class="well col-sm-12 col-md-12 col-lg-8 col-lg-offset-2">
     <h2 class="create-text text-center" id="inter-create-act">Create Your Own Activity</h2>
     <hr>
-    <form action="" method="POST" enctype="multipart/form-data">
+    <form action="" method="POST" enctype="multipart/form-data" id="new-act-cover">
       {% csrf_token %}
       <div class="form-group">
         <label class="control-label sr-only" for="Cover Image">Cover Image</label>
@@ -22,7 +22,7 @@
         </div>
         <div class="upload-cover">
             <span class="btn btn-primary btn-file btn-block" id="act-cover-span"><span id="inter-upload-cover">Upload your Cover Image</span>
-            <input type="file" class="cropit-image-input" id="act-cover-image" accept="image/*">
+            <input type="file" class="cropit-image-input" id="act-cover-image" name="act_cover" accept="image/*">
           </span>
         </div>
       </div>
