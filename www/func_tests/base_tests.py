@@ -43,7 +43,7 @@ class BaseTestStaticLiveServerTestCase(StaticLiveServerTestCase):
         self.assertEqual(
             self.driver.current_url, self.login_required_url)
 
-    def wait_element_url(self, ident, element='id', url=None, timeout=6):
+    def wait_element_url(self, ident, element='id', url=None, timeout=8):
         try:
             if element == 'id':
                 WebDriverWait(self.driver, timeout).until(
@@ -59,7 +59,7 @@ class BaseTestStaticLiveServerTestCase(StaticLiveServerTestCase):
                 self.live_server_url + '/' if not url else url)
 
     def wait_element_text(
-            self, ident, text, element='id', url=None, timeout=6):
+            self, ident, text, element='id', url=None, timeout=8):
         try:
             if element == 'id':
                 WebDriverWait(self.driver, timeout).until(
