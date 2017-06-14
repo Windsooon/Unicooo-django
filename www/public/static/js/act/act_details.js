@@ -8,7 +8,6 @@ $act_edit_btn.on("click", function() {
     }
     else if ($act_edit_btn.text() == "Save") {
         var editor = $("#act-editor").data('quill');
-
         editor.disable();
         var delta = editor.getContents();
         var act_id = $(".activity-details-content").children('input').val();
@@ -30,3 +29,22 @@ $act_edit_btn.on("click", function() {
         });
     }
 });
+
+function auto_save(act_id) {
+    var editor = $("#act-editor").data('quill');
+    var delta = editor.getContents();
+    var csrftoken = getCookie('csrftoken');
+    $.ajax({
+        url: "/api/acts/" + act_id + "/",
+        type: "PATCH",
+        beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRFToken', csrftoken)
+        },
+        dataType: 'json',
+        data: {
+            csrfmiddlewaretoken: csrftoken,
+            "act_intro": JSON.stringify(delta)},
+        success: function(data) {
+        },
+    });
+}
