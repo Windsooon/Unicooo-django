@@ -24,7 +24,7 @@ $(document).ready(function(){
                 minlength: 7,
                 remote: {
                     url: "/checkemail/",
-                    type: "post",
+                    type: "get",
                     data: {
                         email: function() {
                         return $("#email_signup").val();
@@ -39,7 +39,7 @@ $(document).ready(function(){
                 regex_name: /^((?!'|"|<|>).)*$/,
                 remote: {
                     url: "/checkuser/",
-                    type: "post",
+                    type: "get",
                     data: {
                         user_name: function() {
                         return $("#username_signup").val();

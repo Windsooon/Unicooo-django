@@ -1,4 +1,5 @@
 $(document).ready(function(){
+    // change activity details text
     $("#id_act_type").on("change", function() {
         var select_val = $("#id_act_type option:selected").val();
         if (select_val == 0) {
@@ -10,12 +11,26 @@ $(document).ready(function(){
         else {
             $("#act_type-error").text("Public activity will show in frontpage.")
         }
-
     });
 
-    $("#new-act-form :input").prop("disabled", true);
+    // get upload token 
+    var formData = new FormData();
     var formArray = new Array();
-    var csrf_token = $("#new-act-form input").eq(0).val();
+    $.ajax({
+        url: "/token",
+        type: "GET",
+        datatype: "json",
+        data: {"type": 0},
+        success: function(data) {
+            formData.append("token", data["token"]);
+            formData.append("key", data["key"]);
+            formArray[0] = data["token"];
+            formArray[1] = data["key"];
+        },
+    });
+
+
+    // validate create act form
     $.validator.addMethod(
         "regex",
         function(value, element, regexp) {
@@ -33,9 +48,8 @@ $(document).ready(function(){
                 regex: /^((?!'|"|<|>).)*$/,
                 remote: {
                     url: "/act_title/",
-                    type: "post",
+                    type: "get",
                     data: {
-                        csrfmiddlewaretoken: csrf_token,
                         act_title: function() {
                         return $("#act_title").val().trim();
                         },
@@ -70,11 +84,9 @@ $(document).ready(function(){
             act_title_replace = urlConvert(act_title);
             var act_content = $("#act_content").val();
             var user_name = $(".request-user").text();
-            var csrf_token = $("#new-act-form input").eq(0).val();
             var act_url = user_name + "/" + act_title_replace;
             var $form_group_loading = $(".form-group-loading");
             var $form_submit_wrap = $(".submit-btn-wrap");
-            csrf_token = $("input[name='csrfmiddlewaretoken']").val();
             $("#new-act-form :input").prop("disabled", true);
             $form_submit_wrap.empty()
             var form_outer_loading = $("<div />", {
@@ -87,6 +99,7 @@ $(document).ready(function(){
             form_loading.append(form_inner_loading);
             form_outer_loading.append(form_loading);
             $form_submit_wrap.append(form_outer_loading);
+            var csrf_token = getCookie('csrftoken');
             $.ajax({
                 url: "/api/acts/",
                 type: "POST",
@@ -132,26 +145,8 @@ $(document).ready(function(){
         }
     });
 
-    var formData = new FormData();
-    var formArray = new Array();
-    $act_cover_span = $("#act-cover-span");
-    $('#act-cover-image').on("click", function(){ 
-        formData = new FormData();
-        formArrar = new Array();
-        $.ajax({
-            url: "/token",
-            type: "GET",
-            datatype: "json",
-            data: {"type": 0},
-            success: function(data) {
-                formData.append("token", data["token"]);
-                formData.append("key", data["key"]);
-                formArray[0] = data["token"];
-                formArray[1] = data["key"];
-            },
-        });
-    });
 
+    $act_cover_span = $("#act-cover-span");
     $('#act-cover-image').on("change", function(){ 
         if (typeof (FileReader) != "undefined") {
             var image_holder = $(".act-upload-div");

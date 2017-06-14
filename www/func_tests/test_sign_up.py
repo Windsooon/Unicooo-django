@@ -41,7 +41,7 @@ class SignUpLoginWebdriver(BaseTestStaticLiveServerTestCase):
         cache.delete("email_" + self.email)
         cache.delete("user_name_" + self.username)
 
-    def test_without_cache_signup_email_or_username_exist(self):
+    def test_with_cache_signup_email_or_username_exist(self):
         self.email_signup.send_keys(self.email)
         self.username_signup.send_keys(self.username)
         self.password_signup.send_keys(self.password)
