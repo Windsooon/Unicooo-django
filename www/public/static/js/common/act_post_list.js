@@ -1,4 +1,4 @@
-function get_act_list(data, container){
+function get_act_list(data, container, out=false, text=false){
     $.ajax({
         url: "/api/acts/",
         type: "GET",
@@ -8,6 +8,13 @@ function get_act_list(data, container){
         },
         success: function(data) {
             var imageStyle = "-actCoverSmall"
+            if (data.results.length == 0 && out && text) {
+                var empty_text = $("<p />", {
+                          "id": "feed-empty",
+                          "text": text,
+                      });
+                out.append(empty_text);
+            }
             if (data.results.length > 0) {
                 $.each(data.results, function(key, value){
                     //outer single act div
@@ -71,7 +78,7 @@ function get_act_list(data, container){
 //end function get_act_list
 
 
-function get_post_list(data, container, out=false){
+function get_post_list(data, container, out=false, text=false){
     $.ajax({
         url: "/api/posts/",
         type: "GET",
@@ -87,10 +94,10 @@ function get_post_list(data, container, out=false){
            }
         },
         success: function(data) {
-            if (data.results.length == 0 && out) {
+            if (data.results.length == 0 && out && text) {
                 var empty_text = $("<p />", {
                           "id": "feed-empty",
-                          "text": "You haven't join any activity yet.",
+                          "text": text,
                       });
                 out.append(empty_text);
             }
