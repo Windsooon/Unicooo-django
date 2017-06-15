@@ -74,4 +74,4 @@ class FeedWebdriver(BaseTestStaticLiveServerTestCase):
 
         self.driver.get(self.live_server_url + '/' + self.username + '/feed/')
         feed_empty = self.driver.find_elements_by_class_name('feed-empty')
-        self.assertEqual(len(feed_empty), 0)
+        self.assertFalse(bool(feed_empty))

@@ -69,12 +69,17 @@ class ActList(generics.ListCreateAPIView):
         if act_author is not None:
             queryset = queryset.filter(user__user_name=act_author)
         if act_post is not None:
-            post_object = post_queryset.filter(user__user_name=act_post)
-            id_set = set()
-            for post in post_object:
-                id_set.add(post.act.id)
-            query = reduce(operator.or_, (Q(id=item) for item in id_set))
-            queryset = Act.objects.filter(query).order_by('-act_create_time')
+            try:
+                post_object = post_queryset.get(user__user_name=act_post)
+            except Post.DoesNotExist:
+                queryset = Act.objects.none()
+            else:
+                id_set = set()
+                for post in post_object:
+                    id_set.add(post.act.id)
+                query = reduce(operator.or_, (Q(id=item) for item in id_set))
+                queryset = Act.objects.filter(
+                    query).order_by('-act_create_time')
         return queryset
 
 

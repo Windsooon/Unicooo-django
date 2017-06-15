@@ -70,15 +70,11 @@ class CreateActWebdriver(BaseTestStaticLiveServerTestCase):
                 'Please enter your act title.')
             self.assertEqual(get_user_model().objects.count(), 0)
 
-    def test_create_act_success(self):
+    def test_upload_act_cover_success(self):
         self.act_cover_image.send_keys(
             '/usr/src/app/func_tests/images/images_test.png')
         try:
             WebDriverWait(self.driver, 10).until(
                 EC.element_to_be_clickable((By.ID, "act-cover-btn")))
         finally:
-            self.act_title.send_keys('just_123_test_title')
-            self.act_content.send_keys('just_123test_content_tent')
-        self.driver.find_element_by_class_name('submit-btn').click()
-        self.wait_element_url("front-matrix")
-        self.assertEqual(get_user_model().objects.count(), 1)
+            pass
