@@ -50,7 +50,7 @@ class MyUser(AbstractBaseUser):
             choices=USERGENDER,
             default=USERGENDER[0][0]
             )
-    user_details = models.CharField(max_length=80)
+    user_details = models.CharField(max_length=200, blank=True)
     user_register_time = models.DateTimeField(auto_now=True)
     user_validated = models.IntegerField(default=0)
     is_active = models.BooleanField(default=True)

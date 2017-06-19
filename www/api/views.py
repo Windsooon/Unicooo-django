@@ -4,8 +4,6 @@ import iso8601
 
 from django.contrib.auth import authenticate, login as django_login
 from django.views.decorators.csrf import csrf_exempt
-from django.db.models import Q
-from functools import reduce
 from activities.models import Act
 from common.models import MyUser
 from post.models import Post
@@ -15,7 +13,7 @@ from comment.models import Comment
 from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 from .serializers import ActSerializer, PostAllSerializer, PostSerializer, \
-        UserSerializer, CommentSerializer
+        UserSerializer, UserModifySerializer, CommentSerializer
 from .permissions import IsOwnerOrReadOnly, \
         IsAuthenticatedOrCreate, IsOwnerOrAdminOrPostReadOnly, \
         IsActCreatorOrReadOnly
@@ -69,17 +67,14 @@ class ActList(generics.ListCreateAPIView):
         if act_author is not None:
             queryset = queryset.filter(user__user_name=act_author)
         if act_post is not None:
-            try:
-                post_object = post_queryset.get(user__user_name=act_post)
-            except Post.DoesNotExist:
-                queryset = Act.objects.none()
-            else:
-                id_set = set()
-                for post in post_object:
-                    id_set.add(post.act.id)
-                query = reduce(operator.or_, (Q(id=item) for item in id_set))
+            post_object = post_queryset.filter(
+                user__user_name=act_post).values_list(
+                    'act_id', flat=True).distinct()
+            if post_object.count() >= 0:
                 queryset = Act.objects.filter(
-                    query).order_by('-act_create_time')
+                    id__in=post_object)
+            else:
+                queryset = Act.objects.none()
         return queryset
 
 
@@ -235,21 +230,4 @@ class UserList(generics.ListCreateAPIView):
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsOwnerOrReadOnly,)
     queryset = MyUser.objects.all()
-    serializer_class = UserSerializer
-
-    def update(self, request, *args, **kwargs):
-        if "user_name" in request.data:
-            return Response(
-                status=status.HTTP_403_FORBIDDEN,
-                )
-        partial = kwargs.pop('partial', False)
-        instance = self.get_object()
-        serializer = self.get_serializer(
-            instance, data=request.data, partial=partial)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-
-        if getattr(instance, '_prefetched_objects_cache', None):
-            instance._prefetched_objects_cache = {}
-
-        return Response(serializer.data)
+    serializer_class = UserModifySerializer
