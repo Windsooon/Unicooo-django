@@ -63,9 +63,9 @@ class VisitFronePageWebdriver(BaseTestStaticLiveServerTestCase):
             'act-search-text').send_keys(10080)
         self.driver.find_element_by_class_name('act-search').click()
         try:
-            WebDriverWait(self.driver, 6).until(
+            WebDriverWait(self.driver, 8).until(
                 EC.alert_is_present(), 'timeout'
             )
-            alert = self.driver.switch_to_alert()
         finally:
+            alert = self.driver.switch_to_alert()
             self.assertEqual(alert.text, 'Can\'t find this activity')

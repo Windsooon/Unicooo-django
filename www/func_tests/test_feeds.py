@@ -51,7 +51,7 @@ class FeedWebdriver(BaseTestStaticLiveServerTestCase):
         self.driver.get(self.live_server_url + '/' + self.username + '/feed/')
         self.assert_equal_error_text(
             'feed-empty',
-            'You haven\'t join any activity yet.')
+            'You haven\'t join any activities yet.')
 
     def test_feed_get_post_when_create_act_then_join(self):
         # post default vale
