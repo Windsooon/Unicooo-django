@@ -9,11 +9,15 @@ function get_act_list(data, container, out=false, text=false){
         success: function(data) {
             var imageStyle = "-actCoverSmall"
             if (data.results.length == 0 && out && text) {
-                var empty_text = $("<p />", {
+                var $empty_div = $("<div />", {
+                        "class": "comment-wrapper well col-lg-8 col-lg-offset-2",
+                        });
+                var $empty_text = $("<p />", {
                           "id": "feed-empty",
                           "text": text,
                       });
-                out.append(empty_text);
+                $empty_div.append($empty_text);
+                out.append($empty_div);
             }
             if (data.results.length > 0) {
                 $.each(data.results, function(key, value){
@@ -95,11 +99,15 @@ function get_post_list(data, container, out=false, text=false){
         },
         success: function(data) {
             if (data.results.length == 0 && out && text) {
-                var empty_text = $("<p />", {
+                var $empty_div = $("<div />", {
+                        "class": "comment-wrapper well col-lg-8 col-lg-offset-2",
+                        });
+                var $empty_text = $("<p />", {
                           "id": "feed-empty",
                           "text": text,
                       });
-                out.append(empty_text);
+                $empty_div.append($empty_text);
+                out.append($empty_div);
             }
             if (data.results.length > 0) {
                 var httpsUrl = "https://o3e6g3hdp.qnssl.com/"

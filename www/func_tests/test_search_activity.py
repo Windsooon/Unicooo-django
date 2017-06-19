@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from activities.models import Act
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from .base_tests import BaseTestStaticLiveServerTestCase
@@ -50,10 +51,13 @@ class VisitFronePageWebdriver(BaseTestStaticLiveServerTestCase):
         self.assertIn('just a test title', act_title)
         act_search = self.driver.find_element_by_class_name('act-search-text')
         act_search.send_keys(self.act.id+10000)
-        self.driver.find_element_by_class_name('act-search').click()
+        self.driver.find_element_by_class_name(
+            'act-search').send_keys(Keys.ENTER)
         self.wait_element_url(
             "activity-details-thumb", 'class',
-            url=self.live_server_url + '/act/')
+            url=self.live_server_url + '/act/' +
+            self.username + '/' + 'just%20a%20test%20title'
+            )
 
     def test_search_no_activity(self):
         '''
@@ -61,9 +65,10 @@ class VisitFronePageWebdriver(BaseTestStaticLiveServerTestCase):
         '''
         self.driver.find_element_by_class_name(
             'act-search-text').send_keys(10080)
-        self.driver.find_element_by_class_name('act-search').click()
+        self.driver.find_element_by_class_name(
+            'act-search').send_keys(Keys.ENTER)
         try:
-            WebDriverWait(self.driver, 8).until(
+            WebDriverWait(self.driver, 5).until(
                 EC.alert_is_present(), 'timeout'
             )
         finally:

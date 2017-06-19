@@ -3,7 +3,7 @@ $(document).ready(function(){
     var page = 1;
     var data = {"act_type": 2, "page": page};
     var scrollTimeout;
-    var $container = $(".row").masonry({
+    var $container = $(".activity-list-row").masonry({
         itemSelector: '.act-outer-container',
         transitionDuration: '0.3s',
         hiddenStyle: { opacity: 0 },
