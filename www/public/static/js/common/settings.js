@@ -7,7 +7,8 @@ $(document).ready(function() {
             return this.optional(element) || re.test(value);
         },
         "Details may only contain alphanumeric characters."
-    );
+   );
+
    var validator = $("#settings-form").validate({
         rules: {
             user_details: {
@@ -28,15 +29,15 @@ $(document).ready(function() {
             var csrf_token = $("input[name='csrfmiddlewaretoken']").val();
             $("#settings-form :input").prop("disabled", true);
             loadingBefore($form_submit_wrap);
-            if (formArray[1]) {
-                user_avatar = formArray[1];
+            if (formArray[0]) {
+                user_avatar = formArray[0];
             }
             else {
                 user_avatar = "";
             }
             $.ajax({
                 url: "/api/users/" + $("#user-id").val() + "/",
-                type: "PUT",
+                type: "PATCH",
                 datatype: "json",
                 data:  {"user_gender": $("#id_user_gender option:selected").val(), "user_details": $("#user-details").val(), "user_avatar": user_avatar},
                 beforeSend:function(xhr, settings) {
@@ -51,6 +52,7 @@ $(document).ready(function() {
                           "class": "setting-upload-cover btn btn-primary btn-file btn-block"
                       });
                     var upload_success = $("<span />", {
+                          "class": "success-span",
                           text: "Success",
                       });
                     setting_upload_cover.append(upload_success);
@@ -102,7 +104,6 @@ $(document).ready(function() {
             success: function(data) {
                 formData.append("key", data["key"]);
                 formData.append("token", data["token"]);
-                formArray[1] = data["key"];
             },
         });
     });
@@ -155,6 +156,7 @@ $(document).ready(function() {
                 $(".progress").remove();
                 $("#avatar-upload-img").removeClass("unfinished-image");
                 $("#avatar-upload-img").addClass("finished-image");
+                formArray[0] = data["key"];
             }
         });
     });

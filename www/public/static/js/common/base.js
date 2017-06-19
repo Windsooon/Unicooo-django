@@ -42,15 +42,14 @@ $(document).ready(function() {
                 success: function(data) {
                     if (data.results.length > 0) {
                         $.each(data.results, function(key, value){
-                            window.location.replace("/act/" + value["act_url"]);
+                            window.location.replace("/act/" + value["act_url"] + '/');
                         })
                     }
                     else {
                         alert("Can't find this activity"); 
                     };
                 },
-                error: function(xhr, status, error) {
-                    alert(JSON.parse(xhr.responseText).Data)
+                error: function(data) {
                     alert("Server error, please try again later.");
                 },
             });
