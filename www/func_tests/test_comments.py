@@ -6,14 +6,14 @@ from post.models import Post
 from comment.models import Comment
 
 
-class FeedWebdriver(BaseTestStaticLiveServerTestCase):
+class CommentWebdriver(BaseTestStaticLiveServerTestCase):
 
     @classmethod
     def setUpClass(cls):
         cls.email = 'just_test@test.com'
         cls.password = '123456saasdfasdf'
         cls.username = 'just_test'
-        super(FeedWebdriver, cls).setUpClass()
+        super(CommentWebdriver, cls).setUpClass()
 
     def setUp(self):
         self.user_object = get_user_model().objects.create_user(
