@@ -89,3 +89,4 @@ class CreateActWebdriver(BaseTestStaticLiveServerTestCase):
                 'activity-details-thumb',
                 url='http://web:8081/act/just_test/just_test_title/'
             )
+            self.assertEqual(Act.objects.count(), 1)

@@ -184,6 +184,10 @@ function imgError(image) {
 
 function validateUrl(text_url) {
     var urlregex = new RegExp(
-          "^(http:\/\/www.|https:\/\/www.|ftp:\/\/www.|www.){1}([0-9A-Za-z]+\.)");
+        "(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})");
     return urlregex.test(text_url);
+}
+
+function startsWith(str, word) {
+    return str.lastIndexOf(word, 0) === 0;
 }

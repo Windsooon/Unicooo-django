@@ -39,20 +39,18 @@ $(document).ready(function(){
     }); 
     
     //click "UPLOAD IMAGE" button
-    $(document).on("click", ".post-upload-image", function(){
-        formData = new FormData();
-        formArrar = new Array();
-        $.ajax({
-            url: "/token/",
-            type: "GET",
-            datatype: "json",
-            data: {"type": 1},
-            success: function(data) {
-                formData.append("token", data["token"]);
-                formData.append("key", data["key"]);
-                formArray[1] = data["key"];
-            },
-        });
+    formData = new FormData();
+    formArrar = new Array();
+    $.ajax({
+        url: "/token/",
+        type: "GET",
+        datatype: "json",
+        data: {"type": 1},
+        success: function(data) {
+            formData.append("token", data["token"]);
+            formData.append("key", data["key"]);
+            formArray[1] = data["key"];
+        },
     });
     
     //when post image change
@@ -160,6 +158,7 @@ $(document).ready(function(){
             },
             error: function(xhr, status, error) {
                 if (xhr.status >= 400 && xhr.status < 500) {
+                        alert(xhr.responseText);
                         error_text = "Please check again your input.";
                 }
                 else {
@@ -214,7 +213,7 @@ $(document).ready(function(){
         var re = new RegExp("^((?!\'|\"|<|>).)*$");
         var post_form_url = $(".post-form-url").val();
         if($(".post-form-url").css("display") != "none" && !validateUrl(post_form_url)) {
-            alert("Url not valid"); 
+            alert("Url not valid."); 
             return false;
         }
         $activity_input = $(".activity-details-content input");
@@ -228,6 +227,9 @@ $(document).ready(function(){
         var csrf_token = $("input[name='csrfmiddlewaretoken']").val();
         formArray[4] = $activity_input.eq(0).val();
         formArray[6] = post_content
+        if (!startsWith(post_url, 'http') && !startsWith(post_url, 'https'))  {
+            post_url = "http://" + post_url; 
+        }
         $.ajax({
             url: "/api/posts/",
             type: "POST",
