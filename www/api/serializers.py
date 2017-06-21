@@ -1,4 +1,3 @@
-import logging
 from activities.models import Act
 from django.core.cache import cache
 from common.models import MyUser
@@ -11,8 +10,6 @@ from rest_framework import serializers
 
 # Django-redis
 from django_redis import get_redis_connection
-
-logging.basicConfig(filename='www.log', level=logging.INFO)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -49,7 +46,7 @@ class UserModifySerializer(serializers.ModelSerializer):
             "email", "password", "user_avatar",
             "user_gender", "user_details")
         extra_kwargs = {
-            "password": {"write_only": True},
+            "password": {"write_only": True, "required": False},
             "email": {"write_only": True}}
         read_only_fields = ("id",)
 

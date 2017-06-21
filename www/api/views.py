@@ -27,7 +27,7 @@ from django_redis import get_redis_connection
 
 class ActList(generics.ListCreateAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-    queryset = Act.objects.all().order_by('-act_create_time')
+    queryset = Act.objects.all()
     serializer_class = ActSerializer
 
     def perform_create(self, serializer):
@@ -54,7 +54,7 @@ class ActList(generics.ListCreateAPIView):
         return Response(serializer_data)
 
     def get_queryset(self):
-        queryset = Act.objects.all().order_by('-act_create_time')
+        queryset = Act.objects.all()
         post_queryset = Post.objects.all()
         act_type = self.request.query_params.get('act_type', None)
         act_author = self.request.query_params.get('act_author', None)
@@ -124,7 +124,7 @@ class PostList(generics.ListCreateAPIView):
         serializer.save(user=self.request.user)
 
     def get_queryset(self):
-        queryset = Post.objects.all().order_by('-post_create_time')
+        queryset = Post.objects.all()
         act_id = self.request.query_params.get('act_id', None)
         post_author = self.request.query_params.get('post_author', None)
         post_feed = self.request.query_params.get('post_feed', None)
@@ -183,7 +183,7 @@ class CommentList(generics.ListCreateAPIView):
         return super().create(request, args, kwargs)
 
     def get_queryset(self):
-        queryset = Comment.objects.all().order_by("-comment_create_time")
+        queryset = Comment.objects.all()
         post_id = self.request.query_params.get('post_id', None)
         reply_id = self.request.query_params.get('reply_id', None)
 
@@ -231,3 +231,8 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsOwnerOrReadOnly,)
     queryset = MyUser.objects.all()
     serializer_class = UserModifySerializer
+
+    def update(self, request, *args, **kwargs):
+        if 'user_name' in request.data.keys():
+            return Response(status=403)
+        return super().update(request)
