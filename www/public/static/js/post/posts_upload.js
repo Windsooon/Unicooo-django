@@ -228,7 +228,9 @@ $(document).ready(function(){
         formArray[4] = $activity_input.eq(0).val();
         formArray[6] = post_content
         if (!startsWith(post_url, 'http') && !startsWith(post_url, 'https'))  {
-            post_url = "http://" + post_url; 
+            if (post_url) {
+                post_url = "http://" + post_url; 
+            }
         }
         $.ajax({
             url: "/api/posts/",
