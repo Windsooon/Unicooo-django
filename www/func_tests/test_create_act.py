@@ -74,7 +74,7 @@ class CreateActWebdriver(BaseTestStaticLiveServerTestCase):
                 'Please enter your act content.')
             self.assertEqual(Act.objects.count(), 0)
 
-    def test_upload_act_cover_success(self):
+    def test_create_act_success(self):
         self.act_cover_image.send_keys(
             '/usr/src/app/func_tests/images/images_test.png')
         try:
@@ -87,6 +87,7 @@ class CreateActWebdriver(BaseTestStaticLiveServerTestCase):
                 'act-cover-btn').send_keys(Keys.ENTER)
             self.wait_element_url(
                 'activity-details-thumb',
-                url='http://web:8081/act/just_test/just_test_title/'
+                'class',
+                url='http://web:8081/act/just_test/just_test_title/',
             )
             self.assertEqual(Act.objects.count(), 1)

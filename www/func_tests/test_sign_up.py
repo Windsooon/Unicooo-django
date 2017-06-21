@@ -86,6 +86,7 @@ class SignUpLoginWebdriver(BaseTestStaticLiveServerTestCase):
         # wait for the front page show up
         self.wait_element_url("front-matrix")
         self.check_user_authed()
+        self.assertEqual(get_user_model().objects.count(), 2)
 
     def test_signup_not_valid_email_error_text_appear(self):
         self.email_signup.send_keys('just_test')

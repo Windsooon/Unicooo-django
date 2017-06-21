@@ -75,3 +75,32 @@ class FeedWebdriver(BaseTestStaticLiveServerTestCase):
         self.driver.get(self.live_server_url + '/' + self.username + '/feed/')
         feed_empty = self.driver.find_elements_by_class_name('feed-empty')
         self.assertFalse(bool(feed_empty))
+
+    def test_feed_get_post_when_other_create_act_then_join(self):
+        # post default vale
+        self.user_object2 = get_user_model().objects.create_user(
+            username='test_user_name',
+            email='test@testuser.com',
+            password=self.password,
+            is_active=1
+            )
+        self.post_content = 'just_sample_content'
+        self.post_thumb_url = '1457502382959cf00'
+        self.post_thumb_width = 500.0
+        self.post_thumb_height = 1000.0
+        self.post_mime_types = 1
+        self.nsfw = 1
+        self.post_object = Post.objects.create(
+            act=self.act_object,
+            user=self.user_object2,
+            post_content=self.post_content,
+            post_thumb_url=self.post_thumb_url,
+            post_thumb_width=self.post_thumb_width,
+            post_thumb_height=self.post_thumb_height,
+            post_mime_types=self.post_mime_types,
+            nsfw=self.nsfw,
+        )
+
+        self.driver.get(self.live_server_url + '/' + self.username + '/feed/')
+        feed_empty = self.driver.find_elements_by_class_name('feed-empty')
+        self.assertFalse(bool(feed_empty))

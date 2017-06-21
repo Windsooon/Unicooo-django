@@ -63,4 +63,5 @@ class SettingsWebdriver(BaseTestStaticLiveServerTestCase):
         self.wait_element_text('success-span', 'SUCCESS', 'class')
         self.driver.get(
             self.live_server_url + '/' + self.username + '/settings/')
-        # select = Select(self.driver.find_element_by_id('id_user_gender'))
+        gender = self.driver.find_element_by_id('id_user_gender')
+        self.assertEqual(gender.text, 'MAIE')

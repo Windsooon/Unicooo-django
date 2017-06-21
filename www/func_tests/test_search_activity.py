@@ -66,7 +66,7 @@ class VisitFronePageWebdriver(BaseTestStaticLiveServerTestCase):
         self.driver.find_element_by_class_name(
             'act-search-text').send_keys(10080)
         self.driver.find_element_by_class_name(
-            'act-search').send_keys(Keys.ENTER)
+            'act-search').click()
         try:
             WebDriverWait(self.driver, 5).until(
                 EC.alert_is_present(), 'timeout'

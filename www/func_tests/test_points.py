@@ -1,3 +1,4 @@
+import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
@@ -97,5 +98,6 @@ class PointWebdriver(BaseTestStaticLiveServerTestCase):
             )
         finally:
             self.driver.find_element_by_class_name(
-                'post-like-details').click()
-        self.assertEqual(49, self.user_object.points)
+                'post-like-details-a').click()
+            time.sleep(2)
+            self.assertEqual(49, self.user_object.points)

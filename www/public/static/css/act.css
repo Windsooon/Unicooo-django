@@ -335,12 +335,29 @@
     font-size: 1.5em;
 }
 
+.see-more-div {
+    text-align: center;
+}
+
+#see-more-btn {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 3px #9f9f9f;
+}
+
 #act-edit-btn {
     display:block;
     margin: 0 auto;
     background-color: white;
     margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 0 3px #9f9f9f;
 }
+
+#act-edit-btn:active {
+    box-shadow: 0 1px #cbcbcb;
+}
+
 .act-editor-row {
     padding-top: 10px;
 }
