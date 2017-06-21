@@ -24,6 +24,7 @@ class Act(models.Model):
 
     class Meta:
         unique_together = ('user', 'act_title')
+        ordering = ['-act_create_time']
 
     def __str__(self):
         return self.act_title

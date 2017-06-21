@@ -17,3 +17,9 @@ class Post(models.Model):
     nsfw = models.IntegerField()
     post_create_time = models.DateTimeField(auto_now=True)
     post_update_time = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-post_create_time']
+
+    def __str__(self):
+        return self.post_title
