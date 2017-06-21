@@ -153,6 +153,7 @@ def personal_list(request, personal, status):
     else:
         return render(request, "404.html")
 
+
 def personal_feed(request, personal):
     if request.method == "GET":
         try:
@@ -196,6 +197,11 @@ def personal_comments(request, personal):
 def contact(request):
     """Contact Us"""
     return render(request, "common/contact.html")
+
+
+def thanks(request):
+    """Thank You"""
+    return render(request, "common/thanks.html")
 
 
 @login_required
