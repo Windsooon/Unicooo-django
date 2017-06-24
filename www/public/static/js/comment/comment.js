@@ -1,7 +1,6 @@
 var comment_click_handler = function(e) {
     var comment_text = $(".comment-form-text").val();
     var csrf_token = $("input[name='csrfmiddlewaretoken']").val();
-    var httpsUrl = "https://o3e6g3hdp.qnssl.com/"
     var avatarStyle = "-avatarSetting"
     if (comment_text.length < 1) {
         return false;
@@ -138,28 +137,28 @@ var comment_click_handler = function(e) {
          });
     }
 
-    //显示剩余输入字数
-    $(".comment-form-text").keyup(function(){  
-        var $comment_length = $(".comment-form-length");
-        //length未必存在
-        if ($(".comment-form-text").val().length) {
-            var currrent_length=$(".comment-form-text").val().length;  
-            if (currrent_length >= 1 && currrent_length <= 140) {
-                $comment_length.text(140-currrent_length);
-                if ($('#add-comment-btn').is(":disabled")) {
-                    $('#add-comment-btn').prop('disabled', false);
-                }
-            }
-            else if (currrent_length >140) {
-                $comment_length.text("beyond 140 char");
-                $comment_length.css("color","#3f51b5");
-                $('#add-comment-btn').prop('disabled', true);
+//显示剩余输入字数
+$(".comment-form-text").keyup(function(){  
+    var $comment_length = $(".comment-form-length");
+    //length未必存在
+    if ($(".comment-form-text").val().length) {
+        var currrent_length=$(".comment-form-text").val().length;  
+        if (currrent_length >= 1 && currrent_length <= 140) {
+            $comment_length.text(140-currrent_length);
+            if ($('#add-comment-btn').is(":disabled")) {
+                $('#add-comment-btn').prop('disabled', false);
             }
         }
-        else {
-            $comment_length.text(140);
+        else if (currrent_length >140) {
+            $comment_length.text("beyond 140 char");
+            $comment_length.css("color","#3f51b5");
+            $('#add-comment-btn').prop('disabled', true);
         }
-    }); 
+    }
+    else {
+        $comment_length.text(140);
+    }
+}); 
 
 //personal page comments
 function ajax_comment_list(reply_id, page){
@@ -177,12 +176,10 @@ function ajax_comment_list(reply_id, page){
                         });
                     var comment_image_a = $("<a />", {
                         "class": "comment-image-a pull-left",
-                        href:  "/" + value["comment_author"] + "/act_crate/",
+                        href:  "/" + value["comment_author"] + "/act_create/",
                         });
                     //if user avatar is empty
                     if (value["comment_avatar"]) {
-
-                        var httpsUrl = "https://o3e6g3hdp.qnssl.com/";
                         var avatarStyle = "-avatarSetting";
                         var comment_image_div = $("<div />", {
                             "class": "comment-image-div",

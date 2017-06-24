@@ -57,7 +57,7 @@ $(document).ready(function() {
         else {
             alert("Please enter activity id for searching.");
         }
-        });
+    });
 });
 
 function poll() {

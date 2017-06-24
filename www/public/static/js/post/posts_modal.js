@@ -1,5 +1,4 @@
 $(document).ready(function(){
-    var $container = $('#posts-container').masonry();
     $("#post-upload").on("show.bs.modal", function(e) {
         post_upload_status = false;
         if ($(".progress-bar").length == 0){
@@ -19,29 +18,14 @@ $(document).ready(function(){
         var post_id = $(e.relatedTarget).data('post-id');
         var reply_id = $("#user-id").val();
         var page = 1;
-        var csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+        if ($(".request-user").text() == $(e.relatedTarget).parent().find(".post-user").text()) {
+            getPost(post_id, e, true);
+            delete_post(post_id);
+        }
+        else {
+            getPost(post_id, e, false);
+        }
         ajax_comment_list(reply_id, page)
-        getPost(post_id, e);
-        $('#really-delete-btn').click(function(){
-            $.ajax({
-                url: "/api/posts/" + post_id + "/",
-                method: "DELETE",
-                datatype: "json",
-                beforeSend:function(xhr, settings) {
-                    if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
-                        xhr.setRequestHeader("X-CSRFToken", csrf_token);
-                    } 
-                },
-                success: function() {
-                  $container.masonry("remove", $("#post-" + post_id)).masonry('layout'); 
-                  $('#post-details').modal('hide')
-                  $('#post-delete-modal').modal('hide')
-                },
-                error: function() {
-                  alert("You don't have permission to delete this post"); 
-                },
-            });
-        });
     });
 
     $('#post-details').on('hidden.bs.modal', function (e) {
@@ -89,3 +73,28 @@ $(document).ready(function(){
         }
     });
 });
+
+function delete_post(post_id) {
+    $('#really-delete-btn').unbind().click(function() {
+        var $container = $('#posts-container').masonry();
+        var csrf_token = getCookie('csrftoken');
+        $.ajax({
+            url: "/api/posts/" + post_id + "/",
+            method: "DELETE",
+            datatype: "json",
+            beforeSend:function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
+                    xhr.setRequestHeader("X-CSRFToken", csrf_token);
+                } 
+            },
+            success: function() {
+                $container.masonry("remove", $("#post-" + post_id)).masonry('layout'); 
+                $('#post-details').modal('hide')
+                $('#post-delete-modal').modal('hide')
+            },
+            error: function() {
+                alert("You don't have permission to delete this post"); 
+            },
+        });
+    });
+}
