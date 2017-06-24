@@ -1,5 +1,14 @@
 version: '2'
 services:
+  db:
+   image: mysql
+   restart: always
+   volumes:
+     - mysqldata:/var/lib/mysql
+     - ./env/:/etc/mysql/conf.d
+   ports:
+     - "3306:3306"
+   env_file: env/mysql.env
   web:
     restart: always
     build: ./www
