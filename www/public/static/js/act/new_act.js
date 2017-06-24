@@ -6,7 +6,7 @@ $(document).ready(function(){
             $("#act_type-error").text("Only you can join this activity.But others still can see the activity details by activity id.")
         }
         else if (select_val == 1) {
-            $("#act_type-error").text("Group activity won't be shown in frontpage or recommended, but still can be search by activity id.")
+            $("#act_type-error").text("Group activity won't be shown in frontpage, but still can be search by activity id.")
         }
         else {
             $("#act_type-error").text("Public activity will show in frontpage.")

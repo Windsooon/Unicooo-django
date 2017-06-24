@@ -19,6 +19,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'debug_toolbar',
+    'silk',
     'api',
     'rest_framework',
     'common',
@@ -26,6 +28,7 @@ INSTALLED_APPS = (
     'comment',
     'post',
     'tests',
+    'func_tests',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -33,12 +36,14 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'silk.middleware.SilkyMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.middleware.gzip.GZipMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 ROOT_URLCONF = 'unicooo.urls'
@@ -130,9 +135,20 @@ REST_FRAMEWORK = {
 DEBUG = True
 TEMPLATE_DEBUG = False
 
+INTERNAL_IPS = ('127.0.0.1',)
+
+DEBUG_TOOLBAR_CONFIG = {
+    "SHOW_TOOLBAR_CALLBACK": lambda request: True,
+}
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'sql_sunkist_t',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'unicooo_sunkist',
+        'USER': 'root',
+        'PASSWORD': 'formyne2012AC',
+        'HOST': 'db',
+        'PORT': '3306',
+        'CHARSET': 'UTF-8',
     }
 }

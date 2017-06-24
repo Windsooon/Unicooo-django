@@ -3,6 +3,10 @@
   overflow-y: auto;
 }
 
+.modal-content {
+    border-radius: 6px;
+}
+
 .single-content-post {
     border-top: 2px solid #2b6e90;
     max-height: 200px;
@@ -24,6 +28,12 @@
 
 .post-image-b {
     width: 100%;
+}
+
+.post-upload-div {
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-right: 1px solid #ccc;
 }
 
 .post-raw-details {

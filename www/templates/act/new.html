@@ -15,13 +15,13 @@
       <div class="form-group">
         <label class="control-label sr-only" for="Cover Image">Cover Image</label>
         <div class="act-upload-div">
-          <img id="act-upload-img" src="https://o3e6g3hdp.qnssl.com/act_cover.jpg" />
+          <img id="act-upload-img" src="http://7xrexo.com1.z0.glb.clouddn.com/cover_act.png" />
         </div>
         <div class="progress">
           <div class="progress-bar"></div>
         </div>
         <div class="upload-cover">
-            <span class="btn btn-primary btn-file btn-block" id="act-cover-span"><span id="inter-upload-cover">Upload your Cover Image</span>
+            <span class="btn btn-primary btn-file btn-block" id="act-cover-span"><span id="inter-upload-cover">Click To Upload</span>
             <input type="file" class="cropit-image-input" id="act-cover-image" name="act_cover" accept="image/*">
           </span>
         </div>
@@ -33,7 +33,7 @@
       <div class="form-group">
         <label for="act_type" class="control-label" id="inter-act-type">Act Type</label>
           {{ form.act_type }}
-          <label id="act_type-error" class="error" for="act_type">Group activity won't be shown in frontpage or recommended, but still can be search by activity id.</label>
+          <label id="act_type-error"  class="error" for="act_type">Group activity won't be shown in frontpage, but still can be search by activity id.</label>
       </div>
       <div class="form-group label-floating is-empty">
         <label for="act_title" class="control-label" id="inter-act-title">Act Title</label>
@@ -64,25 +64,6 @@
       window.onerror=function(msg){
         $("body").attr("JSError",msg);
       }
-  </script>
-  <script>
-    jQuery.i18n.properties({ 
-            name: 'base',// 资源文件名称
-            path: '{% static 'international/' %}',// 资源文件所在目录路径
-            mode: 'map',// 模式：变量或 Map 
-            cache: false, 
-            async: true,
-            encoding: 'UTF-8', //文件编码方式
-            callback: function() {// 回调方法
-                $("#inter-create-act").text(jQuery.i18n.prop('act_create_act'));
-                $("#inter-upload-cover").text(jQuery.i18n.prop('act_upload_cover'));
-                $("#inter-act-type").text(jQuery.i18n.prop('act_type'));
-                $("#inter-act-license").text(jQuery.i18n.prop('act_license'));
-                $("#inter-act-title").text(jQuery.i18n.prop('act_title'));
-                $("#inter-act-content").text(jQuery.i18n.prop('act_content'));
-                $("#inter-settings-details").text(jQuery.i18n.prop('settings_details'));
-            } 
-        });
   </script>
 {% endblock %}
 
