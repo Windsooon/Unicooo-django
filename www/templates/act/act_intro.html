@@ -36,6 +36,7 @@
   <script src="{% static 'js/act/quill.js' %}"></script>
   <script src="{% static 'js/act/act_details.js' %}"></script>
   <script>
+    edit_btn_click();
     // Don't show the details button in detail page.
     $(".details-act-btn").css("display", "none");
     var toolbarOptions = [
@@ -65,6 +66,7 @@
        readOnly: true,
        theme: 'snow'
     });
+
     {% if act_details.act_intro %}
         var act_intro = {{ act_details.act_intro|safe }};
         editor.setContents(act_intro);
