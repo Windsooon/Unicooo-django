@@ -3,8 +3,10 @@ from activities.choices import POSTMIME
 
 
 class Post(models.Model):
-    user = models.ForeignKey("common.MyUser", related_name="post_user")
-    act = models.ForeignKey("activities.Act", related_name="post_act")
+    user = models.ForeignKey(
+        "common.MyUser", related_name="post_user", on_delete=models.CASCADE)
+    act = models.ForeignKey(
+        "activities.Act", related_name="post_act", on_delete=models.CASCADE)
     post_title = models.CharField(max_length=30, blank=True)
     post_content = models.CharField(max_length=140)
     post_url = models.CharField(max_length=255, blank=True)

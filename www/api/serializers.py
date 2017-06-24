@@ -47,7 +47,7 @@ class UserModifySerializer(serializers.ModelSerializer):
             "user_gender", "user_details")
         extra_kwargs = {
             "password": {"write_only": True, "required": False},
-            "email": {"write_only": True}}
+            "email": {"write_only": True, "required": False}}
         read_only_fields = ("id",)
 
 
