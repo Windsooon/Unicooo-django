@@ -2,6 +2,10 @@
     color: gray;
 }
 
+#personal-container {
+    margin-top: 80px;
+}
+
 .personal-btn-group {
     position: absolute;
     bottom: 0px;

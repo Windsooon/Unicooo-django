@@ -40,36 +40,43 @@
   </div>
   </div>
 </div>
-<div class="activity-container container">
   {% if status == "post" %}
-  <div class="post-list">
+  <div class="container" id="personal-container">
+      <div class="post-list">
+      </div>
   </div>
   {% else %}
-  <div class="activity-row row">
+  <div class="activity-container container">
+      <div class="activity-row row">
+      </div>
   </div>
   {% endif %}
-
+    <!-- Display post details using modal -->
   <div id="post-details" class="modal fade" tabindex="-1" style="display: none">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h4 class="modal-title">Post details</h4>
+            <h4 class="modal-title" id="inter-post-content">Post Content</h4>
             <input type="hidden" id="input-post-id"/>
           </div>
-          <!-- end modal-header -->
           <div class="modal-body">
             <div class="post-image-b">
             </div>
             <div class="post-border">
               <div class="post-title">
-                <p class="post-details-user"></p>
+                <a class="post-details-a">
+                  <p class="post-details-user"></p>
+                </a>
                 <input type="hidden" id="input-post-author-id"/>
               </div>
               <div class="post-posttime">  
                 <p class="post-details-posttime"></p>
               </div>
               {% if request.user.is_authenticated %}
+                <div class="post-url-details">  
+                  <a href="" target="_blank" class="post-url-details-a glyphicon glyphicon-link" aria-hidden="true"></a>
+                </div>
                 <div class="post-like-details">  
                   <span class="post-like-details-a" aria-hidden="true"></span>
                 </div>
@@ -79,34 +86,61 @@
               <p class="post-details-content-p"></p>
             </div>
           </div>
-          <!-- end modal-body -->
+          <div id="post-delete">
+            <button class="btn btn-default" data-toggle="modal" href="#post-delete-modal" data-focus-on="input:first">
+              <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+              <span class="post-delete-p">Delete this post</span>
+            </button>
+          </div> <!-- end post-delete -->
           <div class="modal-footer">
             <!-- Key content display all comment -->
             <ul class="list-group">
             </ul>
             <div class="comment-form">
+              {% if request.user.is_anonymous %}
+                <div class="comment-request-login pull-right">
+                  <a class="btn btn-primary comment-request-a" href="{%url 'login' %}?next={% firstof request.path '/' %}" role="button" id="inter-login-comment">Login to comment</a>
+                </div>
+              {% else %}
               <form method="POST">
                 {% csrf_token %}
                 <div class="form-group">
                   <label class="sr-only" for="" >Comment</label>
-                  <input type="text" class="comment-form-text form-control" id="" placeholder="Please enter you comment">
+                  <input type="text" class="comment-form-text form-control" id="inter-comment-holder" placeholder="Please enter you comment">
                 <h6 class="comment-form-length">140</h6>
                 </div>
                 <button type="button" id="add-comment-btn" class="btn btn-primary pull-right">Submit</button>
               </form>
-            </div>
-          </div>
-          <!-- end modal-footer -->
+              {% endif %}
+            </div> <!-- end comment-form -->
+          </div> <!-- end modal footer -->
         </div>
-        <!-- end modal-content -->
       </div>
-      <!-- end modal-dialog -->
-    </div>
-    <!-- end post-details -->
   </div>
-  <!-- end row -->
+
+<!--delete post -->  
+<div class="modal fade" id="post-delete-modal" tabindex="-1" role="dialog" aria-labelledby="DeletePost" data-focus-on="input:first">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Warning</h4>
+      </div>
+      <div class="modal-body">
+        <form method="POST">
+          {% csrf_token %}
+        </form>
+        <p class="post-ready-delete-p">Do you really want to delete this post?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" id="really-delete-btn">Delete</button>
+      </div>
+    </div>
+  </div>
 </div>
-<!-- end container -->
+
+</div> <!-- end container -->
 {% endblock %}
 {% block extra_scripts %}
   <script> window.CSRF_TOKEN = "{{ csrf_token }}"; </script>

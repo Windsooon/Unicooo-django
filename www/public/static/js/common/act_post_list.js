@@ -242,13 +242,11 @@ function get_post_list(data, container, out=false, text=false){
                     container.masonry('appended', $elems); 
                 });
             }
-            else {
-                $(".outer_loading").fadeOut(150, function(){
-                    $(this).remove();
-                });
-            }
         },
         complete:function(data){
+            $(".outer_loading").fadeOut(150, function() {
+                $(this).remove();
+            });
             complete_data = $.parseJSON(data.responseText); 
             if (complete_data.next) {
                 ajax_state = true;
