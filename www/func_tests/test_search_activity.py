@@ -71,7 +71,7 @@ class SearchFrontPageWebdriver(BaseTestStaticLiveServerTestCase):
 
     def test_search_wrong_input_failed(self):
         '''
-        search return nothing
+        search with wrong input
         '''
         self.act_search.send_keys('abcdefg')
         self.act_search.send_keys(Keys.ENTER)
@@ -82,3 +82,13 @@ class SearchFrontPageWebdriver(BaseTestStaticLiveServerTestCase):
         finally:
             alert = self.driver.switch_to_alert()
             self.assertEqual(alert.text, 'Activity id should be 5 digits.')
+
+    def test_click_create_activity(self):
+        '''
+        search return nothing
+        '''
+        self.driver.find_element_by_class_name('front-btn').click()
+        self.wait_element_url(
+            "inter-create-act",
+            url=self.live_server_url + '/act/new/'
+        )

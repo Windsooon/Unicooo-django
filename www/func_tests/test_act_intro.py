@@ -7,10 +7,6 @@ from activities.models import Act
 
 class IntroWebdriver(BaseTestStaticLiveServerTestCase):
 
-    @classmethod
-    def setUpClass(cls):
-        super(IntroWebdriver, cls).setUpClass()
-
     def setUp(self):
         self.email = 'just_test@test.com'
         self.password = '123456saasdfasdf'
@@ -49,7 +45,7 @@ class IntroWebdriver(BaseTestStaticLiveServerTestCase):
     def tearDown(self):
         self.client.logout()
 
-    def test__act_intro_default_empty(self):
+    def test_act_intro_default_empty(self):
         self.driver.find_element_by_class_name(
             'details-act-btn').send_keys(Keys.ENTER)
         self.wait_element_url(
