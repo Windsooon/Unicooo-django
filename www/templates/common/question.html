@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load humanize %}
+{% block extra_head %}
+<link href="{% static 'css/quill.snow.css' %}" rel="stylesheet"/>
+<style>
+    .ql-toolbar {
+        display: none;
+    }
+    #question-editor {
+        margin-top: 60px;
+    }
+
+    .question-editor-row {
+        background-color: white;
+    }
+
+    .ql-editor {
+        font-size: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row question-editor-row">
+    <div id="question-editor">
+      <div id="editor">
+      </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+  <script>
+  $.material.init();
+  </script>
+  <script src="{% static 'js/act/quill.js' %}"></script>
+  <script>
+    var toolbarOptions = [
+        [
+            {'list': 'ordered'}, 
+            {'list': 'bullet'}, 
+            {'align': [] },
+            {'header': [1, 2, 3, 4, 5, 6, false]}
+        ],
+        ['link', 'code-block', 'blockquote'],
+        ['bold', { 'color': [] }],
+    ];
+    var Link = Quill.import("formats/link");
+    Link.sanitize = function(url) {
+        if (url.match("^http")) {
+            return url;
+        }
+        else
+            return "http://" + url;
+    }
+
+    var editor = new Quill('#editor', {
+       modules: {
+         toolbar: toolbarOptions
+       },
+       readOnly: true,
+       theme: 'snow'
+    });
+    editor.setContents({"ops":[{"attributes":{"bold":true},"insert":"Q&A"},{"attributes":{"align":"center","header":1},"insert":"\n"},{"insert":"      \n"},{"attributes":{"bold":true},"insert":"What is Unicooo ?"},{"attributes":{"list":"bullet"},"insert":"\n"},{"insert":"Unicooo is a social platform let you get rid of annoying feed. There is no followers and following here.Users only get feed from the activities they join instead of people they follow. "},{"attributes":{"align":"justify","list":"bullet"},"insert":"\n"},{"insert":"\n"},{"attributes":{"bold":true},"insert":"Why I need to join Unicooo when I already using Facebook, Instagram and Twitter ?"},{"attributes":{"list":"bullet"},"insert":"\n"},{"insert":"Why Unicooo"},{"attributes":{"list":"bullet"},"insert":"\n"},{"insert":"\n"},{"attributes":{"bold":true},"insert":"What is the different between Public activity, Group activity and Private activity ?"},{"attributes":{"list":"bullet"},"insert":"\n"},{"insert":"We usually create "},{"attributes":{"list":"bullet"},"insert":"\n"},{"insert":"                 Public activity for public event like concert, marathon. Everyone can upload their posts in this public activity. \n                 Group activity for share memory between you and your friends or family, like camping, birthday party posts. \n                 Personal activity for event or challenge "},{"attributes":{"bold":true},"insert":"only you can join"},{"insert":", like books you read, or hackerathon you joined last year. \n"},{"attributes":{"bold":true},"insert":"                 Remember, all activities you joined or created are visible to others."},{"insert":"\n\n"},{"attributes":{"bold":true},"insert":"How Unicooo use my data ?"},{"attributes":{"list":"bullet"},"insert":"\n"},{"attributes":{"link":"http://../privacy/"},"insert":"Privacy Policy"},{"attributes":{"list":"bullet"},"insert":"\n"},{"insert":"\n"},{"attributes":{"bold":true},"insert":"How can I contribute to Unicooo  ?"},{"attributes":{"list":"bullet"},"insert":"\n"},{"insert":"Unicooo is open source in "},{"attributes":{"link":"https://github.com/Windsooon/Unicooo-django/"},"insert":"Github"},{"attributes":{"list":"bullet"},"insert":"\n"},{"insert":"\n\n\n\n\n\n\n\n\n"}]});
+  </script>
+{% endblock %}
+

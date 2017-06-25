@@ -11,6 +11,7 @@ urlpatterns = [
                   url(r'^likes/(?P<post_id>\d+)/$', views.update_posts_like),
                   url(r'^checkemail/$', views.check_email_exist),
                   url(r'^privacy/$', views.privacy),
+                  url(r'^question/$', views.question),
                   url(r'^checkuser/$', views.check_username_exist),
                   url(r'^thanks/$', views.thanks, name="thanks"),
                   url(r'^act_title/$', views.check_act_title),

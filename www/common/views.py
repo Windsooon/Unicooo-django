@@ -200,8 +200,13 @@ def contact(request):
 
 
 def privacy(request):
-    """Contact Us"""
+    """Privacy policy"""
     return render(request, "common/privacy.html")
+
+
+def question(request):
+    """question and answer"""
+    return render(request, "common/question.html")
 
 
 def thanks(request):
