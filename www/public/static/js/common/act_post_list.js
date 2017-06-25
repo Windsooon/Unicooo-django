@@ -110,7 +110,6 @@ function get_post_list(data, container, out=false, text=false){
                 out.append($empty_div);
             }
             if (data.results.length > 0) {
-                var httpsUrl = "https://o3e6g3hdp.qnssl.com/"
                 var imageStyle = "-postList"
                 var elems = [];
                 $.each(data.results, function(key, value){

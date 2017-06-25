@@ -10,7 +10,6 @@ $(document).on('show.bs.modal', '.modal', function () {
 });
 
 $(document).ready(function(){
-    var httpsUrl = "https://o3e6g3hdp.qnssl.com/";
     var page = 1
     var scrollTimeout;
     $activity_input = $(".activity-details-content input");
