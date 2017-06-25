@@ -199,6 +199,11 @@ def contact(request):
     return render(request, "common/contact.html")
 
 
+def privacy(request):
+    """Contact Us"""
+    return render(request, "common/privacy.html")
+
+
 def thanks(request):
     """Thank You"""
     return render(request, "common/thanks.html")

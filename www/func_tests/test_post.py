@@ -55,6 +55,32 @@ class PostWebdriver(BaseTestStaticLiveServerTestCase):
     def tearDown(self):
         self.client.logout()
 
+    def test_delete_post(self):
+        Post.objects.create(
+            act=self.act,
+            user=self.user_object,
+            post_content='test_content',
+            post_thumb_url='1493729321d85d41dea3391f1e3b380683eddf7792ea0e64ba',
+            post_thumb_width='400',
+            post_thumb_height='300',
+            post_mime_types=0,
+            nsfw=1
+        )
+        self.driver.get(
+            self.live_server_url + '/act/' +
+            self.username + '/' + self.act_title + '/')
+        self.driver.find_element_by_class_name('post-thumb-a').click()
+        try:
+            WebDriverWait(self.driver, 8).until(
+                EC.presence_of_element_located(
+                    (By.ID, "post-details"))
+            )
+        finally:
+            self.driver.find_element_by_id('post-delete').click()
+            time.sleep(3)
+            self.driver.find_element_by_id('really-delete-btn').click()
+            self.assertEqual(Post.objects.count(), 0)
+
     def test_create_post(self):
         self.driver.get(self.live_server_url)
         self.driver.get(
