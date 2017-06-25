@@ -344,8 +344,13 @@
 
 #see-more-btn {
     background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 3px #9f9f9f;
+    border-radius: 6px;
+    box-shadow: 0 3px #ccc;
+}
+
+#see-more-btn:hover {
+    background-color: #009688;
+    color: white;
 }
 
 #act-edit-btn {
