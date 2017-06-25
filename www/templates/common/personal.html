@@ -43,7 +43,7 @@
 {% if status == "post" %}
 <div class="container" id="personal-container">
     <div class="row">
-      <div class="post-list">
+      <div class="posts-container">
       </div>
     </div>
 </div>
@@ -160,7 +160,7 @@
     var page = 1;
     var ajax_state = true;
     if (status == "post") {
-        var $container = $('.post-list').masonry({
+        var $container = $('.posts-container').masonry({
             columnWidth: 1,
             itemSelector: '.post-container',
             transitionDuration: '0.3s',
@@ -187,7 +187,7 @@
         // Check your page position
         if (status == "post") {
             var $inner_container = $(".post-container");
-            var $outer_container = $(".post-list");
+            var $outer_container = $(".posts-container");
         }
         else {
             var $inner_container = $(".act-outer-container");

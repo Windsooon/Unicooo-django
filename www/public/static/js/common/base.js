@@ -27,7 +27,7 @@ $(document).ready(function() {
         act_search_text = $(".act-search-text").val();
         if (act_search_text){
             act_id = parseInt($(".act-search-text").val(), 10);
-            if (act_id < 10000) {
+            if (act_id < 10000 || isNaN(act_id)) {
                 alert("Activity id should be 5 digits."); 
                 return false;
             }

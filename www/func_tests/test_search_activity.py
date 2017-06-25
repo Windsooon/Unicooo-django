@@ -6,10 +6,12 @@ from selenium.webdriver.support import expected_conditions as EC
 from .base_tests import BaseTestStaticLiveServerTestCase
 
 
-class VisitFronePageWebdriver(BaseTestStaticLiveServerTestCase):
+class SearchFrontPageWebdriver(BaseTestStaticLiveServerTestCase):
 
     def setUp(self):
         self.driver.get(self.live_server_url + '/')
+        self.act_search = self.driver.find_element_by_class_name(
+            'act-search-text')
 
     def tearDown(self):
         pass
@@ -45,28 +47,20 @@ class VisitFronePageWebdriver(BaseTestStaticLiveServerTestCase):
             act_url=self.username + '/' + self.act_title,
             )
         self.assertEqual(Act.objects.count(), 1)
-
-        self.driver.get(self.live_server_url + '/')
-        act_title = self.driver.find_element_by_class_name('act-title-p').text
-        self.assertIn('just a test title', act_title)
-        act_search = self.driver.find_element_by_class_name('act-search-text')
-        act_search.send_keys(self.act.id+10000)
-        self.driver.find_element_by_class_name(
-            'act-search').send_keys(Keys.ENTER)
+        self.act_search.send_keys(self.act.id+10000)
+        self.act_search.send_keys(Keys.ENTER)
         self.wait_element_url(
             "activity-details-thumb", 'class',
             url=self.live_server_url + '/act/' +
-            self.username + '/' + 'just%20a%20test%20title'
+            self.username + '/' + 'just%20a%20test%20title/'
             )
 
-    def test_search_no_activity(self):
+    def test_search_no_activity_failed(self):
         '''
         search return nothing
         '''
-        self.driver.find_element_by_class_name(
-            'act-search-text').send_keys(10080)
-        self.driver.find_element_by_class_name(
-            'act-search').click()
+        self.act_search.send_keys(10080)
+        self.act_search.send_keys(Keys.ENTER)
         try:
             WebDriverWait(self.driver, 5).until(
                 EC.alert_is_present(), 'timeout'
@@ -74,3 +68,17 @@ class VisitFronePageWebdriver(BaseTestStaticLiveServerTestCase):
         finally:
             alert = self.driver.switch_to_alert()
             self.assertEqual(alert.text, 'Can\'t find this activity')
+
+    def test_search_wrong_input_failed(self):
+        '''
+        search return nothing
+        '''
+        self.act_search.send_keys('abcdefg')
+        self.act_search.send_keys(Keys.ENTER)
+        try:
+            WebDriverWait(self.driver, 5).until(
+                EC.alert_is_present(), 'timeout'
+            )
+        finally:
+            alert = self.driver.switch_to_alert()
+            self.assertEqual(alert.text, 'Activity id should be 5 digits.')
