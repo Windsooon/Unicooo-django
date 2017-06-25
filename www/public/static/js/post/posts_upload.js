@@ -4,7 +4,7 @@ $(document).ready(function(){
             $('body').addClass('modal-open');
         }    
     });
-    var $container = $('#posts-container').masonry();
+    var $container = $('.posts-container').masonry();
     var formData = new FormData();
     var formArray = new Array();
     var imageStyle = "-actCoverBig";

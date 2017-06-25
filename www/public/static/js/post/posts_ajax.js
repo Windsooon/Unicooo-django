@@ -15,7 +15,7 @@ $(document).ready(function(){
     $activity_input = $(".activity-details-content input");
     var act_id = $activity_input.eq(0).val();
     var data = {"act_id": act_id, "page": page};
-    var $container = $('#posts-container').masonry({
+    var $container = $('.posts-container').masonry({
         columnWidth: 1,
         itemSelector: '.post-container',
         transitionDuration: '0.3s',
@@ -32,7 +32,7 @@ $(document).ready(function(){
     });
     scrollHandler = function () {
         // Check your page position
-        if (checkScroll($("#posts-container"), $(".post-container:last")) && ajax_state) {
+        if (checkScroll($(".posts-container"), $(".post-container:last")) && ajax_state) {
             data.page += 1;
             ajax_state = false;
             get_post_list(data, $container);

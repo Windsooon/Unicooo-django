@@ -76,7 +76,7 @@ $(document).ready(function(){
 
 function delete_post(post_id) {
     $('#really-delete-btn').unbind().click(function() {
-        var $container = $('#posts-container').masonry();
+        var $container = $('.posts-container').masonry();
         var csrf_token = getCookie('csrftoken');
         $.ajax({
             url: "/api/posts/" + post_id + "/",
