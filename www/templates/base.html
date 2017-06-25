@@ -82,21 +82,30 @@
 {% endblock %}
 
 {% block footer %}
-  <section class="front-footer col-lg-8 col-lg-offset-2">
+  <div class="front-footer">
     <hr>
-    <div class="row">
-      <div class="col-md-4 col-lg-4">
+    <div class="row footer-row">
+      <div class="col-md-2 col-lg-2">
+        <p class="footer-text text-center">Copyright © 2017 Unicooo Inc. All rights reserved.</p>
+      </div>
+      <div class="col-md-2 col-lg-2">
         <a href="{%url 'contact' %}"><p class="footer-text text-center" id="inter-contect">CONTACT US</p></a>
       </div>
-      <div class="col-md-4 col-lg-4">
+      <div class="col-md-2 col-lg-2">
         <a href="{%url 'thanks' %}"><p class="footer-text text-center" id="inter-thank">THANK YOU</p></a>
       </div>
-      <div class="col-md-4 col-lg-4">
-        <p class="footer-text text-center">Copyright © 2017 Unicooo Inc. All rights reserved.</p>
+      <div class="col-md-2 col-lg-2">
+        <a href="{%url 'privacy' %}"><p class="footer-text text-center" id="inter-thank">PRIVACY POLICY</p></a>
+      </div>
+      <div class="col-md-2 col-lg-2">
+        <a href="{%url 'question' %}"><p class="footer-text text-center" id="inter-thank">Q&A</p></a>
+      </div>
+      <div class="col-md-2 col-lg-2">
+        <a href="https://github.com/Windsooon/Unicooo-django"><p class="footer-text text-center" id="inter-thank">Github</p></a>
       </div>
     </div>
     <hr>
-  </section>
+  </div>
 {% endblock %}
 
 {% block scripts %}
