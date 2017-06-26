@@ -7,15 +7,11 @@ from post.models import Post
 
 class PersonalWebdriver(BaseTestStaticLiveServerTestCase):
 
-    @classmethod
-    def setUpClass(cls):
-        cls.username = 'just_test'
-        cls.email = 'just_test@test.com'
-        cls.password = '123456saasdfasdf'
-        cls.live_server_url = 'http://web:8081'
-        super(PersonalWebdriver, cls).setUpClass()
-
     def setUp(self):
+        self.username = 'just_test'
+        self.email = 'just_test@test.com'
+        self.password = '123456saasdfasdf'
+        self.live_server_url = 'http://web:8081'
         self.user_object = get_user_model().objects.create_user(
                 username=self.username,
                 email=self.email,

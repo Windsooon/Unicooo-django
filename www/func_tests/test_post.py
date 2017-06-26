@@ -1,8 +1,8 @@
 import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
 from django.contrib.auth import get_user_model
 from django.test import Client
 from .base_tests import BaseTestStaticLiveServerTestCase
@@ -60,7 +60,8 @@ class PostWebdriver(BaseTestStaticLiveServerTestCase):
             act=self.act,
             user=self.user_object,
             post_content='test_content',
-            post_thumb_url='1493729321d85d41dea3391f1e3b380683eddf7792ea0e64ba',
+            post_thumb_url='1493729321d85d41dea3391f1e' +
+            '3b380683eddf7792ea0e64ba',
             post_thumb_width='400',
             post_thumb_height='300',
             post_mime_types=0,
@@ -71,15 +72,67 @@ class PostWebdriver(BaseTestStaticLiveServerTestCase):
             self.username + '/' + self.act_title + '/')
         self.driver.find_element_by_class_name('post-thumb-a').click()
         try:
-            WebDriverWait(self.driver, 8).until(
+            WebDriverWait(self.driver, 6).until(
                 EC.presence_of_element_located(
-                    (By.ID, "post-details"))
+                    (By.CLASS_NAME, "delete-post-btn"))
             )
         finally:
-            self.driver.find_element_by_id('post-delete').click()
-            time.sleep(3)
-            self.driver.find_element_by_id('really-delete-btn').click()
+            self.driver.find_element_by_class_name(
+                'delete-post-btn').click()
+        try:
+            WebDriverWait(self.driver, 6).until(
+                EC.presence_of_element_located(
+                    (By.CLASS_NAME, "really-delete-post"))
+            )
+        finally:
+            self.driver.find_element_by_id(
+                'really-delete-btn').click()
             self.assertEqual(Post.objects.count(), 0)
+
+    def test_delete_post_left_one(self):
+        Post.objects.create(
+            act=self.act,
+            user=self.user_object,
+            post_content='test_content',
+            post_thumb_url='1493729321d85d41dea3391f1e' +
+            '3b380683eddf7792ea0e64ba',
+            post_thumb_width='400',
+            post_thumb_height='300',
+            post_mime_types=0,
+            nsfw=1
+        )
+        Post.objects.create(
+            act=self.act,
+            user=self.user_object,
+            post_content='test_content_two',
+            post_thumb_url='1493729321d85d41dea3391f1e' +
+            '3b380683eddf7792ea0e64ba',
+            post_thumb_width='400',
+            post_thumb_height='300',
+            post_mime_types=0,
+            nsfw=1
+        )
+        self.driver.get(
+            self.live_server_url + '/act/' +
+            self.username + '/' + self.act_title + '/')
+        self.driver.find_element_by_class_name('post-thumb-a').click()
+        try:
+            WebDriverWait(self.driver, 6).until(
+                EC.presence_of_element_located(
+                    (By.CLASS_NAME, "delete-post-btn"))
+            )
+        finally:
+            self.driver.find_element_by_class_name(
+                'delete-post-btn').click()
+        try:
+            WebDriverWait(self.driver, 6).until(
+                EC.presence_of_element_located(
+                    (By.CLASS_NAME, "really-delete-post"))
+            )
+        finally:
+            self.driver.find_element_by_id(
+                'really-delete-btn').click()
+            self.assertEqual(Post.objects.count(), 1)
 
     def test_create_post(self):
         self.driver.get(self.live_server_url)
@@ -180,45 +233,3 @@ class PostWebdriver(BaseTestStaticLiveServerTestCase):
             time.sleep(5)
             self.driver.find_element_by_class_name('post-form-text').send_keys(
                 'just_for_test_content')
-            add_url_btn = self.driver.find_element_by_class_name('add-url-btn')
-            add_url_btn.click()
-            try:
-                WebDriverWait(self.driver, 4).until(
-                    EC.presence_of_element_located(
-                        (By.CLASS_NAME, "post-form-url"))
-                )
-            finally:
-                self.driver.find_element_by_class_name(
-                    'post-form-url').send_keys('https://www.bing.com')
-                self.driver.find_element_by_class_name(
-                    'add-post-btn').send_keys(Keys.ENTER)
-                time.sleep(3)
-                self.assertEqual(Post.objects.count(), 1)
-
-    def test_create_post_with_not_valid_url_failed(self):
-        self.driver.find_element_by_class_name(
-            'join-act-btn').send_keys(Keys.ENTER)
-        try:
-            WebDriverWait(self.driver, 6).until(
-                EC.presence_of_element_located(
-                    (By.CLASS_NAME, "post-form-text"))
-            )
-        finally:
-            self.driver.find_element_by_class_name(
-                'post-upload-image').send_keys(
-                '/usr/src/app/func_tests/images/images_test.png')
-            time.sleep(6)
-            self.driver.find_element_by_class_name('post-form-text').send_keys(
-                'just_for_test_content')
-            self.driver.find_element_by_class_name('add-url-btn').click()
-            self.driver.find_element_by_class_name('add-url-btn').send_keys(
-                'sadfasdfasdfasdf')
-            self.driver.find_element_by_class_name('add-post-btn').send_keys(
-                Keys.ENTER)
-            try:
-                WebDriverWait(self.driver, 5).until(
-                    EC.alert_is_present(), 'timeout'
-                )
-            finally:
-                alert = self.driver.switch_to_alert()
-                self.assertEqual(alert.text, 'Url not valid.')

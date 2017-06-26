@@ -13,7 +13,7 @@ function personalInit(personal, status, page, container){
     }
     else if (status == "post") {
         data = {"post_author": personal, "page": page};
-        get_post_list(data, container, $(".post-list"), "You haven't join any activities yet.");
+        get_post_list(data, container, $(".posts-container"), "You haven't join any activities yet.");
     }
     else if (status == "feed") {
         data = {"post_feed": personal, "page": page};

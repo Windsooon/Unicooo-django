@@ -7,14 +7,10 @@ from post.models import Post
 
 class FeedWebdriver(BaseTestStaticLiveServerTestCase):
 
-    @classmethod
-    def setUpClass(cls):
-        cls.email = 'just_test@test.com'
-        cls.password = '123456saasdfasdf'
-        cls.username = 'just_test'
-        super(FeedWebdriver, cls).setUpClass()
-
     def setUp(self):
+        self.email = 'just_test@test.com'
+        self.password = '123456saasdfasdf'
+        self.username = 'just_test'
         self.user_object = get_user_model().objects.create_user(
                 username=self.username,
                 email=self.email,
@@ -75,6 +71,8 @@ class FeedWebdriver(BaseTestStaticLiveServerTestCase):
         self.driver.get(self.live_server_url + '/' + self.username + '/feed/')
         feed_empty = self.driver.find_elements_by_class_name('feed-empty')
         self.assertFalse(bool(feed_empty))
+        post_text = self.driver.find_element_by_class_name('post-content-p')
+        self.assertEqual('just_sample_content', post_text.text)
 
     def test_feed_get_post_when_other_create_act_then_join(self):
         # post default vale
@@ -92,7 +90,7 @@ class FeedWebdriver(BaseTestStaticLiveServerTestCase):
         self.nsfw = 1
         self.post_object = Post.objects.create(
             act=self.act_object,
-            user=self.user_object2,
+            user=self.user_object,
             post_content=self.post_content,
             post_thumb_url=self.post_thumb_url,
             post_thumb_width=self.post_thumb_width,
@@ -104,3 +102,5 @@ class FeedWebdriver(BaseTestStaticLiveServerTestCase):
         self.driver.get(self.live_server_url + '/' + self.username + '/feed/')
         feed_empty = self.driver.find_elements_by_class_name('feed-empty')
         self.assertFalse(bool(feed_empty))
+        post_text = self.driver.find_element_by_class_name('post-content-p')
+        self.assertEqual('just_sample_content', post_text.text)
