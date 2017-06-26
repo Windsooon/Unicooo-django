@@ -2,6 +2,15 @@ $(document).ready(function() {
     $('#add-comment-btn').on('click', comment_click_handler);
 });
 
+    $(".personal-group").hover( function() {
+        $(this).find(".personal-btn-text").css("color", "white");
+        $(this).find(".personal-btn").css("color", "white");
+            }, function() {
+        $(this).find(".personal-btn-text").css("color", "#009688");
+        $(this).find(".personal-btn").css("color", "#009688");
+            }
+    );
+
 function personalInit(personal, status, page, container){
     if (status == "act_create") {
         data = {"act_author": personal, "page": page};

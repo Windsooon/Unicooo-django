@@ -11,6 +11,10 @@
     bottom: 0px;
 }
 
+.personal-btn-text, .personal-btn {
+    color: #009688;
+}
+
 .personal-container {
     margin-top: 80px;
 }
@@ -18,6 +22,10 @@
 .personal-header {
     background-color: white;
     height: 320px;
+}
+
+.personal-group:hover {
+    background-color: #009688;
 }
 
 .personal-top {

@@ -26,14 +26,14 @@
     <hr>
     <div class="personal-btn-group btn-group-div">
       <div class="btn-group-justified btn-group" role="group" aria-label="...">
-        <div class="btn-group" role="group">
-          <a class="btn btn-default blue" href="{% url 'status' personal 'act_create' %}" id="act-create-btn" role="button"><span class="icon-right glyphicon glyphicon-pencil" aria-hidden="true"></span>Act</a>
+        <div class="btn-group personal-group" role="group">
+          <a class="btn btn-default personal-btn-a" href="{% url 'status' personal 'act_create' %}" id="act-create-btn" role="button"><span class="personal-btn icon-right glyphicon glyphicon-pencil" aria-hidden="true"></span><span class="personal-btn-text">Act You Created</span></a>
         </div> <!-- end btn-group -->
-        <div class="btn-group" role="group">
-          <a class="btn btn-default blue" href="{% url 'status' personal 'act_join' %}" id="act-join-btn" role="button"><span class="icon-right glyphicon glyphicon-paperclip" aria-hidden="true"></span>Act</a>
+        <div class="btn-group personal-group" role="group">
+          <a class="btn btn-default personal-btn-a" href="{% url 'status' personal 'act_join' %}" id="act-join-btn" role="button"><span class="personal-btn icon-right glyphicon glyphicon-paperclip" aria-hidden="true"></span><span class="personal-btn-text">Act You Joined</span></a>
         </div> <!-- end btn-group -->
-        <div class="btn-group" role="group">
-          <a class="btn btn-default blue" href="{% url 'status' personal 'post' %}" id="post-create-btn" role="button"><span class="icon-right glyphicon glyphicon-bookmark" aria-hidden="true"></span>Post</a>
+        <div class="btn-group personal-group" role="group">
+          <a class="btn btn-default personal-btn-a" href="{% url 'status' personal 'post' %}" id="post-create-btn" role="button"><span class="personal-btn icon-right glyphicon glyphicon-bookmark" aria-hidden="true"></span><span class="personal-btn-text">Post You created</span></a>
         </div> <!-- end btn-group -->
       </div> <!-- end btn-group-justified -->
     </div> <!-- end personal-btn-group -->
