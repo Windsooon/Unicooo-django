@@ -11,7 +11,7 @@ services:
       - PATH=/usr/src/app/:$PATH
       - PYTHONPATH=/usr/src/app/
       - DJANGO_SETTINGS_MODULE=unicooo.settings.production
-    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --noinput && /usr/local/bin/gunicorn unicooo.wsgi:application -w 2 --timeout 200 -k gevent -b :8000 --reload"
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && /usr/local/bin/gunicorn unicooo.wsgi:application -w 3 --timeout 200 -k gevent -b :8000"
     links:
       - redis:redis
   nginx:

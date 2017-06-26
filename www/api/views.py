@@ -205,7 +205,7 @@ class CommentDetail(generics.RetrieveAPIView):
         serializer.save(user=self.request.user)
 
 
-class UserList(generics.ListCreateAPIView):
+class UserList(generics.CreateAPIView):
     queryset = MyUser.objects.all()
     serializer_class = UserSerializer
     permission_classes = (IsAuthenticatedOrCreate,)
