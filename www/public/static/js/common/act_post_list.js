@@ -5,6 +5,13 @@ function get_act_list(data, container, out=false, text=false){
         datatype: "url",
         data: data,
         beforeSend:function(){
+            if (!$(".outer_loading").length) {
+               var post_outer_loading = $("<div />", {
+                          "class": "outer_loading",
+                      });
+               container.append(post_outer_loading);
+               loadingBefore(post_outer_loading, "la-md");
+           }
         },
         success: function(data) {
             var imageStyle = "-actCoverSmall"
@@ -72,6 +79,9 @@ function get_act_list(data, container, out=false, text=false){
             }
         },
         complete:function(data){
+            $(".outer_loading").fadeOut(150, function() {
+                $(this).remove();
+            });
             var complete_data = $.parseJSON(data.responseText); 
             if (complete_data.next) {
                 ajax_state = true;
@@ -93,7 +103,7 @@ function get_post_list(data, container, out=false, text=false){
                var post_outer_loading = $("<div />", {
                           "class": "outer_loading",
                       });
-               $("#posts-container").append(post_outer_loading);
+               container.append(post_outer_loading);
                loadingBefore(post_outer_loading, "la-md");
            }
         },

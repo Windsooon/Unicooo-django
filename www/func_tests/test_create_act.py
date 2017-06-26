@@ -10,14 +10,10 @@ from activities.models import Act
 
 class CreateActWebdriver(BaseTestStaticLiveServerTestCase):
 
-    @classmethod
-    def setUpClass(cls):
-        cls.email = 'just_test@test.com'
-        cls.password = '123456saasdfasdf'
-        cls.username = 'just_test'
-        super(CreateActWebdriver, cls).setUpClass()
-
     def setUp(self):
+        self.email = 'just_test@test.com'
+        self.password = '123456saasdfasdf'
+        self.username = 'just_test'
         self.user_object = get_user_model().objects.create_user(
                 username=self.username,
                 email=self.email,
