@@ -7,7 +7,7 @@ from common import views
 urlpatterns = [
     url(r'^$', cache_page(60 * 1)(views.front_page),
         name="front_page"),
-    url(r'^change_password/$', views.change_password),
+    url(r'^change_password/$', views.change_password, name='change_password'),
     url(r'^sub/$', views.get_notifications),
     url(r'^sub_no/$', views.move_notifications),
     url(r'^token/$', views.get_upload_token),

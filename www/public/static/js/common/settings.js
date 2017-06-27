@@ -26,7 +26,7 @@ $(document).ready(function() {
         submitHandler: function(form) {
             var $form_group_loading = $(".form-group-loading");
             var $form_submit_wrap = $(".submit-btn-wrap");
-            var csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+            var csrftoken = getCookie('csrftoken');
             $("#settings-form :input").prop("disabled", true);
             loadingBefore($form_submit_wrap);
             if (formArray[0]) {
@@ -42,7 +42,7 @@ $(document).ready(function() {
                 data:  {"user_gender": $("#id_user_gender option:selected").val(), "user_details": $("#user-details").val(), "user_avatar": user_avatar},
                 beforeSend:function(xhr, settings) {
                     if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
-                        xhr.setRequestHeader("X-CSRFToken", csrf_token);
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
                     } 
                 },
                 success: function(xhr) {
@@ -69,10 +69,7 @@ $(document).ready(function() {
                     var form_server_error = $("<div />", {
                           "class": "form-server-error"
                       });
-                    if($('.form-server-error-p').length) {
-                        console.log("already");    
-                    } 
-                    else{
+                    if($('.form-server-error-p').length == 0) {
                         $form_submit_wrap.before(form_server_error);
                     }
                     if (xhr.status >= 400 && xhr.status < 500) {

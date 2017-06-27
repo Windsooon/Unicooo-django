@@ -46,6 +46,9 @@
             <label for="user_details" class="control-label" id="inter-settings-details">User Details</label>
               {{ form.user_details }}
           </div>
+          <div class="form-group">
+            <a href="{% url 'change_password' %}" class="btn btn-danger btn-block" id="change-btn"><span class="glyphicon glyphicon-edit">  Change Password</span></a>
+          </div>
           <div class="form-group form-group-loading">
             <div class="submit-btn-wrap">
               <button type="sumbit" class="submit-btn btn btn-primary btn-block" id="setting-btn"><span class="glyphicon glyphicon-ok"></span></button>
