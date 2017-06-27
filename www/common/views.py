@@ -20,7 +20,8 @@ from qiniu import Auth
 from .qiniuSettings import accessKey, secretKey, bucket
 from common.qiniuSettings import httpsUrl
 from common.models import MyUser
-from .form import UserCreateForm, UserLoginForm, UserChangeForm
+from .form import UserCreateForm, UserLoginForm,\
+    UserChangeForm
 from activities.models import Act
 from post.models import Post
 
@@ -324,3 +325,8 @@ def check_act_title(request):
         return HttpResponse("false")
     except:
         return HttpResponse("true")
+
+
+@login_required
+def change_password(request):
+    return render(request, 'password/change-password.html')

@@ -56,3 +56,8 @@
     margin: 0 auto;
     width: 50%;
 }
+
+#setting-btn:hover {
+    background-color: #009688; 
+    color: white;
+}
