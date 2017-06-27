@@ -16,14 +16,14 @@ services:
       - redis:redis
   nginx:
     restart: always
-    build: ./nginx/
+    build: ./nginx_pro/
     ports:
       - "80:80"
       - "443:443"
     volumes:
      - ~/www:/www
-     - ~/unicooo_project:/var/unicooo_project
-     - ~/unicooo_project/nginx/conf.d:/etc/nginx/conf.d
+     - ./nginx/sites-enabled/:/etc/nginx/conf.d
+     - ./nginx/settings/nginx.conf:/etc/nginx/nginx.conf
     volumes_from:
       - web
     links:
