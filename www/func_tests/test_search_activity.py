@@ -82,13 +82,3 @@ class SearchFrontPageWebdriver(BaseTestStaticLiveServerTestCase):
         finally:
             alert = self.driver.switch_to_alert()
             self.assertEqual(alert.text, 'Activity id should be 5 digits.')
-
-    def test_click_create_activity(self):
-        '''
-        search return nothing
-        '''
-        self.driver.find_element_by_class_name('front-btn').click()
-        self.wait_element_url(
-            "inter-create-act",
-            url=self.live_server_url + '/act/new/'
-        )

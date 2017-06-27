@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 from django import forms
-from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from .models import MyUser
 
 
@@ -80,7 +79,27 @@ class UserLoginForm(forms.ModelForm):
 # 修改用户表单
 class UserChangeForm(forms.ModelForm):
     """A form for change user"""
-    password = ReadOnlyPasswordHashField()
+    old_password = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                'id': 'old_password',
+                'class': 'form-control',
+                'maxlength': 40,
+                'minlength': 8,
+            }
+        )
+    )
+
+    new_password = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                'id': 'new_password',
+                'class': 'form-control',
+                'maxlength': 40,
+                'minlength': 8,
+            }
+        )
+    )
 
     class Meta:
         model = MyUser
@@ -103,6 +122,3 @@ class UserChangeForm(forms.ModelForm):
                 }
             ),
         }
-
-    def clean_password(self):
-        return self.initial["password"]
