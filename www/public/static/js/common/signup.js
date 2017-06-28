@@ -27,7 +27,7 @@ $(document).ready(function(){
                     type: "get",
                     data: {
                         email: function() {
-                        return $("#email_signup").val();
+                            return $("#email_signup").val();
                         }
                     }
                 }
