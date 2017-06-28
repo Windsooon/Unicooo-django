@@ -330,3 +330,19 @@ def check_act_title(request):
 @login_required
 def change_password(request):
     return render(request, 'password/change-password.html')
+
+
+@login_required
+def password_reset(request):
+    new_password = request.POST.get('new_password', None)
+    request.user.set_password(new_password)
+    request.user.save()
+    return HttpResponse(status=200)
+
+
+@login_required
+def check_old_password(request):
+    old_pasword = request.POST.get('old_password', None)
+    if request.user.check_password(old_pasword):
+        return HttpResponse("true")
+    return HttpResponse("false")

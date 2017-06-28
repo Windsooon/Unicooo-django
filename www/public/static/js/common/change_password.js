@@ -1,10 +1,21 @@
 $(document).ready(function() {
    formArray = new Array();
+   var csrftoken = getCookie('csrftoken');
 
    var validator = $("#change-password-form").validate({
         rules: {
             old_password: {
                 required: true,
+                remote: {
+                    url: "/check_old_password/",
+                    type: "POST",
+                    data: {
+                        old_password: function() {
+                            return $("#id_old_password").val();
+                        },
+                        csrfmiddlewaretoken: csrftoken,
+                    }
+                }
             },
             new_password1: {
                 required: true,
@@ -18,6 +29,7 @@ $(document).ready(function() {
         messages: {
             old_password: {
                 required: "Please enter your old password.",
+                remote: "Your old password is incorret",
             },
             new_password1: {
                 required: "Please enter your new password.",
@@ -36,7 +48,7 @@ $(document).ready(function() {
             loadingBefore($form_submit_wrap);
 
             $.ajax({
-                url: "/api/password_reset/",
+                url: "/password_reset/",
                 type: "POST",
                 datatype: "json",
                 data:  {"new_password": $("#id_new_password1").val()},
