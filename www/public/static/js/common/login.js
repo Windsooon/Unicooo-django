@@ -17,7 +17,8 @@ $(document).ready(function(){
             },
             password: {
                 required: true,
-                minlength: 8
+                minlength: 8,
+                maxlength: 40,
             },
         },
         messages: {
@@ -27,19 +28,24 @@ $(document).ready(function(){
             },
             password: {
                 required: "Please enter your password.",
-                minlength: jQuery.validator.format("Please Enter at least {0} characters.")
+                minlength: jQuery.validator.format("Please Enter at least {0} characters."),
+                maxlength: jQuery.validator.format("Please Enter up to  {0} characters."),
             },
         },
         submitHandler: function(form) {
             $("#login_form :input").prop("disabled", true);
             loadingBefore($(".submit-btn-wrap"));
-            csrf_token = $("input[name='csrfmiddlewaretoken']").val();
+            var csrftoken = getCookie('csrftoken');
             $.ajax({
                 url: "/login/",
                 type: "POST",
                 datatype: "json",
-                data:  {csrfmiddlewaretoken: csrf_token, "email": $("#email_login").val(),"password": $("#password_login").val()},
-                beforeSend:function() {},
+                data:  {"email": $("#email_login").val(),"password": $("#password_login").val()},
+                beforeSend:function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    } 
+                },
                 success: function(xhr) {
                     var current_url = window.location.href; 
                     var location = current_url.split("next=", 2);

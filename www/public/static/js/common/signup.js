@@ -62,7 +62,8 @@ $(document).ready(function(){
             },
             password: {
                 required: "Please enter your password.",
-                minlength: jQuery.validator.format("Please Enter at least {0} characters.")
+                minlength: jQuery.validator.format("Please Enter at least {0} characters."),
+                maxlength: jQuery.validator.format("Please Enter up to  {0} characters."),
             },
             email: {
                 required: "Please enter a valid email address.",

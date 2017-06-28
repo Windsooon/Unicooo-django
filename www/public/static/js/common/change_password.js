@@ -6,6 +6,8 @@ $(document).ready(function() {
         rules: {
             old_password: {
                 required: true,
+                minlength: 6,
+                maxlength: 30,
                 remote: {
                     url: "/check_old_password/",
                     type: "POST",
@@ -18,10 +20,14 @@ $(document).ready(function() {
                 }
             },
             new_password1: {
+                minlength: 6,
+                maxlength: 30,
                 required: true,
                 equalTo: "#id_new_password2"
             },
             new_password2: {
+                minlength: 6,
+                maxlength: 30,
                 required: true,
                 equalTo: "#id_new_password1"
             },
@@ -29,15 +35,21 @@ $(document).ready(function() {
         messages: {
             old_password: {
                 required: "Please enter your old password.",
-                remote: "Your old password is incorret",
+                remote: "Your old password is incorrect.",
+                minlength: jQuery.validator.format("Please Enter at least {0} characters."),
+                maxlength: jQuery.validator.format("Please Enter up to  {0} characters."),
             },
             new_password1: {
                 required: "Please enter your new password.",
-                equalTo: "Password doesn't match the confirmation"
+                equalTo: "Password doesn't match the confirmation.",
+                minlength: jQuery.validator.format("Please Enter at least {0} characters."),
+                maxlength: jQuery.validator.format("Please Enter up to  {0} characters."),
             },
             new_password2: {
                 required: "Please enter your new password again.",
-                equalTo: "Password doesn't match the confirmation"
+                equalTo: "Password doesn't match the confirmation.",
+                minlength: jQuery.validator.format("Please Enter at least {0} characters."),
+                maxlength: jQuery.validator.format("Please Enter up to  {0} characters."),
             },
         },
         submitHandler: function(form) {
@@ -61,7 +73,7 @@ $(document).ready(function() {
                     var $submit_btn_wrap = $(".submit-btn-wrap");
                     $submit_btn_wrap.empty();
                     var setting_upload_cover = $("<span />", {
-                          "class": "setting-upload-cover btn btn-primary btn-file btn-block"
+                          "class": "submit-btn btn btn-primary btn-file btn-block"
                       });
                     var upload_success = $("<span />", {
                           "class": "success-span",

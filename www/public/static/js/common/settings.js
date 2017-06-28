@@ -49,7 +49,7 @@ $(document).ready(function() {
                     var $submit_btn_wrap = $(".submit-btn-wrap");
                     $submit_btn_wrap.empty();
                     var setting_upload_cover = $("<span />", {
-                          "class": "setting-upload-cover btn btn-primary btn-file btn-block"
+                          "class": "submit-btn btn btn-primary btn-file btn-block"
                       });
                     var upload_success = $("<span />", {
                           "class": "success-span",
