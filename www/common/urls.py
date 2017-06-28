@@ -27,7 +27,7 @@ urlpatterns = [
     url(r'^signup/$',
         views.sign_up, name="sign_up"),
     url(r'^login/$',
-        cache_page(60 * 15)(views.login_in), name="login"),
+        views.login_in, name="login"),
     url(r'^contact/$',
         cache_page(60 * 15)(views.contact), name="contact"),
     url(r'^logout/$', views.logout_user, name="logout"),

@@ -350,7 +350,7 @@
 #see-more-btn {
     background-color: white;
     border-radius: 6px;
-    box-shadow: 0 3px #ccc;
+    box-shadow: 0 3px #e2e2e2;
 }
 
 #see-more-btn:hover {
@@ -364,11 +364,13 @@
     background-color: white;
     margin-top: 20px;
     border-radius: 10px;
-    box-shadow: 0 3px #9f9f9f;
+    box-shadow: 0 3px #e2e2e2;
 }
 
-#act-edit-btn:active {
-    box-shadow: 0 1px #cbcbcb;
+
+#act-edit-btn:hover {
+    background-color: #009688;
+    color: white;
 }
 
 .act-editor-row {
@@ -468,10 +470,20 @@
     bottom: 0;
 }
 
+.details-act-btn:hover {
+    background-color: #009688;
+    color: white;
+}
+
 .join-act-btn {
     position: absolute;
     right: 0;
     bottom: 0;
+}
+
+.join-act-btn:hover {
+    background-color: #009688;
+    color: white;
 }
 
 #inter-personal-act {

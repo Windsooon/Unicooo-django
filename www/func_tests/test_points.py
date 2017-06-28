@@ -4,6 +4,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from django.contrib.auth import get_user_model
+from django.core.cache import cache
 from django.test import Client
 from .base_tests import BaseTestStaticLiveServerTestCase
 from activities.models import Act
@@ -44,6 +45,7 @@ class PointWebdriver(BaseTestStaticLiveServerTestCase):
         self.act_cover_btn = self.driver.find_element_by_id('act-cover-btn')
 
     def tearDown(self):
+        cache.clear()
         pass
 
     def test_like_other_posts_minus_point(self):

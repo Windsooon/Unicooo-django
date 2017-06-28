@@ -70,6 +70,13 @@ class LoginWebdriver(BaseTestStaticLiveServerTestCase):
         self.wait_element_text(
             'form-server-error-p', 'Email or password incorrect.', 'class')
 
+    def test_login_wrong_password(self):
+        self.email_login.send_keys(self.email)
+        self.password_login.send_keys('ewrqewk233323')
+        self.submit_btn.click()
+        self.wait_element_text(
+            'form-server-error-p', 'Email or password incorrect.', 'class')
+
     def test_login_empty(self):
         self.submit_btn.click()
         self.assert_equal_error_text(
@@ -78,10 +85,3 @@ class LoginWebdriver(BaseTestStaticLiveServerTestCase):
         self.assert_equal_error_text(
             'password_login-error',
             'Please enter your password.')
-
-    def test_login_wrong_password(self):
-        self.email_login.send_keys(self.email)
-        self.password_login.send_keys('ewrqewk233323')
-        self.submit_btn.click()
-        self.wait_element_text(
-            'form-server-error-p', 'Email or password incorrect.', 'class')

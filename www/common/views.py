@@ -91,8 +91,7 @@ def login_in(request):
         user = authenticate(email=email, password=password)
         if user is not None and user.is_active:
             django_login(request, user)
-            return HttpResponseRedirect(
-               reverse('front_page'))
+            return HttpResponse(10010, status=200)
         else:
             return HttpResponse(10002, status=400)
     else:
