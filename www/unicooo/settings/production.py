@@ -1,4 +1,3 @@
-import sys
 from .base import *
 
 REST_FRAMEWORK = {
