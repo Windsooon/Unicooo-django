@@ -37,6 +37,5 @@ services:
       - redisdata:/data
 
 volumes:
-    mysqldata:
     redisdata:
 
