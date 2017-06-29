@@ -21,7 +21,7 @@ services:
       - DJANGO_SETTINGS_MODULE=unicooo.settings.local
     volumes:
       - ./www:/usr/src/app
-    command: bash -c "python manage.py makemigrations && python manage.py migrate && /usr/local/bin/gunicorn unicooo.wsgi:application -w 3 --timeout 200 -k gevent -b 0.0.0.0:8000 --reload"
+    command: "python manage.py makemigrations && python manage.py migrate && /usr/local/bin/gunicorn unicooo.wsgi:application -w 3 --timeout 200 -k gevent -b 0.0.0.0:8000 --reload"
     links:
       - redis:redis
   nginx_d:

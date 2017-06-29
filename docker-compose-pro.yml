@@ -11,7 +11,7 @@ services:
       - PATH=/usr/src/app/:$PATH
       - PYTHONPATH=/usr/src/app/
       - DJANGO_SETTINGS_MODULE=unicooo.settings.production
-    command: bash -c "python manage.py makemigrations && python manage.py migrate && /usr/local/bin/gunicorn unicooo.wsgi:application -w 3 --timeout 200 -k gevent -b :8000 --reload"
+    command: "python manage.py makemigrations && python manage.py migrate && /usr/local/bin/gunicorn unicooo.wsgi:application -w 3 --timeout 200 -k gevent -b :8000 --reload"
     links:
       - redis:redis
   nginx:
@@ -26,8 +26,8 @@ services:
      - ./nginx/settings/nginx.conf:/etc/nginx/nginx.conf
     volumes_from:
       - web
-    links:
-      - web:web
+    depends_on:
+      - web
   redis:
     restart: always
     image: redis:latest
