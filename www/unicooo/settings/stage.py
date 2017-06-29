@@ -25,7 +25,7 @@ REST_FRAMEWORK = {
     }
 }
 
-ALLOWED_HOSTS = [".unicooo.com"]
+ALLOWED_HOSTS = ["stage.unicooo.com"]
 
 CSRF_COOKIE_SECURE = True
 
