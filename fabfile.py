@@ -23,7 +23,7 @@ def deploy():
     _update_nginx(nginx_conf, host_pre, site_folder)
     _add_local_file(site_folder, source_folder)
     _update_compose(source_folder)
-    _run_docker()
+    _run_docker(source_folder)
 
 
 def _create_directory(site_folder):
@@ -52,8 +52,7 @@ def _update_nginx(nginx_conf, host_pre, site_folder):
 
 
 def _add_local_file(site_folder, source_folder):
-    put('challenges', site_folder)
-    put('ssl', site_folder)
+    put('./www/.secret.json', source_folder + '/www/')
     put('./www/common/qiniuSettings.py', source_folder + '/www/common/')
 
 
@@ -66,5 +65,5 @@ def _update_compose(source_folder):
             backup='')
 
 
-def _run_docker():
-    run('docker-compose -f docker-compose-pro.yml up -d --build')
+def _run_docker(source_folder):
+    run('cd {0} && docker-compose -f docker-compose-pro.yml up -d --build'.format(source_folder))
