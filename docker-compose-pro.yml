@@ -22,6 +22,7 @@ services:
       - "443:443"
     volumes:
      - ./nginx_pro/settings/nginx.conf:/etc/nginx/nginx.conf
+     - ./nginx_pro/sites-enabled/:/etc/nginx/sites-enabled/
     volumes_from:
       - web
     depends_on:
