@@ -14,10 +14,13 @@ def deploy():
 
     site_folder = '/home/{0}/sites/{1}'.format(env.user, env.host)
     source_folder = site_folder + '/source'
-    nginx_conf = source_folder + '/nginx_pro/sites-enabled/unicooo_project.conf'
+    nginx_conf = (
+        source_folder +
+        '/nginx_pro/sites-enabled/unicooo_project.conf')
     _create_directory(site_folder)
     _get_latest_source(source_folder)
     _update_nginx(nginx_conf, host_pre, site_folder)
+    _update_compose(source_folder)
 
 
 def _create_directory(site_folder):
@@ -43,3 +46,11 @@ def _update_nginx(nginx_conf, host_pre, site_folder):
         nginx_conf,
         'deploy_site',
         site_folder)
+
+
+def _update_compose(source_folder):
+    if env.host == 'stage.unicooo.com':
+        sed(
+            source_folder + '/docker-compose-pro.yml',
+            'unicooo.settings.production',
+            'unicooo.settings.stage')
