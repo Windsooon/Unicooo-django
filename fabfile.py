@@ -1,5 +1,6 @@
-from fabric.contrib.files import append, exists, sed
+from fabric.contrib.files import exists, sed
 from fabric.api import env, local, run
+from fabric.operations import put
 
 REPO_URL = 'git@github.com:Windsooon/Unicooo-django.git'
 
@@ -20,11 +21,15 @@ def deploy():
     _create_directory(site_folder)
     _get_latest_source(source_folder)
     _update_nginx(nginx_conf, host_pre, site_folder)
+    _add_local_file(site_folder, source_folder)
     _update_compose(source_folder)
+    _run_docker()
 
 
 def _create_directory(site_folder):
     run('mkdir -p {0}'.format(site_folder))
+    run('mkdir -p {0}/challenges/'.format(site_folder))
+    run('mkdir -p {0}/ssl/'.format(site_folder))
 
 
 def _get_latest_source(source_folder):
@@ -39,13 +44,17 @@ def _get_latest_source(source_folder):
 
 def _update_nginx(nginx_conf, host_pre, site_folder):
     sed(
-        nginx_conf,
-        'unicooo',
-        host_pre)
+        nginx_conf, 'unicooo',
+        host_pre, backup='')
     sed(
-        nginx_conf,
-        'deploy_site',
-        site_folder)
+        nginx_conf, 'deploy_site',
+        site_folder, backup='')
+
+
+def _add_local_file(site_folder, source_folder):
+    put('challenges', site_folder)
+    put('ssl', site_folder)
+    put('./www/common/qiniuSettings.py', source_folder + '/www/common/')
 
 
 def _update_compose(source_folder):
@@ -53,4 +62,9 @@ def _update_compose(source_folder):
         sed(
             source_folder + '/docker-compose-pro.yml',
             'unicooo.settings.production',
-            'unicooo.settings.stage')
+            'unicooo.settings.stage',
+            backup='')
+
+
+def _run_docker():
+    run('docker-compose -f docker-compose-pro.yml up -d --build')
