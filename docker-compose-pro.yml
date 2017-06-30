@@ -21,8 +21,8 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-     - ./nginx/sites-enabled/:/etc/nginx/conf.d
-     - ./nginx/settings/nginx.conf:/etc/nginx/nginx.conf
+     - ./nginx_pro/sites-enabled/:/etc/nginx/conf.d
+     - ./nginx_pro/settings/nginx.conf:/etc/nginx/nginx.conf
     volumes_from:
       - web
     depends_on:
