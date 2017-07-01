@@ -21,8 +21,8 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-     - ./challenges/:/var/challenges/
-     - ./ssl/:/var/tmp/ssl/
+     - ../challenges/:/var/challenges/
+     - ../ssl/:/var/ssl/
      - ./nginx_pro/settings/nginx.conf:/etc/nginx/nginx.conf
      - ./nginx_pro/sites-enabled/unicooo_project.conf:/etc/nginx/sites-enabled/unicooo_project.conf
     volumes_from:
