@@ -36,7 +36,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'unicooo_sunkist',
         'USER': 'root',
-        'PASSWORD': 'formyne2012AC',
+        'PASSWORD': 'just_test',
         'HOST': 'testunicooo.cormcad6fngn.us-west-1.rds.amazonaws.com',
         'PORT': '3306',
         'CHARSET': 'UTF-8',
