@@ -2,7 +2,6 @@
 __pycache__/
 *.py[cod]
 *$py.class
-migrations/
 qiniu*.py
 .s*t.json
 
@@ -58,7 +57,6 @@ coverage.xml
 
 # Django stuff:
 *.log
-local_settings.py
 
 # Flask instance folder
 instance/
