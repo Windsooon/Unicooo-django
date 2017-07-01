@@ -6,6 +6,8 @@ migrations/
 qiniu*.py
 .s*t.json
 
+challenges/
+ssl/
 
 # C extensions
 *.so
