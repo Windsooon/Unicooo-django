@@ -22,7 +22,7 @@ services:
       - "443:443"
     volumes:
      - ./challenges/:/var/challenges/
-     - ./ssl/:/var/ssl/
+     - ./ssl/:/var/tmp/ssl/
      - ./nginx_pro/settings/nginx.conf:/etc/nginx/nginx.conf
      - ./nginx_pro/sites-enabled/unicooo_project.conf:/etc/nginx/sites-enabled/unicooo_project.conf
     volumes_from:
