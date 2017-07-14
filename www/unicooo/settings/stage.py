@@ -34,10 +34,10 @@ SESSION_COOKIE_SECURE = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'unicooo_sunkist',
-        'USER': 'root',
-        'PASSWORD': 'just_test',
-        'HOST': 'testunicooo.cormcad6fngn.us-west-1.rds.amazonaws.com',
+        'NAME': 'testforunicooo',
+        'USER': 'testunicooo',
+        'PASSWORD': 'testunicooo',
+        'HOST': 'testforunicooo.cormcad6fngn.us-west-1.rds.amazonaws.com',
         'PORT': '3306',
         'CHARSET': 'UTF-8',
     }
