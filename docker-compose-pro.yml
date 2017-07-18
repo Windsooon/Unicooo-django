@@ -23,7 +23,8 @@ services:
     volumes:
      - ./www/public/:/var/public/
      - /var/www/:/var/www/
-     - /var/challenges/:/var/challenges/
+     - /var/letsencrypt/:/var/letsencrypt/
+     - /var/dehydrated/:/var/dehydrated/
      - ./nginx_pro/settings/nginx.conf:/etc/nginx/nginx.conf
      - ./nginx_pro/sites-enabled/unicooo_project.conf:/etc/nginx/sites-enabled/unicooo_project.conf
     volumes_from:
