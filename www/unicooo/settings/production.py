@@ -1,5 +1,8 @@
 from .base import *
 
+with open(secret_file) as json_data:
+    d = json.load(json_data)
+
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
@@ -36,7 +39,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'unicooo_sunkist',
         'USER': 'root',
-        'PASSWORD': 'just_for_test',
+        'PASSWORD': d['production'],
         'HOST': 'unicooon.c921zwhbyg7s.us-west-2.rds.amazonaws.com',
         'PORT': '5999',
         'CHARSET': 'UTF-8',
