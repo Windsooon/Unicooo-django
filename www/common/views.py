@@ -258,7 +258,10 @@ def update_posts_like(request, post_id):
     post_object = Post.objects.get(id=post_id)
     act_id = post_object.act_id
 
-    user_points = cache.get("user_points_" + str(request.user.id))
+    try:
+        user_points = cache.get("user_points_" + str(request.user.id))
+    except:
+        cache.set("user_points_" + str(request.user.id), 50)
     if user_points < 1:
         return HttpResponse(error_messages[1], status=500)
     # if user already like the post
