@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^sub/$', views.get_notifications),
     url(r'^sub_no/$', views.move_notifications),
     url(r'^token/$', views.get_upload_token),
+    url(r'^how-to/$', views.how_to),
     url(r'^likes/(?P<post_id>\d+)/$', views.update_posts_like),
     url(r'^checkemail/$', views.check_email_exist),
     url(r'^privacy/$',

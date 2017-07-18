@@ -213,6 +213,10 @@ def thanks(request):
     """Thank You"""
     return render(request, "common/thanks.html")
 
+def how_to(request):
+    """How To Create Activity"""
+    return render(request, "common/how_to.html")
+
 
 @login_required
 def get_notifications(request):
