@@ -26,13 +26,14 @@ services:
       - redis:redis
   nginx_d:
     restart: always
-    build: ./nginx/
+    build: ./nginx_test/
     ports:
       - "80:80"
       - "443:443"
     volumes:
-        - ./nginx/sites-enabled/:/etc/nginx/conf.d
-        - ./nginx/settings/nginx.conf:/etc/nginx/nginx.conf
+        - ./www/public/:/var/public/
+        - ./nginx_test/sites-enabled/:/etc/nginx/conf.d
+        - ./nginx_test/settings/nginx.conf:/etc/nginx/nginx.conf
     volumes_from:
       - web
     links:
