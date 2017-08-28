@@ -6,21 +6,12 @@ REPO_URL = 'git@github.com:Windsooon/Unicooo-django.git'
 
 
 def deploy():
-    if env.host == 'ec2-52-53-245-23.us-west-1.compute.amazonaws.com':
-        env.host = 'stage.unicooo.com'
-        host_pre = 'stage.unicooo'
-    else:
-        env.host = 'unicooo.com'
-        host_pre = 'unicooo'
-
     site_folder = '/home/{0}/sites/{1}'.format(env.user, env.host)
     source_folder = site_folder + '/source'
-    nginx_conf = (
-        source_folder +
-        '/nginx_pro/sites-enabled/unicooo_project.conf')
+    # create directory to store code and other
     _create_directory(site_folder)
+    # get code from Github
     _get_latest_source(source_folder)
-    _update_nginx(nginx_conf, host_pre, site_folder)
     _add_local_file(site_folder, source_folder)
     _update_compose(source_folder)
     _run_docker(source_folder)
@@ -28,8 +19,6 @@ def deploy():
 
 def _create_directory(site_folder):
     run('mkdir -p {0}'.format(site_folder))
-    run('mkdir -p {0}/challenges/'.format(site_folder))
-    run('mkdir -p {0}/ssl/'.format(site_folder))
 
 
 def _get_latest_source(source_folder):
@@ -42,18 +31,14 @@ def _get_latest_source(source_folder):
         source_folder, current_commit))
 
 
-def _update_nginx(nginx_conf, host_pre, site_folder):
-    sed(
-        nginx_conf, 'unicooo',
-        host_pre, backup='')
-    sed(
-        nginx_conf, 'deploy_site',
-        site_folder, backup='')
-
-
 def _add_local_file(site_folder, source_folder):
     put('./www/.secret.json', source_folder + '/www/')
     put('./www/common/qiniuSettings.py', source_folder + '/www/common/')
+    sed(
+        source_folder + '/www/Dockerfile',
+        'pip install -r requirements.txt ' +
+        '-i https://mirrors.ustc.edu.cn/pypi/web/simple/',
+        'pip install -r requirements.txt')
 
 
 def _update_compose(source_folder):
@@ -63,7 +48,13 @@ def _update_compose(source_folder):
             'unicooo.settings.production',
             'unicooo.settings.stage',
             backup='')
+        sed(
+            source_folder + '/docker-compose-pro.yml',
+            'nginx_pro',
+            'nginx',
+            backup='')
 
 
 def _run_docker(source_folder):
-    run('cd {0} && docker-compose -f docker-compose-pro.yml up -d --build'.format(source_folder))
+    run(
+        'cd {0} && docker-compose -f docker-compose-pro.yml up -d --build'.format(source_folder))
