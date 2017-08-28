@@ -97,7 +97,6 @@ AUTHENTICATION_BACKENDS = (
 
 
 # Static files (CSS, JavaScript, Images)
-STATIC_ROOT = '/static/'
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (

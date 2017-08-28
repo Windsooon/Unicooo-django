@@ -97,7 +97,6 @@ AUTHENTICATION_BACKENDS = (
 
 
 # Static files (CSS, JavaScript, Images)
-STATIC_ROOT = '/static/'
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
@@ -140,5 +139,3 @@ DATABASES = {
         'CHARSET': 'UTF-8',
     }
 }
-
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

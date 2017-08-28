@@ -137,5 +137,3 @@ DATABASES = {
         'NAME': 'test_db.sqlite3',
     }
 }
-
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
