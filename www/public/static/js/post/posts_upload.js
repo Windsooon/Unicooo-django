@@ -39,18 +39,20 @@ $(document).ready(function(){
     }); 
     
     //click "UPLOAD IMAGE" button
-    formData = new FormData();
-    formArrar = new Array();
-    $.ajax({
-        url: "/token/",
-        type: "GET",
-        datatype: "json",
-        data: {"type": 1},
-        success: function(data) {
-            formData.append("token", data["token"]);
-            formData.append("key", data["key"]);
-            formArray[1] = data["key"];
-        },
+    $(".join-act-btn").on("click", function(){
+        formData = new FormData();
+        formArrar = new Array();
+        $.ajax({
+            url: "/token/",
+            type: "GET",
+            datatype: "json",
+            data: {"type": 1},
+            success: function(data) {
+                formData.append("token", data["token"]);
+                formData.append("key", data["key"]);
+                formArray[1] = data["key"];
+            },
+        });
     });
     
     //when post image change
