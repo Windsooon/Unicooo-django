@@ -87,3 +87,4 @@ celerybeat-schedule
 
 # Spyder project settings
 .spyderproject
+test_db.sqlite3
