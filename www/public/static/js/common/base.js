@@ -76,7 +76,7 @@ function poll() {
 		error: function () {
 		},
 		complete: function () {
-			poll_interval=10000;
+			poll_interval=30000;
 			setTimeout(poll, poll_interval);
 		},
 	});
