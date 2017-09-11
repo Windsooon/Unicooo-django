@@ -213,6 +213,7 @@ def thanks(request):
     """Thank You"""
     return render(request, "common/thanks.html")
 
+
 def how_to(request):
     """How To Create Activity"""
     return render(request, "common/how_to.html")
@@ -261,49 +262,32 @@ def update_posts_like(request, post_id):
     post_likes_users = get_redis_connection("default")
     post_object = Post.objects.get(id=post_id)
     act_id = post_object.act_id
+    user_id = str(request.user.id)
 
-    try:
-        user_points = cache.get("user_points_" + str(request.user.id))
-    except:
-        cache.set("user_points_" + str(request.user.id), 50)
+    user_points = cache.get("user_points_" + user_id)
     if user_points < 1:
         return HttpResponse(error_messages[1], status=500)
     # if user already like the post
-    try:
-        post_likes_users.zscore(
-            "post_"+str(post_id),
-            "user"+":"+str(request.user.id)
-            )
-    except:
+    user_like = post_likes_users.zscore(
+        "post_"+str(post_id),
+        "user"+":"+str(request.user.id)
+        )
+    if user_like:
         return HttpResponse(error_messages[2], status=500)
     # add like to post
-    try:
-        post_likes_users.zadd(
-                ("post_"+str(post_id)),
-                time.time(),
-                "user"+":"+str(request.user.id)
-                )
-        if cache.get("post_"+str(post_id)):
-            cache.incr("post_"+str(post_id))
-        else:
-            cache.set("post_"+str(post_id), 1, timeout=None)
-        post_likes_users.zadd(
-                ("act_"+str(act_id)),
-                time.time(),
-                "post"+":"+str(post_id)
-                )
-        if cache.get("act_"+str(act_id)):
-            cache.incr("act_"+str(act_id))
-        else:
-            cache.set("act_"+str(act_id), 1, timeout=None)
-    except:
-        return HttpResponse(error_messages[3], status=500)
-    else:
-        try:
-            cache.decr("user_points_" + str(request.user.id))
-            cache.incr("user_points_" + str(post_author_id))
-        except:
-            return HttpResponse(error_messages[4], status=500)
+    post_likes_users.zadd(
+            ("post_"+str(post_id)),
+            time.time(),
+            "user"+":"+str(request.user.id)
+            )
+    post_likes_users.zadd(
+            ("act_"+str(act_id)),
+            time.time(),
+            "post"+":"+str(post_id)
+            )
+# update user points
+    cache.decr("user_points_" + user_id)
+    cache.incr("user_points_" + str(post_author_id))
     return HttpResponse(status=201)
 
 
