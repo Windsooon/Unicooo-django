@@ -44,19 +44,6 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'unicooo.urls'
 
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://" + "redis" + "/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    }
-}
-
-SESSION_ENGINE = "django.contrib.sessions.backends.cache"
-SESSION_CACHE_ALIAS = "default"
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -130,12 +117,21 @@ DEBUG = True
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'unicooo_sunkist',
-        'USER': 'www',
-        'PASSWORD': 'for_unicooo_test',
-        'HOST': 'db',
-        'PORT': '3306',
-        'CHARSET': 'UTF-8',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://redis-18985.c15.us-east-1-4.ec2.cloud.redislabs.com:18985/0",
+        "OPTIONS": {
+            'PASSWORD': 'just_for_redis_unicooo',
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"

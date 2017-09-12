@@ -47,7 +47,7 @@ ROOT_URLCONF = 'unicooo.urls'
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://" + "redis" + "/1",
+        "LOCATION": "redis://127.0.0.1:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -94,7 +94,7 @@ USE_TZ = True
 AUTH_USER_MODEL = 'common.MyUser'
 
 AUTHENTICATION_BACKENDS = (
-    'common.models.CustomAuth', 'django.contrib.auth.backends.ModelBackend')
+    'common.models.CustomAuth',)
 
 
 # Static files (CSS, JavaScript, Images)

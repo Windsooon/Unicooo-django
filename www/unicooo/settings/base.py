@@ -47,8 +47,9 @@ ROOT_URLCONF = 'unicooo.urls'
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://" + "redis" + "/1",
+        "LOCATION": "redis://redis-18985.c15.us-east-1-4.ec2.cloud.redislabs.com:18985/0",
         "OPTIONS": {
+            'PASSWORD': d["redis_pass"],
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     }
