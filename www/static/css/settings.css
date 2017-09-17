@@ -1,0 +1,68 @@
+.avatar-settings img {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    margin: 0 auto;
+    display: block;
+}
+
+.avatar-settings label {
+    display: block;
+}
+
+.avatar-settings label:hover {
+    cursor: pointer;
+}
+
+.avatar-settings-div {
+    margin: 0 auto;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background-color: #c8c7cd;
+    position: relative;
+    padding-top: 20px;
+}
+
+.avatar-settings-p {
+    text-align: center;
+    text-transform: uppercase;
+    color: white;
+    font-size: 80px;
+}
+
+.avatar-settings > input {
+    display: none;
+}
+
+.setting-upload-cover {
+    margin: 0px;
+}
+
+.settings-img-wrapper {
+        margin: 0 auto;
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        background-color: #c8c7cd;
+        position: relative;
+        padding-top: 20px;
+    }
+.settings-img-outer-wrapper {
+    height: 160px;
+}
+
+.progress {
+    margin: 0 auto;
+    width: 50%;
+}
+
+#setting-btn:hover {
+    background-color: #009688; 
+    color: white;
+}
+
+#change-btn:hover{
+    background-color: #f44336;
+    color: white;
+}
