@@ -38,10 +38,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'unicooo_sunkist',
-        'USER': 'root',
+        'USER': 'Windson',
         'PASSWORD': d['production'],
-        'HOST': 'unicooon.c921zwhbyg7s.us-west-2.rds.amazonaws.com',
-        'PORT': '5999',
+        'HOST': 'Windson.mysql.pythonanywhere-services.com',
+        'PORT': '3306',
         'CHARSET': 'UTF-8',
     }
 }
