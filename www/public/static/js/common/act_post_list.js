@@ -30,7 +30,7 @@ function get_act_list(data, container, out=false, text=false){
                 $.each(data.results, function(key, value){
                     //outer single act div
                     var $act_outer_container = $("<div />", {
-                            "class": "act-outer-container col-sm-6 col-md-4 col-lg-4",
+                            "class": "act-outer-container col-xs-12 col-md-4 col-lg-4",
                             });
                     //inner single act div
                     var $act_inner_container = $("<div />", {
