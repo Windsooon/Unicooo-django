@@ -1,152 +1,131 @@
 {% load staticfiles %}
 <!DOCTYPE html>
 <html class="no-js">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="description" content="">
-  <meta name="keywords" content="index">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <meta name="renderer" content="webkit">
-  <meta http-equiv="Cache-Control" content="no-siteapp"/>
-  <link rel="shortcut icon"  href="{% static 'favicon.ico' %}">
-  <link rel="apple-touch-icon-precomposed" href="{% static 'favicon.ico' %}">
-  {% block styles %}
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link rel="shortcut icon"  href="{% static 'favicon.ico' %}">
+    <link rel="apple-touch-icon-precomposed" href="{% static 'favicon.ico' %}">
+    {% block styles %}
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"/>
     <link href="{% static 'css/bootstrap-material-design.min.css' %}" rel="stylesheet"/>
     <link href="{% static 'css/ripples.min.css' %}" rel="stylesheet"/>
     <link href="{% static 'css/common.css' %}" rel="stylesheet"/>
     <link href="{% static 'css/loading.css' %}" rel="stylesheet"/>
-  {% endblock %}
-  {% block extra_head %}
-  {% endblock %}
-  {% block title %}
+    {% endblock %}
+    {% block extra_head %}
+    {% endblock %}
+    {% block title %}
     <title>Welcome to Unicooo</title>
+    {% endblock %}
+  </head>
+  <body>
+  {% block header %}
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#uni-nav" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button> 
+        <a class="navbar-brand" href="/">Unicooo</a>
+      </div>
+  
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse navbar-responsive-collapse" id="uni-nav">
+        <form class="navbar-form navbar-left" role="search">
+          <div class="form-group is-empty col-xs-12">
+            <input type="text" class="form-control act-search-text" placeholder="Act Id">
+            <span class="material-input"></span>
+          <a class="glyphicon glyphicon-search act-search" href=""></a>
+          </div>
+        </form>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a id="explort-btn" href="{% url 'act_type' 'public' %}"><span class="icon-right glyphicon glyphicon-globe" aria-hidden="true"></span><span id="inter-activies">Explore</span></a></li>
+          <li><a id="add-btn" href="{% url 'act_type' 'new' %}"><span class="icon-right glyphicon glyphicon-pencil" aria-hidden="true"></span><span id="inter-add">Add</span></a></li>
+        {% if user.is_authenticated %}
+          <li class="dropdown">
+          <a href="#" id="base-user-username" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="request-user">{{ request.user.user_name }}</span><span class="caret"></span></a>
+          <input id="user-id" type="hidden" value={{request.user.id}} />
+          <input id="user-avatar" type="hidden" value={{request.user.user_avatar}} />
+            <ul class="dropdown-menu">
+              <li class="base-feed"><a href="{% url 'personal' request.user.user_name %}feed/"><span class="icon-big-right glyphicon glyphicon-fire" aria-hidden="true"></span><span>Feed</span></a></li>
+              <li class="base-comments"><a href="{% url 'personal' request.user.user_name %}comments/"><span class="icon-big-right glyphicon glyphicon-comment" aria-hidden="true"></span><span id="inter-comments">Comments</span></a></li>
+              <li class="base-points"><a href=""><span class="icon-big-right glyphicon glyphicon-heart" aria-hidden="true"></span><span>{{request.user.points}}</span></a></li>
+              <li role="separator" class="divider"></li>
+              <li class="base-personal"><a href="{% url 'personal' request.user.user_name %}act_create/"><span class="icon-big-right glyphicon glyphicon-user" aria-hidden="true"></span><span id="inter-personal">Personal</span></a></li>
+              <li class="base-settings"><a href="{% url 'personal' request.user.user_name %}settings/"><span class="icon-big-right glyphicon glyphicon-cog" aria-hidden="true"></span><span id="inter-settings">Settings</span></a></li>
+              <li class="base-logout"><a href="{% url 'logout' %}"><span class="icon-big-right glyphicon glyphicon-log-out" aria-hidden="true"></span><span id="inter-logout">Logout</span></a></li>
+            </ul>
+          </li>
+        {% else %}
+          
+        <li><a href="/signup" role="button" aria-haspopup="true" aria-expanded="false"><span id="inter-signup">Sign Up</span></a></li>
+        {% endif %}
+        </ul>
+      </div>
+      <!-- end navbar-collapse -->
+    </div>
+    <!--  end container-fluid -->
+    </nav>
+    {% endblock %}
+
+  {% block content %}
   {% endblock %}
-</head>
-<body>
-{% block header %}
-<nav class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#uni-nav" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button> 
-      <a class="navbar-brand" href="/">Unicooo</a>
-    </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse navbar-responsive-collapse" id="uni-nav">
-      <form class="navbar-form navbar-left" role="search">
-        <div class="form-group is-empty col-xs-12">
-          <input type="text" class="form-control act-search-text" placeholder="Act Id">
-          <span class="material-input"></span>
-        <a class="glyphicon glyphicon-search act-search" href=""></a>
-        </div>
-      </form>
-      <ul class="nav navbar-nav navbar-right">
-          <li><a id="explort-btn" href="{% url 'act_type' 'public' %}"><span class="icon-right glyphicon glyphicon-globe" aria-hidden="true"></span><span id="inter-activies">Explore</span></a></li>
-        <li><a id="add-btn" href="{% url 'act_type' 'new' %}"><span class="icon-right glyphicon glyphicon-pencil" aria-hidden="true"></span><span id="inter-add">Add</span></a></li>
-      {% if user.is_authenticated %}
-        <li class="dropdown">
-        <a href="#" id="base-user-username" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="request-user">{{ request.user.user_name }}</span><span class="caret"></span></a>
-        <input id="user-id" type="hidden" value={{request.user.id}} />
-        <input id="user-avatar" type="hidden" value={{request.user.user_avatar}} />
-          <ul class="dropdown-menu">
-            <li class="base-feed"><a href="{% url 'personal' request.user.user_name %}feed/"><span class="icon-big-right glyphicon glyphicon-fire" aria-hidden="true"></span><span>Feed</span></a></li>
-            <li class="base-comments"><a href="{% url 'personal' request.user.user_name %}comments/"><span class="icon-big-right glyphicon glyphicon-comment" aria-hidden="true"></span><span id="inter-comments">Comments</span></a></li>
-            <li class="base-points"><a href=""><span class="icon-big-right glyphicon glyphicon-heart" aria-hidden="true"></span><span>{{request.user.points}}</span></a></li>
-            <li role="separator" class="divider"></li>
-            <li class="base-personal"><a href="{% url 'personal' request.user.user_name %}act_create/"><span class="icon-big-right glyphicon glyphicon-user" aria-hidden="true"></span><span id="inter-personal">Personal</span></a></li>
-            <li class="base-settings"><a href="{% url 'personal' request.user.user_name %}settings/"><span class="icon-big-right glyphicon glyphicon-cog" aria-hidden="true"></span><span id="inter-settings">Settings</span></a></li>
-            <li class="base-logout"><a href="{% url 'logout' %}"><span class="icon-big-right glyphicon glyphicon-log-out" aria-hidden="true"></span><span id="inter-logout">Logout</span></a></li>
-          </ul>
-        </li>
-      {% else %}
-        
-      <li><a href="/signup" role="button" aria-haspopup="true" aria-expanded="false"><span id="inter-signup">Sign Up</span></a></li>
-      {% endif %}
-      </ul>
-    </div>
-    <!-- end navbar-collapse -->
-  </div>
-  <!--  end container-fluid -->
-</nav>
-{% endblock %}
-
-{% block content %}
-{% endblock %}
-
-{% block footer %}
-  <div class="front-footer">
+  {% block footer %}
+  <div class="front-footer container">
     <hr>
-    <div class="row footer-row">
-      <div class="col-xs-4 col-sm-4 col-md-2 col-lg-2">
+    <div class="footer-row row">
+      <div class="col-sm-4 col-md-2">
         <p class="footer-text text-center">Copyright © 2017 Unicooo Inc. All rights reserved.</p>
       </div>
-      <div class="col-xs-4 col-sm-4 col-md-2 col-lg-2">
+      <div class="col-sm-4 col-md-2">
         <a href="{%url 'contact' %}"><p class="footer-text text-center" id="inter-contect">CONTACT US</p></a>
       </div>
-      <div class="col-xs-4 col-sm-4 col-md-2 col-lg-2">
+      <div class="col-sm-4 col-md-2">
         <a href=""><p class="footer-text text-center" id="inter-thank">THANK YOU</p></a>
       </div>
-      <div class="col-xs-4 col-sm-4 col-md-2 col-lg-2">
+      <div class="col-sm-4 col-md-2">
         <a href="{%url 'privacy' %}"><p class="footer-text text-center" id="inter-thank">PRIVACY POLICY</p></a>
       </div>
-      <div class="col-xs-4 col-sm-4 col-md-2 col-lg-2">
+      <div class="col-sm-4 col-md-2">
         <a href="{%url 'question' %}"><p class="footer-text text-center" id="inter-thank">Q&A</p></a>
       </div>
-      <div class="col-xs-4 col-sm-4 col-md-2 col-lg-2">
+      <div class="col-sm-4 col-md-2">
         <a href="https://github.com/Windsooon/Unicooo-django"><p class="footer-text text-center" id="inter-thank">Github</p></a>
       </div>
     </div>
     <hr>
   </div>
-{% endblock %}
+  {% endblock %}
 
-{% block scripts %}
-    <!--[if lt IE 9]>
-      <script src="{% static 'js/respond.min.js' %}></script>
-    <![endif]-->
-    <!--[if (gte IE 9)|!(IE)]><!-->
-    <script src="{% static 'js/plugin/jquery-2.1.4.min.js' %}"></script>
-    <script src="{% static 'js/plugin/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/plugin/material.min.js' %}"></script>
-    <script src="{% static 'js/plugin/ripples.min.js' %}"></script>
-    <script src="{% static 'js/common/base.js' %}"></script>
-    <script src="{% static 'js/plugin/jquery.i18n.properties.min.js' %}"></script>
-    <script>
-    jQuery.i18n.properties({ 
-        name: 'base',// 资源文件名称
-        path: '{% static 'international/' %}',// 资源文件所在目录路径
-        mode: 'map',// 模式：变量或 Map 
-        cache: false, 
-        async: true,
-        encoding: 'UTF-8', //文件编码方式
-        callback: function() {// 回调方法
-            $("#inter-activies").text(jQuery.i18n.prop('base_activies'));
-            $("#inter-add").text(jQuery.i18n.prop('base_add'));
-            $("#inter-personal").text(jQuery.i18n.prop('base_personal'));
-            $("#inter-comments").text(jQuery.i18n.prop('base_comments'));
-            $("#inter-settings").text(jQuery.i18n.prop('base_settings'));
-            $("#inter-signup").text(jQuery.i18n.prop('base_signup'));
-            $("#inter-contect").text(jQuery.i18n.prop('base_contect'));
-            $("#inter-thank").text(jQuery.i18n.prop('base_thank'));
-        } 
-    });
-</script>        
-{% if user.is_authenticated %}
-    <script type="text/javascript">
-         poll();
-     </script>
-{% endif %} <!--<![endif]-->
-{% endblock %}
+  {% block scripts %}
+  <!--[if lt IE 9]>
+    <script src="{% static 'js/respond.min.js' %}></script>
+  <![endif]-->
+  <!--[if (gte IE 9)|!(IE)]><!-->
+  <script src="{% static 'js/plugin/jquery-2.1.4.min.js' %}"></script>
+  <script src="{% static 'js/plugin/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/plugin/material.min.js' %}"></script>
+  <script src="{% static 'js/plugin/ripples.min.js' %}"></script>
+  <script src="{% static 'js/common/base.js' %}"></script>
+  {% if user.is_authenticated %}
+  <script type="text/javascript">
+       poll();
+  </script>
+  {% endif %} <!--<![endif]-->
+  {% endblock %}
 
-{% block extra_scripts %}
-{% endblock %}
-</body>
+  {% block extra_scripts %}
+  {% endblock %}
+  </body>
 </html>
