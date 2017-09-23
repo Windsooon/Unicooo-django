@@ -187,3 +187,7 @@ input {
 .page-error {
     font-size: 40px;
 }
+
+#create-act {
+    margin-bottom: 20px;
+}
