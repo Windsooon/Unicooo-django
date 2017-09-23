@@ -86,6 +86,8 @@ AUTHENTICATION_BACKENDS = (
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
 STATICFILES_DIRS = (
     'public/static/',
 )
@@ -125,9 +127,8 @@ DATABASES = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://redis-18985.c15.us-east-1-4.ec2.cloud.redislabs.com:18985/0",
+        "LOCATION": "redis://127.0.0.1:6379/1",
         "OPTIONS": {
-            'PASSWORD': 'just_for_redis_unicooo',
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     }
