@@ -1,4 +1,5 @@
 var httpsUrl = "https://o3e6g3hdp.qnssl.com/";
+const uploadUrl = "https://upload.qbox.me";
 $(document).ready(function() {
     //click get comments
     window.onerror=function(msg){

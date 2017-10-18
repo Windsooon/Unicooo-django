@@ -148,7 +148,7 @@ $(document).ready(function(){
                 }, false);
                 return xhr;
             },
-            url: "https://up.qbox.me/",
+            url: uploadUrl,
             type: "POST",
             data: formData,
             datatype: "json",
