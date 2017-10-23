@@ -6,7 +6,7 @@ from .choices import ACTTYPE, ACTLICENCE
 class Act(models.Model):
     user = models.ForeignKey(
         'common.MyUser', related_name='act_user', on_delete=models.CASCADE)
-    act_title = models.CharField(max_length=30)
+    act_title = models.CharField(max_length=50)
     act_content = models.CharField(max_length=255)
     act_intro = models.TextField(blank=True, null=True)
     act_thumb_url = models.CharField(max_length=400)

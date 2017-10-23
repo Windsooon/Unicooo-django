@@ -190,7 +190,9 @@ class ActTestCase(TestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_act_title_too_long(self):
-        act_c_title = 'just a change title,aui你会sdfaksdfjasdfj'
+        act_c_title = 'just a change title,aui你爱谁大疆分' + \
+                      '_啥都发生地方asdkfjsadjfkasdf世界的风' + \
+                      '景dsf谁大疆分 ____会sdfaksdfjasdfj'
         act_c_content = 'just a change content, content'
         act_c_thumb_url = '888888814968b2eaff2f9ae1a02ec01108757eb768d81dfc'
         json_data = {
