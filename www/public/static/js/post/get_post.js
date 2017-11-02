@@ -116,13 +116,11 @@ function getPost(post_id, e, status) {
                           comment_avatar_empty_div.append(comment_avatar_empty_p);
                           comment_avatar.append(comment_avatar_empty_div);
                       }
-
                       
                       var comment_avatar_a = $("<a />", {
                           "class": "comment-avatar-a pull-left",
                           href:  "/" + value["comment_user"]["user_name"] + "/act_crate/",
                       });
-                    
                       comment_avatar_a.append(comment_avatar);
 
                       //comment user and content
