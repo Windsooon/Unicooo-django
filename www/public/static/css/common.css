@@ -191,3 +191,7 @@ input {
 #create-act {
     margin-bottom: 20px;
 }
+
+.act-search {
+    cursor: pointer;
+}

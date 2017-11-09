@@ -556,8 +556,12 @@
     );
 }
 
-.act-cover-image {
-    cursor: inherit;
+#act-cover-image {
+    cursor: pointer;
+}
+
+#act-cover-span {
+    cursor: pointer;
 }
 
 #act-cover-span:hover {
