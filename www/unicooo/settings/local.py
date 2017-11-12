@@ -86,7 +86,7 @@ AUTHENTICATION_BACKENDS = (
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+# STATIC_ROOT = os.path.join(BASE_DIR, "public/static")
 
 STATICFILES_DIRS = (
     'public/static/',
