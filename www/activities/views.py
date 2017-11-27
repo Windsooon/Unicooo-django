@@ -12,7 +12,8 @@ from .choices import ACTLICENCE
 def act_create(request):
     if request.method == "GET":
         form = ActCreateForm
-        return render(request, "act/new.html", {"form": form})
+        return render(
+            request, "act/new.html", {"form": form, "httpsUrl": httpsUrl})
 
 
 def act_list(request, act_list):
