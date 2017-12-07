@@ -192,6 +192,7 @@ input {
     margin-bottom: 20px;
 }
 
-.act-search {
+.act-search, .input-group-addon {
     cursor: pointer;
 }
+

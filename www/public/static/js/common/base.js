@@ -14,6 +14,20 @@ $(document).ready(function() {
             });
         }    
     });
+
+    //Click show/hide password
+    $(".input-group-addon").on("click", ".glyphicon-eye-close", function() {
+         $(this).parent().parent().children("input").attr("type", "text");
+         $(this).removeClass("glyphicon-eye-close");
+         $(this).addClass("glyphicon-eye-open");
+    });
+
+    $(".input-group-addon").on("click", ".glyphicon-eye-open", function() {
+         $(this).parent().parent().children("input").attr("type", "password");
+         $(this).removeClass("glyphicon-eye-open");
+         $(this).addClass("glyphicon-eye-close");
+    });
+
     //press enter still search the act
     $('.act-search-text').keypress(function (e) {
         var key = e.which;
