@@ -22,11 +22,14 @@ function getPost(post_id, e, status) {
                       $(".post-like-details-a").removeClass("glyphicon glyphicon-heart");
                       $(".post-like-details-a").addClass("glyphicon glyphicon-heart-empty");
                   }
+                  // if this post has url
                   if (data["post_url"]) {
+                      var post_url = data["post_url"]
                       $(".glyphicon-link").css("color", "#2b6e90")
                       $(".post-url-details-a").attr("href", data["post_url"])
                   }
                   else {
+                      var post_url = "javascript:void(0)"
                       $(".glyphicon-link").css("color", "gray")
                       $(".post-url-details-a").removeAttr("href");
                   }
@@ -35,6 +38,11 @@ function getPost(post_id, e, status) {
                   }
                   if (data["post_mime_types"] == 0) {
                       post_image_b.empty(); 
+                      var post_raw_url = $("<a />", {
+                          "class": "post-raw-a",
+                          "href": post_url,
+                          "target": "_blank"
+                      });
                       var post_thumb_url = httpsUrl + data["post_thumb_url"] + imageStyle;
                       var post_raw_details = $("<img />", {
                           "class": "post-raw-details",
@@ -42,7 +50,8 @@ function getPost(post_id, e, status) {
                       });
                       // post_raw_details.css("width", data["post_thumb_width"]);
                       // post_raw_details.css("height", data["post_thumb_height"]);
-                      post_image_b.append(post_raw_details);
+                      post_image_b.append(post_raw_url);
+                      post_raw_url.append(post_raw_details);
                   }
                   else if (data["post_mime_types"] == 1) {
                       post_image_b.empty(); 
